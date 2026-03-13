@@ -53,6 +53,18 @@ Garbage Collector -> Jigsaw -> Arbiter -> Action
 - Arbiter gates action.
 - Action is mocked in this repo and executes only on approval.
 
+## Conceptual Role
+
+```mermaid
+flowchart LR
+    IN["Candidate + Task"]
+    --> KERN["Kernel Chain<br/>retrieve · score · rank · infer · explain"]
+    --> ENV["Evidence Bundle"]
+    --> OUT["Arbiter Decision Package"]
+
+    MEM["Optional Memory Context<br/>from Garbage Collector"] -.-> KERN
+```
+
 ## Public Interfaces
 
 Jigsaw’s public integration surfaces are explicit contracts, not direct cross-repo imports:

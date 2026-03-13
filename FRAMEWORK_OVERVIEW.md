@@ -57,6 +57,24 @@ Each repo can stand alone. Interoperability happens through contracts and adapte
 ## How They Connect
 
 ```mermaid
+flowchart TD
+    GC["Garbage Collector<br/>memory substrate<br/>notes · links · PDFs -> searchable memory"]
+    JIG["Jigsaw<br/>capability layer<br/>converts candidates into evidence bundles"]
+    ARB["Arbiter<br/>judgment layer<br/>gates action on evidence + policy"]
+    ACT["Action Layer<br/>executes only after Arbiter permits"]
+
+    GC -- "retrieval + context" --> JIG
+    JIG -- "evidence bundle" --> ARB
+    ARB -- "decision trace" --> GC
+    ARB -- "approved actions only" --> ACT
+
+    style GC fill:#2d4a3e,color:#fff
+    style JIG fill:#2d3a4a,color:#fff
+    style ARB fill:#4a2d2d,color:#fff
+    style ACT fill:#3a3a3a,color:#fff
+```
+
+```mermaid
 sequenceDiagram
     participant GC as Garbage Collector
     participant J as Jigsaw
