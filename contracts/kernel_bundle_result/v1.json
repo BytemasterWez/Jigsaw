@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/kernel_bundle_result/v1.json",
+  "title": "JigsawKernelBundleResultV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "bundle_id",
+    "input_id",
+    "kernel_outputs",
+    "composed_summary",
+    "composition_notes",
+    "metadata"
+  ],
+  "properties": {
+    "contract": { "type": "string", "const": "kernel_bundle_result" },
+    "version": { "type": "string", "const": "v1" },
+    "bundle_id": { "type": "string", "minLength": 1 },
+    "input_id": { "type": "string", "minLength": 1 },
+    "kernel_outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "../kernel_output/v1.json"
+      }
+    },
+    "composed_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle_judgment", "summary"],
+      "properties": {
+        "bundle_judgment": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 }
+      }
+    },
+    "composition_notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metadata": {
+      "$ref": "../common/metadata.v1.json"
+    }
+  }
+}
+

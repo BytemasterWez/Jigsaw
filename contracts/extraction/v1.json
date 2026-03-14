@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/extraction/v1.json",
+  "title": "JigsawExtractionV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "extraction_id",
+    "artifact_id",
+    "status",
+    "extracted_text",
+    "sections",
+    "tables",
+    "entities",
+    "warnings",
+    "metadata",
+    "provenance"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "extraction"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "extraction_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "partial",
+        "failed"
+      ]
+    },
+    "extracted_text": {
+      "type": "string"
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metadata": {
+      "$ref": "../common/metadata.v1.json"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_artifact_id",
+        "transform",
+        "transform_version"
+      ],
+      "properties": {
+        "source_artifact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transform": {
+          "type": "string",
+          "const": "artifact_to_extraction"
+        },
+        "transform_version": {
+          "type": "string",
+          "const": "v1"
+        }
+      }
+    }
+  }
+}
+

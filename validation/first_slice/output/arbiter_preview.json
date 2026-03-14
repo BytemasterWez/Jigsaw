@@ -1,0 +1,16 @@
+{
+  "candidate_id": "art_0001",
+  "domain": "default",
+  "candidate_type": "document",
+  "summary": "meeting_note_alpha",
+  "evidence": {
+    "source_count": 1,
+    "freshness_days": 0,
+    "fit_score": null
+  },
+  "context": {
+    "source_system": "garbage_collector",
+    "source_type": "note",
+    "jigsaw_request_id": "judgment_request:art_0001-default"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "contract_version": "kernel.v1",
+  "engine_name": "goal_alignment",
+  "subject": {
+    "subject_type": "item",
+    "subject_id": "gc:item:404"
+  },
+  "summary": "This item does not show strong alignment with the current local goals.",
+  "classification": "no_match",
+  "score": 0.08,
+  "confidence": 0.19,
+  "rationale": "The current item did not produce enough grounded similarity or keyword evidence to support a goal match.",
+  "evidence": [],
+  "signals": {
+    "relevance": 0.08,
+    "novelty": 0.82,
+    "actionability": 0.1,
+    "recurrence": 0.12
+  },
+  "outputs": {
+    "matched_targets": [],
+    "recommended_action": "ignore",
+    "tags": ["goal-alignment"]
+  },
+  "provenance": {
+    "generated_at": "2026-03-13T12:00:00Z",
+    "source_system": "garbage-collector",
+    "engine_version": "goal_alignment.v1"
+  }
+}

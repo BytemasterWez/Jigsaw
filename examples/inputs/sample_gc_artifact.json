@@ -1,0 +1,24 @@
+{
+  "contract": "artifact",
+  "version": "v1",
+  "artifact_id": "art_0001",
+  "source_system": "garbage_collector",
+  "source_type": "note",
+  "title": "meeting_note_alpha",
+  "created_at": "2026-03-14T20:00:00Z",
+  "ingested_at": "2026-03-14T20:05:00Z",
+  "content_ref": "gc://memory/art_0001",
+  "raw_text": "The council discussed drainage issues and contractor delays. Customer validation remains weak, and one note claims the issue is resolved while a direct field observation says it is not.\n\nA revenue model is present, but the operating mode still assumes onsite delivery rather than the intended remote model.\n\nAn execution plan is not yet documented.",
+  "mime_type": "text/plain",
+  "language": "en",
+  "metadata": {
+    "folder": "inbox",
+    "gc_record_type": "meeting_note"
+  },
+  "provenance": {
+    "origin": "user_drop",
+    "path": "local/inbox/meeting_note_alpha.txt",
+    "hash_sha256": "abc123artifacthash"
+  }
+}
+

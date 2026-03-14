@@ -1,6 +1,6 @@
 # Jigsaw
 
-Jigsaw is the middle capability layer between memory and judgment.
+Jigsaw is the middle capability layer in a three-layer modular intelligence framework. It owns stable contracts, shaping, composition, artifact-processing lanes, and kernel-family execution between normalized material and final judgment.
 
 - Garbage Collector remembers.
 - Jigsaw turns a candidate into an explicit evidence bundle.
@@ -36,11 +36,51 @@ Jigsaw is not:
 
 Within the larger architecture:
 
-- Garbage Collector is the memory substrate
-- Jigsaw is the capability and kernel layer
-- Arbiter is the judgment membrane
+- Garbage Collector is the material, normalization, and substrate layer
+- Jigsaw is the middle capability layer, shaping, composition, and kernel-family execution layer
+- Arbiter is the final judgment membrane
+
+An end-to-end integration proof now exists across the wider framework:
+
+`material -> normalized form -> shaped kernel bundle -> thin adapter -> Arbiter judgment`
 
 Jigsaw can still be used standalone in demo mode. In that mode it ships with local demo adapters for memory and judgment so the kernel chain can be inspected without any other repo.
+
+## What Has Been Proven
+
+Jigsaw currently has operational proof for three bounded surfaces:
+
+### Phase 1A: artifact interoperability lane
+
+A normalized artifact can enter Jigsaw, be validated, transformed, chunked, and emitted as a stable downstream judgment request with provenance and linkage preserved.
+
+### Phase 1B: first kernel-family lane
+
+A shared `kernel_input` can enter Jigsaw, run through three fixed kernels (`observed_state`, `expected_state`, `contradiction`), and emit a composed `kernel_bundle_result` with evidence and lineage preserved.
+
+### Integration proof into current Arbiter
+
+A Jigsaw `kernel_bundle_result` can be passed through a thin adapter into Arbiter's current public request/response membrane and receive a valid Arbiter judgment without redesigning Arbiter.
+
+This proves Jigsaw is not just passive schema storage. It is an operational middle capability layer.
+
+## Boundary Discipline
+
+Jigsaw is intentionally not:
+
+- the raw ingestion substrate
+- the final judgment membrane
+- a generic middleware blob
+
+Its role is to provide:
+
+- contract stability
+- shaping and composition
+- reusable middle-layer execution lanes
+- a home for kernel-family capability under shared discipline
+
+Source-specific irregularity belongs in adapters.
+Final judgment belongs downstream.
 
 ## Role In The Larger Stack
 
@@ -72,8 +112,25 @@ Jigsaw’s public integration surfaces are explicit contracts, not direct cross-
 - [MESSAGE_BUS_SCHEMA.md](./MESSAGE_BUS_SCHEMA.md)
 - [MEMORY_CONTRACT.md](./MEMORY_CONTRACT.md)
 - [ARBITER_DECISION_CONTRACT.md](./ARBITER_DECISION_CONTRACT.md)
+- [SHARED_KERNEL_FRAMEWORK_STATUS.md](./SHARED_KERNEL_FRAMEWORK_STATUS.md)
 - [SYSTEM_POSITIONING.md](./SYSTEM_POSITIONING.md)
 - [FRAMEWORK_OVERVIEW.md](./FRAMEWORK_OVERVIEW.md)
+
+Jigsaw also now supports `kernel.v1` as a first-class ingest contract for shared engine results, while keeping `MessageEnvelope` as its native internal runtime shape.
+
+## Canonical Contract Source
+
+`kernel.v1` is canonically defined in the standalone `kernel-contracts` repo.
+
+Jigsaw keeps a local schema snapshot for native ingest validation, but that snapshot is a pinned derivative, not the source of truth. Current alignment target:
+
+- `kernel-contracts` `0.1.0`
+
+Drift policy:
+
+- contract changes originate in `kernel-contracts` first
+- Jigsaw updates its local snapshot deliberately afterward
+- local schema or fixture edits here should not redefine `kernel.v1`
 
 ## Kernel Chain
 
@@ -146,6 +203,7 @@ The point is not to maximize actions. The point is to show that:
 - Jigsaw can run standalone or through thin adapters
 - audit trace behavior remains stable across demo and adapter-backed flows
 - the capability layer can stay separate from memory and judgment repos
+- valid `kernel.v1` payloads can be ingested natively and converted into Jigsaw's runtime envelope
 
 ## Not Yet Proven
 
@@ -157,6 +215,9 @@ The point is not to maximize actions. The point is to show that:
 ## Key Files
 
 - [ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md)
+- [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)
+- [EXTERNAL_SUMMARY.md](./EXTERNAL_SUMMARY.md)
+- [OPERATIONAL_PROOF.md](./OPERATIONAL_PROOF.md)
 - [MESSAGE_BUS_SCHEMA.md](./MESSAGE_BUS_SCHEMA.md)
 - [MEMORY_CONTRACT.md](./MEMORY_CONTRACT.md)
 - [ARBITER_DECISION_CONTRACT.md](./ARBITER_DECISION_CONTRACT.md)
@@ -164,3 +225,4 @@ The point is not to maximize actions. The point is to show that:
 - [FRAMEWORK_OVERVIEW.md](./FRAMEWORK_OVERVIEW.md)
 - [CLAIM_OF_PROOF.md](./CLAIM_OF_PROOF.md)
 - [INTEGRATION_NOTES.md](./INTEGRATION_NOTES.md)
+- [SHARED_KERNEL_FRAMEWORK_STATUS.md](./SHARED_KERNEL_FRAMEWORK_STATUS.md)

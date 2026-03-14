@@ -1,0 +1,11 @@
+{
+  "pipeline_run_id": "artifact-lane-first-slice",
+  "generated_at": "2026-03-14T12:00:00Z",
+  "input_path": "E:\\codex projects\\Jigsaw\\examples\\inputs\\sample_gc_artifact.json",
+  "output_dir": "E:\\codex projects\\Jigsaw\\validation\\first_slice\\output",
+  "artifact_id": "art_0001",
+  "extraction_id": "extraction:art_0001",
+  "chunk_count": 1,
+  "judgment_request_id": "judgment_request:art_0001-default",
+  "status": "success"
+}

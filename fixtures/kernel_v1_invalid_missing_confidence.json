@@ -1,0 +1,29 @@
+{
+  "contract_version": "kernel.v1",
+  "engine_name": "goal_alignment",
+  "subject": {
+    "subject_type": "item",
+    "subject_id": "gc:item:123"
+  },
+  "summary": "Strong alignment with the user's remote income goal.",
+  "classification": "match",
+  "score": 0.84,
+  "rationale": "The item discusses automation workflows, client delivery, and repeatable systems tied to remote income generation.",
+  "evidence": [],
+  "signals": {
+    "relevance": 0.84,
+    "novelty": 0.31,
+    "actionability": 0.76,
+    "recurrence": 0.44
+  },
+  "outputs": {
+    "matched_targets": [],
+    "recommended_action": "review",
+    "tags": []
+  },
+  "provenance": {
+    "generated_at": "2026-03-13T12:00:00Z",
+    "source_system": "garbage-collector",
+    "engine_version": "goal_alignment.v1"
+  }
+}

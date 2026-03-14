@@ -1,0 +1,51 @@
+{
+  "contract_version": "kernel.v1",
+  "engine_name": "goal_alignment",
+  "subject": {
+    "subject_type": "item",
+    "subject_id": "gc:item:123"
+  },
+  "summary": "Strong alignment with the user's remote income goal.",
+  "classification": "match",
+  "score": 0.84,
+  "confidence": 0.78,
+  "rationale": "The item discusses automation workflows, client delivery, and repeatable systems tied to remote income generation.",
+  "evidence": [
+    {
+      "evidence_type": "chunk",
+      "source_id": "gc:chunk:456",
+      "source_item_id": "gc:item:123",
+      "snippet": "Build repeatable workflow automation services for remote clients...",
+      "relevance": 0.87,
+      "confidence": 0.82,
+      "observed_at": "2026-03-13T12:00:00Z",
+      "provenance": {
+        "source_system": "garbage-collector",
+        "item_id": 123,
+        "chunk_id": 456
+      }
+    }
+  ],
+  "signals": {
+    "relevance": 0.84,
+    "novelty": 0.31,
+    "actionability": 0.76,
+    "recurrence": 0.44
+  },
+  "outputs": {
+    "matched_targets": [
+      {
+        "target_id": "goal:remote-income",
+        "label": "Remote income",
+        "strength": 0.84
+      }
+    ],
+    "recommended_action": "review",
+    "tags": ["goal-match", "remote-income", "workflow-automation"]
+  },
+  "provenance": {
+    "generated_at": "2026-03-13T12:00:00Z",
+    "source_system": "garbage-collector",
+    "engine_version": "goal_alignment.v1"
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/chunk/v1.json",
+  "title": "JigsawChunkV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "chunk_id",
+    "artifact_id",
+    "extraction_id",
+    "sequence",
+    "text",
+    "char_start",
+    "char_end",
+    "token_estimate",
+    "section_label",
+    "metadata",
+    "provenance"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "chunk"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "chunk_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extraction_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "char_start": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "char_end": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "token_estimate": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "section_label": {
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "../common/metadata.v1.json"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_artifact_id",
+        "source_extraction_id",
+        "transform",
+        "transform_version"
+      ],
+      "properties": {
+        "source_artifact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_extraction_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transform": {
+          "type": "string",
+          "const": "extraction_to_chunks"
+        },
+        "transform_version": {
+          "type": "string",
+          "const": "v1"
+        }
+      }
+    }
+  }
+}
+

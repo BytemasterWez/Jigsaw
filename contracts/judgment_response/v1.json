@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/judgment_response/v1.json",
+  "title": "JigsawJudgmentResponseV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "response_id",
+    "request_id",
+    "status",
+    "decision",
+    "score",
+    "summary",
+    "reasons",
+    "evidence_used",
+    "warnings",
+    "metadata"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "judgment_response"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "response_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "partial",
+        "failed"
+      ]
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "promoted",
+        "watchlist",
+        "rejected",
+        "undetermined"
+      ]
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metadata": {
+      "$ref": "../common/metadata.v1.json"
+    }
+  }
+}
+

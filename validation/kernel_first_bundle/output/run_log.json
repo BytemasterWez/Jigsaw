@@ -1,0 +1,14 @@
+{
+  "pipeline_run_id": "kernel-lane-first-bundle",
+  "generated_at": "2026-03-14T12:00:00Z",
+  "input_path": "E:\\codex projects\\Jigsaw\\examples\\inputs\\sample_kernel_input.json",
+  "output_dir": "E:\\codex projects\\Jigsaw\\validation\\kernel_first_bundle\\output",
+  "input_id": "kin_0001",
+  "bundle_id": "kernel_bundle:kin_0001",
+  "kernel_order": [
+    "observed_state",
+    "expected_state",
+    "contradiction"
+  ],
+  "status": "success"
+}

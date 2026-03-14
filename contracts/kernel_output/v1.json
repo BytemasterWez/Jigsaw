@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/kernel_output/v1.json",
+  "title": "JigsawKernelOutputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "output_id",
+    "kernel_type",
+    "input_id",
+    "status",
+    "judgment",
+    "confidence",
+    "reasons",
+    "evidence_used",
+    "metadata"
+  ],
+  "properties": {
+    "contract": { "type": "string", "const": "kernel_output" },
+    "version": { "type": "string", "const": "v1" },
+    "output_id": { "type": "string", "minLength": 1 },
+    "kernel_type": {
+      "type": "string",
+      "enum": ["observed_state", "expected_state", "contradiction"]
+    },
+    "input_id": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["success", "partial", "failed"]
+    },
+    "judgment": { "type": "string", "minLength": 1 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "reasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence_used": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "metadata": {
+      "$ref": "../common/metadata.v1.json"
+    }
+  }
+}
+

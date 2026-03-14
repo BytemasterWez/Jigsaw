@@ -4,6 +4,43 @@
 
 This document describes the minimum real integration points between Jigsaw and the existing Garbage Collector and Arbiter systems.
 
+It also records how the shared `kernel.v1` contract maps into Jigsaw's native `MessageEnvelope`.
+
+## Shared Kernel Contract Mapping
+
+Jigsaw now accepts `kernel.v1` as a first-class ingest surface for shared engine results.
+
+Native Jigsaw runtime remains:
+
+- `MessageEnvelope`
+
+Shared `kernel.v1` ingest path:
+
+- validate payload against `schemas/kernel_v1.schema.json`
+- parse typed result fields
+- map the result into `MessageEnvelope`
+- preserve the original payload in `metadata["kernel_v1"]`
+
+### `kernel.v1` -> `MessageEnvelope`
+
+| `kernel.v1` field | Jigsaw target | Notes |
+| --- | --- | --- |
+| `subject.subject_id` | `candidate.candidate_id` | preserved directly |
+| `subject.subject_type` | `candidate.kind` | preserved directly |
+| `summary` | `candidate.summary`, `explanation.summary` | used for top-line explanation |
+| `classification` | `candidate.attributes.classification` | preserved as metadata |
+| `outputs.recommended_action` | `candidate.attributes.recommended_action` | preserved as metadata |
+| `outputs.tags` | `candidate.attributes.tags` | preserved as metadata |
+| `score` | `scores["kernel_score"]` | explicit shared-contract score |
+| `confidence` | `scores["kernel_confidence"]`, `scores["confidence"]` | confidence remains separate from score |
+| `signals.relevance` | `scores["fit"]` | used as Jigsaw fit-compatible signal |
+| `evidence[*]` | `evidence[*]` | mapped into `EvidenceRecord` with provenance |
+| `rationale` | `explanation.why_now` | preserved as rationale |
+| `outputs.matched_targets` | `explanation.supporting_points` | labels become supporting points |
+| full payload | `metadata["kernel_v1"]` | original validated result retained for audit |
+
+This mapping keeps Jigsaw compatible with the shared engine-result primitive without redesigning the internal kernel chain.
+
 ## Garbage Collector Mapping
 
 ### Real integration points used

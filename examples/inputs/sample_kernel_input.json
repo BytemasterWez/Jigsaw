@@ -1,0 +1,101 @@
+{
+  "contract": "kernel_input",
+  "version": "v1",
+  "input_id": "kin_0001",
+  "subject_id": "case:jigsaw-kernel-1",
+  "subject_type": "candidate",
+  "content": {
+    "title": "remote_service_candidate_alpha",
+    "summary": "A candidate with a viable revenue model, weak customer validation, and one conflicting claim about whether validation is present.",
+    "observed_items": [
+      {
+        "name": "revenue_model_ready",
+        "value": true
+      },
+      {
+        "name": "customer_validation",
+        "value": false
+      },
+      {
+        "name": "operating_mode",
+        "value": "remote"
+      }
+    ],
+    "expected_items": [
+      {
+        "name": "revenue_model_ready",
+        "target_value": true
+      },
+      {
+        "name": "customer_validation",
+        "target_value": true
+      },
+      {
+        "name": "operating_mode",
+        "target_value": "remote"
+      }
+    ],
+    "claims": [
+      {
+        "name": "customer_validation",
+        "value": true
+      }
+    ]
+  },
+  "context": {
+    "minimum_expected_observations": 4,
+    "analysis_profile": "default"
+  },
+  "evidence": [
+    {
+      "evidence_id": "ev_001",
+      "kind": "observation",
+      "text": "The revenue model is documented and appears viable.",
+      "confidence": 0.86,
+      "observed_at": "2026-03-14T10:00:00Z",
+      "provenance": {
+        "source_system": "garbage_collector",
+        "artifact_id": "art_0001"
+      }
+    },
+    {
+      "evidence_id": "ev_002",
+      "kind": "observation",
+      "text": "Field notes say customer validation has not yet been achieved.",
+      "confidence": 0.84,
+      "observed_at": "2026-03-14T10:05:00Z",
+      "provenance": {
+        "source_system": "garbage_collector",
+        "artifact_id": "art_0001"
+      }
+    },
+    {
+      "evidence_id": "ev_003",
+      "kind": "claim",
+      "text": "A separate internal claim says customer validation is already present.",
+      "confidence": 0.79,
+      "observed_at": "2026-03-14T10:06:00Z",
+      "provenance": {
+        "source_system": "garbage_collector",
+        "artifact_id": "art_0001"
+      }
+    }
+  ],
+  "metadata": {
+    "object_id": "kin_0001",
+    "schema_version": "v1",
+    "created_at": "2026-03-14T12:00:00Z",
+    "updated_at": "2026-03-14T12:00:00Z",
+    "source_system": "garbage_collector",
+    "pipeline_run_id": "kernel-lane-first-bundle",
+    "confidence": 0.84,
+    "tags": [
+      "kernel-lane",
+      "example"
+    ],
+    "lineage": [
+      "art_0001"
+    ]
+  }
+}
+
