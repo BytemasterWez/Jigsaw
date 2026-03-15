@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/hypothesis_state/v1.json",
+  "title": "JigsawHypothesisStateV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "hypothesis_id",
+    "question_or_claim",
+    "supporting_evidence_ids",
+    "conflicting_evidence_ids",
+    "missing_evidence",
+    "confidence",
+    "state",
+    "next_probe"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "hypothesis_state"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "hypothesis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "question_or_claim": {
+      "type": "string",
+      "minLength": 1
+    },
+    "supporting_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "conflicting_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "open",
+        "gathering_evidence",
+        "conflicted",
+        "sufficient",
+        "escalate",
+        "closed"
+      ]
+    },
+    "next_probe": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
