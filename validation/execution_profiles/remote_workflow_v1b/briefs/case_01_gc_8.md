@@ -2,19 +2,19 @@
 
 ## Headline
 
-Remote income looks strong enough to prioritize now.
+Remote income is ready for priority review.
 
 ## Title
 
 Remote income
 
-## Decision Snapshot
+## At a glance
 
 - outcome: `promoted`
-- bundle judgment: `aligned`
-- bundle confidence: `0.72`
-- Arbiter confidence: `0.81`
-- recommended action: `prioritise_for_review`
+- overall assessment: `aligned`
+- case confidence: `0.72`
+- decision confidence: `0.81`
+- next step: `prioritise_for_review`
 
 ## Primary Item
 
@@ -32,37 +32,37 @@ Remote income
 
 The case is clear enough and aligns with the expected state. Strong fit, recent supporting evidence, and acceptable evidence depth justify immediate review.
 
-## Bundle Result
+## Overall assessment
 
-- judgment: `Aligned`
+- status: `Aligned`
 - confidence: `0.72`
 
-## Arbiter Result
+## Final decision
 
-- judgement: `Promoted`
+- decision: `Promoted`
 - confidence: `0.81`
-- recommended action: `prioritise_for_review`
+- next step: `prioritise_for_review`
 
-## Why It Landed Here
+## Why this case landed here
 
-### Observed picture
+### What the evidence shows
 
-- Observed coverage meets the minimum expected threshold.
+- There is enough direct evidence to treat this as a real case worth reviewing.
 
-### Expected fit
+### What is still missing
 
-- offer_pricing_defined is not aligned with the expected target.
+- Pricing is not yet clearly defined.
 
-### Contradiction check
+### Conflicts or concerns
 
-- No material contradiction detected across the provided input set.
+- No major conflicts were found in the supporting material.
 
-### Arbiter factors
+### Decision factors
 
 - High relevance to target profile
 - Evidence is recent
 - Multiple sources support the candidate
 
-## Recommended Next Action
+## What to do next
 
-Prioritize for human review and concrete follow-up.
+Review this case now and decide the next concrete follow-up.

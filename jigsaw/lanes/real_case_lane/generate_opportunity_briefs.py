@@ -34,6 +34,13 @@ def _title_case(value: str) -> str:
     return value.replace("_", " ").strip().title()
 
 
+def _sentence_case(value: str) -> str:
+    text = value.replace("_", " ").strip()
+    if not text:
+        return "Unknown"
+    return text[0].upper() + text[1:]
+
+
 def _supporting_lines(supporting_items: list[dict[str, Any]]) -> str:
     lines = []
     for item in supporting_items:
@@ -49,11 +56,23 @@ def _kernel_reason_map(bundle: dict[str, Any]) -> dict[str, list[str]]:
     }
 
 
+def _rewrite_reason(reason: str) -> str:
+    text = reason.strip()
+    replacements = {
+        "Observed coverage meets the minimum expected threshold.": "There is enough direct evidence to treat this as a real case worth reviewing.",
+        "No material contradiction detected across the provided input set.": "No major conflicts were found in the supporting material.",
+        "offer_pricing_defined is not aligned with the expected target.": "Pricing is not yet clearly defined.",
+        "consulting_use_case_defined is not aligned with the expected target.": "The consulting use case is not yet clearly framed.",
+        "operations_scaffold_present is not aligned with the expected target.": "The operational setup is still incomplete.",
+    }
+    return replacements.get(text, text)
+
+
 def _next_action_text(arbiter_response: dict[str, Any]) -> str:
     action = arbiter_response.get("recommended_action", "")
     mapping = {
-        "prioritise_for_review": "Prioritize for human review and concrete follow-up.",
-        "hold_for_recheck": "Keep on watchlist and enrich the case before acting.",
+        "prioritise_for_review": "Review this case now and decide the next concrete follow-up.",
+        "hold_for_recheck": "Do not act yet. Strengthen the case with clearer pricing, use-case definition, or supporting evidence before review.",
         "suppress": "Do not prioritize further work unless new evidence appears.",
     }
     return mapping.get(action, action or "No next action provided.")
@@ -71,19 +90,19 @@ def _headline(case_summary: dict[str, Any], arbiter_response: dict[str, Any], pr
     title = _title_from_content(primary_item)
     judgement = arbiter_response.get("judgement", "")
     if judgement == "promoted":
-        return f"{title} looks strong enough to prioritize now."
+        return f"{title} is ready for priority review."
     if judgement == "watchlist":
-        return f"{title} looks promising but needs more evidence before action."
+        return f"{title} shows promise but needs more evidence."
     return f"{title} does not currently justify further work."
 
 
 def _status_snapshot(case_summary: dict[str, Any], arbiter_response: dict[str, Any]) -> str:
     return (
         f"- outcome: `{arbiter_response['judgement']}`\n"
-        f"- bundle judgment: `{case_summary['bundle_judgment']}`\n"
-        f"- bundle confidence: `{case_summary['bundle_confidence']}`\n"
-        f"- Arbiter confidence: `{arbiter_response['confidence']}`\n"
-        f"- recommended action: `{arbiter_response['recommended_action']}`\n"
+        f"- overall assessment: `{case_summary['bundle_judgment']}`\n"
+        f"- case confidence: `{case_summary['bundle_confidence']}`\n"
+        f"- decision confidence: `{arbiter_response['confidence']}`\n"
+        f"- next step: `{arbiter_response['recommended_action']}`\n"
     )
 
 
@@ -98,10 +117,10 @@ def _brief_rationale(case_summary: dict[str, Any], bundle: dict[str, Any], arbit
 def _human_reason_lines(bundle: dict[str, Any], arbiter_response: dict[str, Any]) -> str:
     kernel_reasons = _kernel_reason_map(bundle)
     sections = [
-        ("Observed picture", kernel_reasons.get("observed_state", [])),
-        ("Expected fit", kernel_reasons.get("expected_state", [])),
-        ("Contradiction check", kernel_reasons.get("contradiction", [])),
-        ("Arbiter factors", arbiter_response.get("key_factors", [])),
+        ("What the evidence shows", [_rewrite_reason(item) for item in kernel_reasons.get("observed_state", [])]),
+        ("What is still missing", [_rewrite_reason(item) for item in kernel_reasons.get("expected_state", [])]),
+        ("Conflicts or concerns", [_rewrite_reason(item) for item in kernel_reasons.get("contradiction", [])]),
+        ("Decision factors", [_rewrite_reason(item) for item in arbiter_response.get("key_factors", [])]),
     ]
     parts = []
     for title, items in sections:
@@ -126,7 +145,7 @@ def build_case_brief(case_dir: Path) -> str:
         f"{headline}\n\n"
         f"## Title\n\n"
         f"{title}\n\n"
-        f"## Decision Snapshot\n\n"
+        f"## At a glance\n\n"
         f"{_status_snapshot(case_summary, arbiter_response)}\n"
         f"## Primary Item\n\n"
         f"- id: `{primary_item['item_id']}`\n"
@@ -136,16 +155,16 @@ def build_case_brief(case_dir: Path) -> str:
         f"{_supporting_lines(supporting_items)}\n"
         f"## Case Summary\n\n"
         f"{brief_rationale}\n\n"
-        f"## Bundle Result\n\n"
-        f"- judgment: `{_title_case(case_summary['bundle_judgment'])}`\n"
+        f"## Overall assessment\n\n"
+        f"- status: `{_sentence_case(case_summary['bundle_judgment'])}`\n"
         f"- confidence: `{case_summary['bundle_confidence']}`\n\n"
-        f"## Arbiter Result\n\n"
-        f"- judgement: `{_title_case(arbiter_response['judgement'])}`\n"
+        f"## Final decision\n\n"
+        f"- decision: `{_title_case(arbiter_response['judgement'])}`\n"
         f"- confidence: `{arbiter_response['confidence']}`\n"
-        f"- recommended action: `{arbiter_response['recommended_action']}`\n\n"
-        f"## Why It Landed Here\n\n"
+        f"- next step: `{arbiter_response['recommended_action']}`\n\n"
+        f"## Why this case landed here\n\n"
         f"{_human_reason_lines(bundle, arbiter_response)}\n"
-        f"## Recommended Next Action\n\n"
+        f"## What to do next\n\n"
         f"{_next_action_text(arbiter_response)}\n"
     )
 
@@ -175,10 +194,10 @@ def _html_supporting_items(supporting_items: list[dict[str, Any]]) -> str:
 def _html_reason_sections(bundle: dict[str, Any], arbiter_response: dict[str, Any]) -> str:
     kernel_reasons = _kernel_reason_map(bundle)
     sections = [
-        ("Observed picture", kernel_reasons.get("observed_state", [])),
-        ("Expected fit", kernel_reasons.get("expected_state", [])),
-        ("Contradiction check", kernel_reasons.get("contradiction", [])),
-        ("Arbiter factors", arbiter_response.get("key_factors", [])),
+        ("What the evidence shows", [_rewrite_reason(item) for item in kernel_reasons.get("observed_state", [])]),
+        ("What is still missing", [_rewrite_reason(item) for item in kernel_reasons.get("expected_state", [])]),
+        ("Conflicts or concerns", [_rewrite_reason(item) for item in kernel_reasons.get("contradiction", [])]),
+        ("Decision factors", [_rewrite_reason(item) for item in arbiter_response.get("key_factors", [])]),
     ]
     rendered = []
     for title, items in sections:
@@ -393,12 +412,12 @@ def build_case_brief_html(case_dir: Path) -> str:
       </header>
       <section class="grid">
         <div class="panel">
-          <h2>Decision Snapshot</h2>
+          <h2>At a glance</h2>
           <ul class="meta-list">
-            <li><span class="meta-label">Bundle judgment</span><span class="meta-value">{html.escape(_title_case(case_summary['bundle_judgment']))}</span></li>
-            <li><span class="meta-label">Bundle confidence</span><span class="meta-value">{case_summary['bundle_confidence']}</span></li>
-            <li><span class="meta-label">Arbiter confidence</span><span class="meta-value">{arbiter_response['confidence']}</span></li>
-            <li><span class="meta-label">Recommended action</span><span class="meta-value">{html.escape(arbiter_response['recommended_action'])}</span></li>
+            <li><span class="meta-label">Overall assessment</span><span class="meta-value">{html.escape(_sentence_case(case_summary['bundle_judgment']))}</span></li>
+            <li><span class="meta-label">Case confidence</span><span class="meta-value">{case_summary['bundle_confidence']}</span></li>
+            <li><span class="meta-label">Decision confidence</span><span class="meta-value">{arbiter_response['confidence']}</span></li>
+            <li><span class="meta-label">Next step</span><span class="meta-value">{html.escape(arbiter_response['recommended_action'])}</span></li>
           </ul>
         </div>
         <div class="panel">
@@ -417,11 +436,11 @@ def build_case_brief_html(case_dir: Path) -> str:
           {_html_supporting_items(supporting_items)}
         </div>
         <div class="panel">
-          <h2>Why It Landed Here</h2>
+          <h2>Why this case landed here</h2>
           {_html_reason_sections(bundle, arbiter_response)}
         </div>
         <div class="panel">
-          <h2>Recommended Next Action</h2>
+          <h2>What to do next</h2>
           <div class="action-box">
             <p>{html.escape(_next_action_text(arbiter_response))}</p>
           </div>

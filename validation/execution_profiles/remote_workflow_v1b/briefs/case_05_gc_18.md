@@ -2,19 +2,19 @@
 
 ## Headline
 
-AI systems looks promising but needs more evidence before action.
+AI systems shows promise but needs more evidence.
 
 ## Title
 
 AI systems
 
-## Decision Snapshot
+## At a glance
 
 - outcome: `watchlist`
-- bundle judgment: `partially_aligned`
-- bundle confidence: `0.72`
-- Arbiter confidence: `0.63`
-- recommended action: `hold_for_recheck`
+- overall assessment: `partially_aligned`
+- case confidence: `0.72`
+- decision confidence: `0.63`
+- next step: `hold_for_recheck`
 
 ## Primary Item
 
@@ -32,38 +32,38 @@ AI systems
 
 The case is only partially aligned and should be treated cautiously. Candidate shows some relevance but does not yet justify immediate action.
 
-## Bundle Result
+## Overall assessment
 
-- judgment: `Partially Aligned`
+- status: `Partially aligned`
 - confidence: `0.72`
 
-## Arbiter Result
+## Final decision
 
-- judgement: `Watchlist`
+- decision: `Watchlist`
 - confidence: `0.63`
-- recommended action: `hold_for_recheck`
+- next step: `hold_for_recheck`
 
-## Why It Landed Here
+## Why this case landed here
 
-### Observed picture
+### What the evidence shows
 
-- Observed coverage meets the minimum expected threshold.
+- There is enough direct evidence to treat this as a real case worth reviewing.
 
-### Expected fit
+### What is still missing
 
-- consulting_use_case_defined is not aligned with the expected target.
-- offer_pricing_defined is not aligned with the expected target.
+- The consulting use case is not yet clearly framed.
+- Pricing is not yet clearly defined.
 
-### Contradiction check
+### Conflicts or concerns
 
-- No material contradiction detected across the provided input set.
+- No major conflicts were found in the supporting material.
 
-### Arbiter factors
+### Decision factors
 
 - Moderate fit to target profile
 - Evidence is incomplete or weaker
 - Worth monitoring or enriching
 
-## Recommended Next Action
+## What to do next
 
-Keep on watchlist and enrich the case before acting.
+Do not act yet. Strengthen the case with clearer pricing, use-case definition, or supporting evidence before review.
