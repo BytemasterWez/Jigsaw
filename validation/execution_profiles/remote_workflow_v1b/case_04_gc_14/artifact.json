@@ -1,0 +1,23 @@
+{
+  "contract": "artifact",
+  "version": "v1",
+  "artifact_id": "gc_item_14",
+  "source_system": "garbage_collector",
+  "source_type": "note",
+  "title": "Business ops",
+  "created_at": "2026-03-13T00:28:53.517685Z",
+  "ingested_at": "2026-03-13T00:28:53.517685Z",
+  "content_ref": "gc://items/14",
+  "raw_text": "Business ops\n\nInvoice template fixes.",
+  "mime_type": "text/plain",
+  "language": "en",
+  "metadata": {
+    "gc_item_id": 14,
+    "pipeline_run_id": "remote_workflow_v1b-case-04"
+  },
+  "provenance": {
+    "origin": "gc_sqlite_item",
+    "path": "items/14",
+    "hash_sha256": "gc-item-14"
+  }
+}

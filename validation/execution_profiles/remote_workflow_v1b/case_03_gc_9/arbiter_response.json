@@ -1,0 +1,12 @@
+{
+  "candidate_id": "gc_case:remote_workflow_v1b:9",
+  "judgement": "watchlist",
+  "confidence": 0.63,
+  "reason_summary": "Candidate shows some relevance but does not yet justify immediate action.",
+  "key_factors": [
+    "Moderate fit to target profile",
+    "Evidence is incomplete or weaker",
+    "Worth monitoring or enriching"
+  ],
+  "recommended_action": "hold_for_recheck"
+}

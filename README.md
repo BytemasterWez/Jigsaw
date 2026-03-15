@@ -78,6 +78,10 @@ This is a bounded proof of local-model viability inside Jigsaw, not a claim of u
 
 This proves Jigsaw is not just passive schema storage. It is an operational middle capability layer.
 
+### Execution profile proof
+
+Jigsaw now supports standardized execution profiles for repeatable real-case runs. The first calibrated profile, `remote_workflow_v1b`, ran five live GC-backed cases through one fixed selection, shaping, kernel, and Arbiter path and produced a believable spread of outcomes (`2 promoted`, `3 watchlist`, `0 rejected`) rather than uniformly flattering results.
+
 ## Boundary Discipline
 
 Jigsaw is intentionally not:
@@ -233,6 +237,7 @@ The point is not to maximize actions. The point is to show that:
 - [EXTERNAL_SUMMARY.md](./EXTERNAL_SUMMARY.md)
 - [OPERATIONAL_PROOF.md](./OPERATIONAL_PROOF.md)
 - [ARBITER_COMPRESSION_AUDIT.md](./ARBITER_COMPRESSION_AUDIT.md)
+- [docs/EXECUTION_PROFILE_SPEC.md](./docs/EXECUTION_PROFILE_SPEC.md)
 - [validation/kernel_lmstudio_test/FINAL_RESULT.md](./validation/kernel_lmstudio_test/FINAL_RESULT.md)
 - [validation/kernel_lmstudio_test/VALIDATION_NOTE.md](./validation/kernel_lmstudio_test/VALIDATION_NOTE.md)
 - [validation/kernel_lmstudio_test/ADAPTER_SENSITIVITY_NOTE.md](./validation/kernel_lmstudio_test/ADAPTER_SENSITIVITY_NOTE.md)
@@ -240,6 +245,7 @@ The point is not to maximize actions. The point is to show that:
 - [validation/kernel_lmstudio_expected_test/VALIDATION_NOTE.md](./validation/kernel_lmstudio_expected_test/VALIDATION_NOTE.md)
 - [validation/kernel_lmstudio_mixed_test/FINAL_RESULT.md](./validation/kernel_lmstudio_mixed_test/FINAL_RESULT.md)
 - [validation/kernel_lmstudio_mixed_test/VALIDATION_NOTE.md](./validation/kernel_lmstudio_mixed_test/VALIDATION_NOTE.md)
+- [validation/execution_profiles/remote_workflow_v1b/SUMMARY.md](./validation/execution_profiles/remote_workflow_v1b/SUMMARY.md)
 - [MESSAGE_BUS_SCHEMA.md](./MESSAGE_BUS_SCHEMA.md)
 - [MEMORY_CONTRACT.md](./MEMORY_CONTRACT.md)
 - [ARBITER_DECISION_CONTRACT.md](./ARBITER_DECISION_CONTRACT.md)

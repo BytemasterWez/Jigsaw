@@ -1,0 +1,44 @@
+{
+  "contract": "extraction",
+  "version": "v1",
+  "extraction_id": "extraction:gc_item_45",
+  "artifact_id": "gc_item_45",
+  "status": "success",
+  "extracted_text": "Remote workflow systems\n\nAutomation ideas for consulting projects.",
+  "sections": [
+    {
+      "label": "section_1",
+      "char_start": 0,
+      "char_end": 23
+    },
+    {
+      "label": "section_2",
+      "char_start": 25,
+      "char_end": 66
+    }
+  ],
+  "tables": [],
+  "entities": [],
+  "warnings": [],
+  "metadata": {
+    "object_id": "extraction:gc_item_45",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T12:15:00Z",
+    "updated_at": "2026-03-15T12:15:00Z",
+    "source_system": "garbage_collector",
+    "pipeline_run_id": "remote_workflow_v1b-case-02",
+    "confidence": 1.0,
+    "tags": [
+      "artifact-lane",
+      "extraction"
+    ],
+    "lineage": [
+      "gc_item_45"
+    ]
+  },
+  "provenance": {
+    "source_artifact_id": "gc_item_45",
+    "transform": "artifact_to_extraction",
+    "transform_version": "v1"
+  }
+}

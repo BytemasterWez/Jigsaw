@@ -1,0 +1,15 @@
+{
+  "profile_name": "remote_workflow_v1b",
+  "primary_item_id": 45,
+  "supporting_item_ids": [
+    8,
+    14,
+    18
+  ],
+  "bundle_judgment": "aligned",
+  "bundle_confidence": 0.72,
+  "arbiter_fit_score": 0.8,
+  "arbiter_judgement": "promoted",
+  "recommended_action": "prioritise_for_review",
+  "shaping_issues": []
+}

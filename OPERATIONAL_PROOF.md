@@ -64,6 +64,26 @@ In this bounded proof:
 - the current Arbiter membrane still produced a usable bounded result
 - downstream `watchlist` parity was preserved on the tested case
 
+### 6. Calibrated execution profile proof
+
+Jigsaw now supports standardized execution profiles that hold the process fixed across varying live cases.
+
+The first calibrated profile, `remote_workflow_v1b`, ran five live GC-backed cases through the same:
+
+- primary selection process
+- supporting-item selection process
+- shaping template
+- deterministic kernel bundle
+- current Arbiter membrane
+
+This produced a believable spread:
+
+- `2 promoted`
+- `3 watchlist`
+- `0 rejected`
+
+That matters because it proves not just repeatable execution, but repeatable execution with plausible discrimination rather than uniformly flattering outputs.
+
 ## What this means
 
 This proves the three repositories are not just related ideas. They form an operationally aligned modular framework with preserved boundaries:
@@ -94,5 +114,6 @@ What exists today is:
 - one successful cross-layer integration proof
 - two bounded single-slot local-model kernel proofs inside Jigsaw
 - one bounded mixed local-model bundle proof inside Jigsaw
+- one calibrated execution profile with believable spread across live GC-backed cases
 
 That is the current foundation for future expansion.

@@ -1,0 +1,38 @@
+[
+  {
+    "contract": "chunk",
+    "version": "v1",
+    "chunk_id": "chunk:gc_item_18-1",
+    "artifact_id": "gc_item_18",
+    "extraction_id": "extraction:gc_item_18",
+    "sequence": 1,
+    "text": "AI systems\n\nMemory tool behavior notes.",
+    "char_start": 0,
+    "char_end": 39,
+    "token_estimate": 6,
+    "section_label": "section_1",
+    "metadata": {
+      "object_id": "chunk:gc_item_18-1",
+      "schema_version": "v1",
+      "created_at": "2026-03-15T12:15:00Z",
+      "updated_at": "2026-03-15T12:15:00Z",
+      "source_system": "garbage_collector",
+      "pipeline_run_id": "remote_workflow_v1b-case-05",
+      "confidence": 1.0,
+      "tags": [
+        "artifact-lane",
+        "chunk"
+      ],
+      "lineage": [
+        "gc_item_18",
+        "extraction:gc_item_18"
+      ]
+    },
+    "provenance": {
+      "source_artifact_id": "gc_item_18",
+      "source_extraction_id": "extraction:gc_item_18",
+      "transform": "extraction_to_chunks",
+      "transform_version": "v1"
+    }
+  }
+]
