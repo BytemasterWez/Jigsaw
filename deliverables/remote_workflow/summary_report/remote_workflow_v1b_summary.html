@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Remote Workflow Summary Report</title>
+  <style>
+    :root {
+      --bg: #f4efe4;
+      --paper: #fffdf7;
+      --ink: #1d1b16;
+      --muted: #635b4f;
+      --border: #d8cdb7;
+      --promoted: #1f7a4d;
+      --promoted-bg: #d9f3e4;
+      --watchlist: #9a6700;
+      --watchlist-bg: #fff0c2;
+      --rejected: #a1271f;
+      --rejected-bg: #f8d9d5;
+      --shadow: rgba(59, 48, 31, 0.08);
+      --font-serif: Georgia, "Times New Roman", serif;
+      --font-sans: "Segoe UI", Tahoma, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8f3e9 0%, var(--bg) 100%);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.55;
+    }
+    .shell {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 20px 56px;
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 18px 40px var(--shadow);
+      overflow: hidden;
+    }
+    .hero {
+      padding: 32px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(242,233,215,0.7));
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-family: var(--font-serif);
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 1.05;
+    }
+    .lede {
+      margin: 0;
+      max-width: 760px;
+      font-size: 18px;
+      color: var(--muted);
+    }
+    .content {
+      padding: 28px 32px 32px;
+      display: grid;
+      gap: 24px;
+    }
+    .panel {
+      padding: 20px 22px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.68);
+    }
+    .panel h2 {
+      margin: 0 0 12px;
+      font-family: var(--font-serif);
+      font-size: 20px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .stat {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #f8f3ea;
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(99, 91, 79, 0.16);
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .badge.promoted { color: var(--promoted); background: var(--promoted-bg); }
+    .badge.watchlist { color: var(--watchlist); background: var(--watchlist-bg); }
+    .badge.rejected { color: var(--rejected); background: var(--rejected-bg); }
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    a {
+      color: #8d4c20;
+    }
+    @media (max-width: 820px) {
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      th:nth-child(4), td:nth-child(4) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <article class="card">
+      <header class="hero">
+        <p class="eyebrow">Remote Workflow Summary Report</p>
+        <h1>remote_workflow_v1b</h1>
+        <p class="lede">
+          This report summarizes 5 remote workflow opportunity cases processed under the
+          <strong>remote_workflow_v1b</strong> execution profile.
+        </p>
+      </header>
+      <section class="content">
+        <section class="panel">
+          <h2>Overview</h2>
+          <div class="stats">
+            <div class="stat"><div class="stat-label">Generated</div><div class="stat-value" style="font-size:18px">2026-03-15T14:26:53+00:00</div></div>
+            <div class="stat"><div class="stat-label">Cases reviewed</div><div class="stat-value">5</div></div>
+            <div class="stat"><div class="stat-label">Promoted</div><div class="stat-value">2</div></div>
+            <div class="stat"><div class="stat-label">Watchlist / Rejected</div><div class="stat-value">3 / 0</div></div>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>What this batch suggests</h2>
+          <p>The current batch shows a mix of clearly actionable remote workflow cases and weaker adjacent cases that still need more evidence before review.</p>
+        </section>
+        <section class="panel">
+          <h2>Case list</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Case</th>
+                <th>Title</th>
+                <th>Outcome</th>
+                <th>Confidence</th>
+                <th>Next step</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>case_01_gc_8</td><td>Remote income</td><td><span class="badge promoted">Promoted</span></td><td>0.72</td><td>Prioritise for review</td></tr><tr><td>case_02_gc_45</td><td>Remote workflow systems Automation ideas for consulting projects.</td><td><span class="badge promoted">Promoted</span></td><td>0.72</td><td>Prioritise for review</td></tr><tr><td>case_03_gc_9</td><td>AI tools</td><td><span class="badge watchlist">Watchlist</span></td><td>0.6375</td><td>Hold for recheck</td></tr><tr><td>case_04_gc_14</td><td>Business ops</td><td><span class="badge watchlist">Watchlist</span></td><td>0.6375</td><td>Hold for recheck</td></tr><tr><td>case_05_gc_18</td><td>AI systems</td><td><span class="badge watchlist">Watchlist</span></td><td>0.72</td><td>Hold for recheck</td></tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="panel">
+          <h2>Individual briefs</h2>
+          <ul><li><strong>case_01_gc_8</strong>: <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_01_gc_8.html">HTML brief</a> | <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_01_gc_8.md">Markdown brief</a></li><li><strong>case_02_gc_45</strong>: <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_02_gc_45.html">HTML brief</a> | <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_02_gc_45.md">Markdown brief</a></li><li><strong>case_03_gc_9</strong>: <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_03_gc_9.html">HTML brief</a> | <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_03_gc_9.md">Markdown brief</a></li><li><strong>case_04_gc_14</strong>: <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_04_gc_14.html">HTML brief</a> | <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_04_gc_14.md">Markdown brief</a></li><li><strong>case_05_gc_18</strong>: <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_05_gc_18.html">HTML brief</a> | <a href="/validation/execution_profiles/remote_workflow_v1b/briefs/case_05_gc_18.md">Markdown brief</a></li></ul>
+        </section>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
