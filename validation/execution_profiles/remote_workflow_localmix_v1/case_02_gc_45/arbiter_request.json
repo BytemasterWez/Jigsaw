@@ -1,0 +1,24 @@
+{
+  "candidate_id": "gc_case:remote_workflow_localmix_v1:45",
+  "domain": "jigsaw_kernel_bundle",
+  "candidate_type": "opportunity_case",
+  "summary": "The case is only partially aligned and should be treated cautiously.",
+  "evidence": {
+    "source_count": 4,
+    "freshness_days": 2,
+    "fit_score": 0.55,
+    "estimated_value_band": "partially_aligned"
+  },
+  "context": {
+    "buyer_profile": "remote_workflow_localmix_v1",
+    "current_queue_pressure": "medium",
+    "action_cost": "medium",
+    "jigsaw_bundle_id": "kernel_bundle:kin_gc_45_remote_workflow_localmix_v1",
+    "jigsaw_bundle_judgment": "partially_aligned",
+    "kernel_sequence": [
+      "observed_state",
+      "expected_state",
+      "contradiction"
+    ]
+  }
+}

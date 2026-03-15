@@ -1,0 +1,23 @@
+{
+  "contract": "artifact",
+  "version": "v1",
+  "artifact_id": "gc_item_8",
+  "source_system": "garbage_collector",
+  "source_type": "note",
+  "title": "Remote income",
+  "created_at": "2026-03-13T00:28:53.491666Z",
+  "ingested_at": "2026-03-13T00:28:53.491666Z",
+  "content_ref": "gc://items/8",
+  "raw_text": "Remote income\n\nConsulting idea around AI workflows.",
+  "mime_type": "text/plain",
+  "language": "en",
+  "metadata": {
+    "gc_item_id": 8,
+    "pipeline_run_id": "remote_workflow_localmix_v1-case-01"
+  },
+  "provenance": {
+    "origin": "gc_sqlite_item",
+    "path": "items/8",
+    "hash_sha256": "gc-item-8"
+  }
+}

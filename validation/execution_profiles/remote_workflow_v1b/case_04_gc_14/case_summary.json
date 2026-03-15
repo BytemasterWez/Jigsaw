@@ -20,5 +20,28 @@
     "expected_state": "deterministic",
     "contradiction": "deterministic"
   },
+  "kernel_runtime": {
+    "observed_state": {
+      "engine_mode": "deterministic",
+      "model_name": null,
+      "retries_used": 0,
+      "elapsed_seconds": null,
+      "judgment": "observed_state_clear"
+    },
+    "expected_state": {
+      "engine_mode": "deterministic",
+      "model_name": null,
+      "retries_used": 0,
+      "elapsed_seconds": null,
+      "judgment": "expected_state_misaligned"
+    },
+    "contradiction": {
+      "engine_mode": "deterministic",
+      "model_name": null,
+      "retries_used": 0,
+      "elapsed_seconds": null,
+      "judgment": "contradiction_not_detected"
+    }
+  },
   "shaping_issues": []
 }

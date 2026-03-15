@@ -28,6 +28,15 @@ def test_calibrated_execution_profile_can_load() -> None:
     assert profile["kernel_engines"]["observed_state"] == "deterministic"
 
 
+def test_localmix_execution_profile_can_load() -> None:
+    profile = load_execution_profile("remote_workflow_localmix_v1")
+
+    assert profile["profile_name"] == "remote_workflow_localmix_v1"
+    assert profile["kernel_engines"]["observed_state"] == "lmstudio"
+    assert profile["kernel_engines"]["expected_state"] == "lmstudio"
+    assert profile["kernel_engines"]["contradiction"] == "deterministic"
+
+
 def test_execution_profile_batch_generates_summary(tmp_path: Path) -> None:
     output_root = tmp_path / "execution_profile_batch"
     summary = run_profile_batch(case_limit=2, output_root_override=output_root)
@@ -46,3 +55,4 @@ def test_execution_profile_batch_generates_summary(tmp_path: Path) -> None:
     assert (first_case_dir / "hypothesis_state.json").exists()
     assert (first_case_dir / "case_input.json").exists()
     assert saved["cases"][0]["controller_next_probe"] == "package_case"
+    assert "kernel_runtime" in saved["cases"][0]

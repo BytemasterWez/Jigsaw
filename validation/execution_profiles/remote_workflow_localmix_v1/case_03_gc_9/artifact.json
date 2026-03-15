@@ -1,0 +1,23 @@
+{
+  "contract": "artifact",
+  "version": "v1",
+  "artifact_id": "gc_item_9",
+  "source_system": "garbage_collector",
+  "source_type": "note",
+  "title": "AI tools",
+  "created_at": "2026-03-13T00:28:53.495679Z",
+  "ingested_at": "2026-03-13T00:28:53.495679Z",
+  "content_ref": "gc://items/9",
+  "raw_text": "AI tools\n\nPrompt library cleanup tasks.",
+  "mime_type": "text/plain",
+  "language": "en",
+  "metadata": {
+    "gc_item_id": 9,
+    "pipeline_run_id": "remote_workflow_localmix_v1-case-03"
+  },
+  "provenance": {
+    "origin": "gc_sqlite_item",
+    "path": "items/9",
+    "hash_sha256": "gc-item-9"
+  }
+}

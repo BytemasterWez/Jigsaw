@@ -1,0 +1,144 @@
+{
+  "contract": "kernel_bundle_result",
+  "version": "v1",
+  "bundle_id": "kernel_bundle:kin_gc_45_remote_workflow_localmix_v1",
+  "input_id": "kin_gc_45_remote_workflow_localmix_v1",
+  "kernel_outputs": [
+    {
+      "contract": "kernel_output",
+      "version": "v1",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_localmix_v1-observed_state",
+      "kernel_type": "observed_state",
+      "input_id": "kin_gc_45_remote_workflow_localmix_v1",
+      "status": "success",
+      "judgment": "observed_state_partial",
+      "confidence": 0.6,
+      "reasons": [
+        "The observed items include three true observations and one false observation (offer_pricing_defined). The presence of a false observation reduces the overall clarity, making it partial.",
+        "There are four observations in total, but only three are true while one is false. This means that not all expected aspects are clearly covered by reliable evidence."
+      ],
+      "evidence_used": [
+        "gc_ev_45",
+        "gc_ev_8",
+        "gc_ev_14",
+        "gc_ev_18"
+      ],
+      "metadata": {
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_localmix_v1-observed_state",
+        "schema_version": "v1",
+        "created_at": "2026-03-15T12:15:00Z",
+        "updated_at": "2026-03-15T12:15:00Z",
+        "source_system": "jigsaw",
+        "pipeline_run_id": "remote_workflow_localmix_v1-case-02",
+        "confidence": 0.6,
+        "tags": [
+          "kernel-lane",
+          "observed-state",
+          "lmstudio"
+        ],
+        "lineage": [
+          "kin_gc_45_remote_workflow_localmix_v1"
+        ]
+      }
+    },
+    {
+      "contract": "kernel_output",
+      "version": "v1",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_localmix_v1-expected_state",
+      "kernel_type": "expected_state",
+      "input_id": "kin_gc_45_remote_workflow_localmix_v1",
+      "status": "success",
+      "judgment": "expected_state_partial",
+      "confidence": 0.75,
+      "reasons": [
+        "The expected_value for 'workflow_automation_focus' is true and the observed_value is also true, so it aligns.",
+        "Similarly, 'consulting_use_case_defined' has both expected and observed as true, which aligns.",
+        "However, 'offer_pricing_defined' does not align because expected is true but observed is false. This indicates a misalignment in one of the three key expectations."
+      ],
+      "evidence_used": [
+        "gc_ev_45",
+        "gc_ev_8",
+        "gc_ev_14",
+        "gc_ev_18"
+      ],
+      "metadata": {
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_localmix_v1-expected_state",
+        "schema_version": "v1",
+        "created_at": "2026-03-15T12:15:00Z",
+        "updated_at": "2026-03-15T12:15:00Z",
+        "source_system": "jigsaw",
+        "pipeline_run_id": "remote_workflow_localmix_v1-case-02",
+        "confidence": 0.75,
+        "tags": [
+          "kernel-lane",
+          "expected-state",
+          "lmstudio"
+        ],
+        "lineage": [
+          "kin_gc_45_remote_workflow_localmix_v1"
+        ]
+      }
+    },
+    {
+      "contract": "kernel_output",
+      "version": "v1",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_localmix_v1-contradiction",
+      "kernel_type": "contradiction",
+      "input_id": "kin_gc_45_remote_workflow_localmix_v1",
+      "status": "success",
+      "judgment": "contradiction_not_detected",
+      "confidence": 0.72,
+      "reasons": [
+        "No material contradiction detected across the provided input set."
+      ],
+      "evidence_used": [
+        "gc_ev_45",
+        "gc_ev_8",
+        "gc_ev_14",
+        "gc_ev_18"
+      ],
+      "metadata": {
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_localmix_v1-contradiction",
+        "schema_version": "v1",
+        "created_at": "2026-03-15T12:15:00Z",
+        "updated_at": "2026-03-15T12:15:00Z",
+        "source_system": "jigsaw",
+        "pipeline_run_id": "remote_workflow_localmix_v1-case-02",
+        "confidence": 0.72,
+        "tags": [
+          "kernel-lane",
+          "contradiction"
+        ],
+        "lineage": [
+          "kin_gc_45_remote_workflow_localmix_v1"
+        ]
+      }
+    }
+  ],
+  "composed_summary": {
+    "bundle_judgment": "partially_aligned",
+    "summary": "The case is only partially aligned and should be treated cautiously."
+  },
+  "composition_notes": [
+    "Alignment remains partial even though the observed picture is usable."
+  ],
+  "metadata": {
+    "object_id": "kernel_bundle:kin_gc_45_remote_workflow_localmix_v1",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T12:15:00Z",
+    "updated_at": "2026-03-15T12:15:00Z",
+    "source_system": "jigsaw",
+    "pipeline_run_id": "remote_workflow_localmix_v1-case-02",
+    "confidence": 0.6,
+    "tags": [
+      "kernel-lane",
+      "bundle-result"
+    ],
+    "lineage": [
+      "kin_gc_45_remote_workflow_localmix_v1",
+      "kernel_output:kin_gc_45_remote_workflow_localmix_v1-observed_state",
+      "kernel_output:kin_gc_45_remote_workflow_localmix_v1-expected_state",
+      "kernel_output:kin_gc_45_remote_workflow_localmix_v1-contradiction"
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "contract": "chunk",
+    "version": "v1",
+    "chunk_id": "chunk:gc_item_14-1",
+    "artifact_id": "gc_item_14",
+    "extraction_id": "extraction:gc_item_14",
+    "sequence": 1,
+    "text": "Business ops\n\nInvoice template fixes.",
+    "char_start": 0,
+    "char_end": 37,
+    "token_estimate": 5,
+    "section_label": "section_1",
+    "metadata": {
+      "object_id": "chunk:gc_item_14-1",
+      "schema_version": "v1",
+      "created_at": "2026-03-15T12:15:00Z",
+      "updated_at": "2026-03-15T12:15:00Z",
+      "source_system": "garbage_collector",
+      "pipeline_run_id": "remote_workflow_localmix_v1-case-04",
+      "confidence": 1.0,
+      "tags": [
+        "artifact-lane",
+        "chunk"
+      ],
+      "lineage": [
+        "gc_item_14",
+        "extraction:gc_item_14"
+      ]
+    },
+    "provenance": {
+      "source_artifact_id": "gc_item_14",
+      "source_extraction_id": "extraction:gc_item_14",
+      "transform": "extraction_to_chunks",
+      "transform_version": "v1"
+    }
+  }
+]

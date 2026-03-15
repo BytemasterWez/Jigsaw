@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 import sqlite3
+import sys
 import tomllib
 from dataclasses import dataclass
 from datetime import datetime
@@ -433,6 +434,7 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
         "arbiter_judgement": arbiter_response["judgement"],
         "recommended_action": arbiter_response["recommended_action"],
         "kernel_engines": composition["case_summary"]["kernel_engines"],
+        "kernel_runtime": composition["case_summary"]["kernel_runtime"],
         "shaping_issues": [] if supporting_items else ["no_supporting_items"],
     }
     _dump_json(output_dir / "case_summary.json", case_summary)
@@ -508,5 +510,6 @@ def run_profile_batch(
 
 
 if __name__ == "__main__":
-    result = run_profile_batch()
+    profile_name = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_PROFILE
+    result = run_profile_batch(profile_name)
     print(json.dumps(result, indent=2))

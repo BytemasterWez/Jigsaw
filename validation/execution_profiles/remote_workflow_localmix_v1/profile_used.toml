@@ -1,0 +1,63 @@
+profile_name = "remote_workflow_localmix_v1"
+profile_version = "v1"
+
+[selection]
+primary_rule = "cluster_diverse_keyword_score_then_recency"
+primary_terms = ["remote", "workflow", "automation", "consulting", "income", "client", "offer", "business", "invoice", "ai", "systems", "tools"]
+primary_min_score = 1
+primary_case_limit = 5
+primary_diversify_clusters = true
+primary_low_band_threshold = 2
+supporting_rule = "overlap_then_profile_score_with_cluster_cap_and_weaker_tail"
+supporting_terms = ["remote", "workflow", "automation", "consulting", "income", "client", "offer", "pricing", "invoice", "ops", "business", "ai"]
+supporting_min_score = 1
+supporting_max_per_cluster = 1
+supporting_require_one_weaker_item = true
+supporting_weak_band_max_score = 2
+max_supporting_items = 3
+
+[shaping]
+artifact_lane = true
+case_template = "bounded_opportunity_case_v1b"
+minimum_expected_observations = 4
+require_primary_signal_anchor = true
+minimum_signal_support_count = 2
+
+[shaping.signal_terms]
+workflow_automation_focus = ["remote", "workflow", "automation", "ai"]
+consulting_use_case_defined = ["consulting", "client", "offer", "service"]
+offer_pricing_defined = ["pricing", "price", "offer", "invoice", "budget"]
+operations_scaffold_present = ["ops", "invoice", "template", "system", "process", "workflow"]
+
+[controller]
+minimum_supporting_evidence = 3
+conflict_threshold = 1
+escalate_if_gaps = false
+
+[kernel_engines]
+observed_state = "lmstudio"
+expected_state = "lmstudio"
+contradiction = "deterministic"
+
+[engine.lmstudio]
+model = "deepseek/deepseek-r1-0528-qwen3-8b"
+max_retries = 1
+
+[arbiter]
+adapter = "current_public_membrane"
+confidence_to_fit_score = "bundle_min_confidence"
+output_mode = "bounded"
+
+[outputs]
+root = "validation/execution_profiles/remote_workflow_localmix_v1"
+save_request = true
+save_bundle = true
+save_response = true
+save_run_log = true
+save_summary = true
+
+[validation]
+require_primary_item = true
+require_supporting_items_min = 1
+require_kernel_bundle = true
+require_arbiter_response = true

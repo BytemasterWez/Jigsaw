@@ -1,0 +1,19 @@
+{
+  "contract": "case_input",
+  "version": "v1",
+  "case_id": "case:hyp:gc:9",
+  "hypothesis_id": "hyp:gc:9",
+  "question_or_claim": "Should GC item 9 be packaged for remote workflow review?",
+  "primary_evidence_ids": [
+    "gc:item:9"
+  ],
+  "supporting_evidence_ids": [
+    "gc:item:8",
+    "gc:item:45",
+    "gc:item:14"
+  ],
+  "conflicting_evidence_ids": [],
+  "missing_evidence": [],
+  "current_confidence": 0.78,
+  "reason_for_packaging": "sufficient_support_low_conflict"
+}

@@ -1,0 +1,50 @@
+{
+  "contract": "judgment_request",
+  "version": "v1",
+  "request_id": "judgment_request:gc_item_14-remote_workflow_localmix_v1",
+  "artifact_id": "gc_item_14",
+  "subject": {
+    "title": "Business ops",
+    "type": "document"
+  },
+  "context": {
+    "source_system": "garbage_collector",
+    "source_type": "note",
+    "analysis_profile": "remote_workflow_localmix_v1"
+  },
+  "chunks": [
+    {
+      "chunk_id": "chunk:gc_item_14-1",
+      "text": "Business ops\n\nInvoice template fixes.",
+      "section_label": "section_1"
+    }
+  ],
+  "evidence": {
+    "provenance": {
+      "artifact_id": "gc_item_14",
+      "chunk_count": 1,
+      "lineage": [
+        "gc_item_14",
+        "chunk:gc_item_14-1"
+      ]
+    },
+    "hash_sha256": "b321d3bbb5d76b781317757751f32b96d232c21cbe6c4d41541242ae7be501a3"
+  },
+  "metadata": {
+    "object_id": "judgment_request:gc_item_14-remote_workflow_localmix_v1",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T12:15:00Z",
+    "updated_at": "2026-03-15T12:15:00Z",
+    "source_system": "garbage_collector",
+    "pipeline_run_id": "remote_workflow_localmix_v1-case-04",
+    "confidence": 1.0,
+    "tags": [
+      "artifact-lane",
+      "judgment-request"
+    ],
+    "lineage": [
+      "gc_item_14",
+      "chunk:gc_item_14-1"
+    ]
+  }
+}

@@ -137,6 +137,29 @@ def compose_case_from_case_input(
             "expected_state": expected_result.engine_mode,
             "contradiction": contradiction_result.engine_mode,
         },
+        "kernel_runtime": {
+            "observed_state": {
+                "engine_mode": observed_result.engine_mode,
+                "model_name": observed_result.model_name,
+                "retries_used": observed_result.retries_used,
+                "elapsed_seconds": observed_result.elapsed_seconds,
+                "judgment": observed_result.validated_output.judgment,
+            },
+            "expected_state": {
+                "engine_mode": expected_result.engine_mode,
+                "model_name": expected_result.model_name,
+                "retries_used": expected_result.retries_used,
+                "elapsed_seconds": expected_result.elapsed_seconds,
+                "judgment": expected_result.validated_output.judgment,
+            },
+            "contradiction": {
+                "engine_mode": contradiction_result.engine_mode,
+                "model_name": contradiction_result.model_name,
+                "retries_used": contradiction_result.retries_used,
+                "elapsed_seconds": contradiction_result.elapsed_seconds,
+                "judgment": contradiction_result.validated_output.judgment,
+            },
+        },
     }
     return {
         "case_input": validated_case_input.model_dump(mode="python"),

@@ -1,0 +1,38 @@
+[
+  {
+    "contract": "chunk",
+    "version": "v1",
+    "chunk_id": "chunk:gc_item_9-1",
+    "artifact_id": "gc_item_9",
+    "extraction_id": "extraction:gc_item_9",
+    "sequence": 1,
+    "text": "AI tools\n\nPrompt library cleanup tasks.",
+    "char_start": 0,
+    "char_end": 39,
+    "token_estimate": 6,
+    "section_label": "section_1",
+    "metadata": {
+      "object_id": "chunk:gc_item_9-1",
+      "schema_version": "v1",
+      "created_at": "2026-03-15T12:15:00Z",
+      "updated_at": "2026-03-15T12:15:00Z",
+      "source_system": "garbage_collector",
+      "pipeline_run_id": "remote_workflow_localmix_v1-case-03",
+      "confidence": 1.0,
+      "tags": [
+        "artifact-lane",
+        "chunk"
+      ],
+      "lineage": [
+        "gc_item_9",
+        "extraction:gc_item_9"
+      ]
+    },
+    "provenance": {
+      "source_artifact_id": "gc_item_9",
+      "source_extraction_id": "extraction:gc_item_9",
+      "transform": "extraction_to_chunks",
+      "transform_version": "v1"
+    }
+  }
+]
