@@ -11,5 +11,10 @@
   "arbiter_fit_score": 0.8,
   "arbiter_judgement": "promoted",
   "recommended_action": "prioritise_for_review",
+  "kernel_engines": {
+    "observed_state": "deterministic",
+    "expected_state": "deterministic",
+    "contradiction": "deterministic"
+  },
   "shaping_issues": []
 }

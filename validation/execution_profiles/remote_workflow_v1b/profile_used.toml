@@ -29,10 +29,14 @@ consulting_use_case_defined = ["consulting", "client", "offer", "service"]
 offer_pricing_defined = ["pricing", "price", "offer", "invoice", "budget"]
 operations_scaffold_present = ["ops", "invoice", "template", "system", "process", "workflow"]
 
-[kernels]
+[kernel_engines]
 observed_state = "deterministic"
 expected_state = "deterministic"
 contradiction = "deterministic"
+
+[engine.lmstudio]
+model = "deepseek/deepseek-r1-0528-qwen3-8b"
+max_retries = 1
 
 [arbiter]
 adapter = "current_public_membrane"

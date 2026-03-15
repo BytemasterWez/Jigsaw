@@ -10,5 +10,10 @@
     "expected_state",
     "contradiction"
   ],
+  "kernel_engines": {
+    "observed_state": "deterministic",
+    "expected_state": "deterministic",
+    "contradiction": "deterministic"
+  },
   "status": "success"
 }

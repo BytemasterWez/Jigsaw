@@ -24,6 +24,7 @@ def test_calibrated_execution_profile_can_load() -> None:
     assert profile["profile_name"] == "remote_workflow_v1b"
     assert profile["selection"]["supporting_max_per_cluster"] == 1
     assert profile["shaping"]["require_primary_signal_anchor"] is True
+    assert profile["kernel_engines"]["observed_state"] == "deterministic"
 
 
 def test_execution_profile_batch_generates_summary(tmp_path: Path) -> None:

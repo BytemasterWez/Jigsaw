@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from jigsaw.engines.kernel_runtime import run_kernel_for_profile
 from jigsaw.lanes.artifact_lane.transforms import artifact_to_extraction, chunks_to_judgment_request, extraction_to_chunks
 from jigsaw.lanes.artifact_lane.validators import (
     validate_artifact_v1,
@@ -18,11 +19,9 @@ from jigsaw.lanes.artifact_lane.validators import (
 )
 from jigsaw.lanes.kernel_lane.arbiter_integration import adjudicate_via_current_arbiter, kernel_bundle_result_to_arbiter_request
 from jigsaw.lanes.kernel_lane.compose import compose_kernel_bundle
-from jigsaw.lanes.kernel_lane.kernels import run_contradiction, run_expected_state, run_observed_state
 from jigsaw.lanes.kernel_lane.validators import (
     validate_kernel_bundle_result_v1,
     validate_kernel_input_v1,
-    validate_kernel_output_v1,
 )
 from jigsaw.lanes.real_case_lane.execute_remote_workflow_case import GC_DB_PATH, GCItem, _artifact_from_gc_item, _fetch_gc_item
 
@@ -365,19 +364,31 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
         pipeline_run_id=pipeline_run_id,
         generated_at=generated_at,
     )
-    observed_output = validate_kernel_output_v1(
-        run_observed_state(kernel_input, pipeline_run_id=pipeline_run_id, generated_at=generated_at).model_dump(mode="python")
+    observed_result = run_kernel_for_profile(
+        "observed_state",
+        kernel_input,
+        profile,
+        pipeline_run_id=pipeline_run_id,
+        generated_at=generated_at,
     )
-    expected_output = validate_kernel_output_v1(
-        run_expected_state(kernel_input, pipeline_run_id=pipeline_run_id, generated_at=generated_at).model_dump(mode="python")
+    expected_result = run_kernel_for_profile(
+        "expected_state",
+        kernel_input,
+        profile,
+        pipeline_run_id=pipeline_run_id,
+        generated_at=generated_at,
     )
-    contradiction_output = validate_kernel_output_v1(
-        run_contradiction(kernel_input, pipeline_run_id=pipeline_run_id, generated_at=generated_at).model_dump(mode="python")
+    contradiction_result = run_kernel_for_profile(
+        "contradiction",
+        kernel_input,
+        profile,
+        pipeline_run_id=pipeline_run_id,
+        generated_at=generated_at,
     )
     bundle_result = validate_kernel_bundle_result_v1(
         compose_kernel_bundle(
             kernel_input,
-            [observed_output, expected_output, contradiction_output],
+            [observed_result.validated_output, expected_result.validated_output, contradiction_result.validated_output],
             pipeline_run_id=pipeline_run_id,
             generated_at=generated_at,
         ).model_dump(mode="python")
@@ -405,6 +416,11 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
         "arbiter_fit_score": arbiter_request["evidence"]["fit_score"],
         "arbiter_judgement": arbiter_response["judgement"],
         "recommended_action": arbiter_response["recommended_action"],
+        "kernel_engines": {
+            "observed_state": observed_result.engine_mode,
+            "expected_state": expected_result.engine_mode,
+            "contradiction": contradiction_result.engine_mode,
+        },
         "shaping_issues": [] if supporting_items else ["no_supporting_items"],
     }
     _dump_json(output_dir / "case_summary.json", case_summary)

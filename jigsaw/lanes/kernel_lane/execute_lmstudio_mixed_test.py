@@ -3,13 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from jigsaw.engines.kernel_runtime import run_kernel
+
 from .arbiter_integration import adjudicate_via_current_arbiter, kernel_bundle_result_to_arbiter_request
 from .compose import compose_kernel_bundle
 from .execute_first_kernel_bundle import INPUT_PATH
-from .kernels import run_contradiction
-from .lmstudio_expected_state import run_lmstudio_expected_state
-from .lmstudio_observed_state import run_lmstudio_observed_state
-from .validators import validate_kernel_bundle_result_v1, validate_kernel_input_v1, validate_kernel_output_v1
+from .validators import validate_kernel_bundle_result_v1, validate_kernel_input_v1
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -32,24 +31,32 @@ def run_lmstudio_mixed_test() -> dict[str, str | int | float]:
     _dump_json(OUTPUT_DIR / "kernel_input.json", kernel_input.model_dump(mode="python"))
 
     try:
-        lm_observed = run_lmstudio_observed_state(
+        lm_observed = run_kernel(
+            "observed_state",
+            "lmstudio",
             kernel_input,
             pipeline_run_id=pipeline_run_id,
             generated_at=generated_at,
-            max_retries=1,
+            config={"max_retries": 1},
         )
-        lm_expected = run_lmstudio_expected_state(
+        lm_expected = run_kernel(
+            "expected_state",
+            "lmstudio",
             kernel_input,
             pipeline_run_id=pipeline_run_id,
             generated_at=generated_at,
-            max_retries=1,
+            config={"max_retries": 1},
         )
-        contradiction_output = validate_kernel_output_v1(
-            run_contradiction(kernel_input, pipeline_run_id=pipeline_run_id, generated_at=generated_at).model_dump(mode="python")
+        contradiction_result = run_kernel(
+            "contradiction",
+            "deterministic",
+            kernel_input,
+            pipeline_run_id=pipeline_run_id,
+            generated_at=generated_at,
         )
         bundle_result = compose_kernel_bundle(
             kernel_input,
-            [lm_observed.validated_output, lm_expected.validated_output, contradiction_output],
+            [lm_observed.validated_output, lm_expected.validated_output, contradiction_result.validated_output],
             pipeline_run_id=pipeline_run_id,
             generated_at=generated_at,
         )
@@ -63,7 +70,7 @@ def run_lmstudio_mixed_test() -> dict[str, str | int | float]:
         _dump_json(OUTPUT_DIR / "expected_state_raw_model_output.json", lm_expected.raw_model_output)
         _dump_json(OUTPUT_DIR / "expected_state_generated.json", lm_expected.generated_payload)
         _dump_json(OUTPUT_DIR / "expected_state_validated.json", lm_expected.validated_output.model_dump(mode="python"))
-        _dump_json(OUTPUT_DIR / "contradiction.json", contradiction_output.model_dump(mode="python"))
+        _dump_json(OUTPUT_DIR / "contradiction.json", contradiction_result.validated_output.model_dump(mode="python"))
         _dump_json(OUTPUT_DIR / "kernel_bundle_result.json", bundle_result.model_dump(mode="python"))
         _dump_json(OUTPUT_DIR / "arbiter_request.json", arbiter_request)
         _dump_json(OUTPUT_DIR / "arbiter_response.json", arbiter_response)
@@ -84,6 +91,11 @@ def run_lmstudio_mixed_test() -> dict[str, str | int | float]:
                 "bundle_confidence": bundle_result.metadata.confidence,
                 "arbiter_fit_score": arbiter_request["evidence"]["fit_score"],
                 "arbiter_judgement": arbiter_response["judgement"],
+                "kernel_engines": {
+                    "observed_state": lm_observed.engine_mode,
+                    "expected_state": lm_expected.engine_mode,
+                    "contradiction": contradiction_result.engine_mode,
+                },
                 "status": "success",
             },
         )
