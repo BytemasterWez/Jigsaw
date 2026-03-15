@@ -84,6 +84,23 @@ This produced a believable spread:
 
 That matters because it proves not just repeatable execution, but repeatable execution with plausible discrimination rather than uniformly flattering outputs.
 
+### 7. Product-slice brief pack proof
+
+The calibrated `remote_workflow_v1b` profile now generates a user-consumable Remote Workflow Opportunity Brief pack.
+
+For each case, the brief includes:
+
+- title
+- primary item
+- supporting items
+- short case summary
+- bundle judgment and confidence
+- Arbiter result
+- bounded rationale
+- recommended next action
+
+This is the first current-stack output that reads like a usable product artifact rather than an internal proof pack.
+
 ## What this means
 
 This proves the three repositories are not just related ideas. They form an operationally aligned modular framework with preserved boundaries:
@@ -115,5 +132,6 @@ What exists today is:
 - two bounded single-slot local-model kernel proofs inside Jigsaw
 - one bounded mixed local-model bundle proof inside Jigsaw
 - one calibrated execution profile with believable spread across live GC-backed cases
+- one user-consumable brief pack generated from a calibrated execution profile
 
 That is the current foundation for future expansion.
