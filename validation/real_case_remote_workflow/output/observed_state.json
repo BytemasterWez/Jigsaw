@@ -1,0 +1,35 @@
+{
+  "contract": "kernel_output",
+  "version": "v1",
+  "output_id": "kernel_output:kin_gc_45-observed_state",
+  "kernel_type": "observed_state",
+  "input_id": "kin_gc_45",
+  "status": "success",
+  "judgment": "observed_state_clear",
+  "confidence": 0.85,
+  "reasons": [
+    "Observed coverage meets the minimum expected threshold."
+  ],
+  "evidence_used": [
+    "gc_ev_45",
+    "gc_ev_8",
+    "gc_ev_22",
+    "gc_ev_14"
+  ],
+  "metadata": {
+    "object_id": "kernel_output:kin_gc_45-observed_state",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T11:45:00Z",
+    "updated_at": "2026-03-15T11:45:00Z",
+    "source_system": "jigsaw",
+    "pipeline_run_id": "real-case-remote-workflow",
+    "confidence": 0.85,
+    "tags": [
+      "kernel-lane",
+      "observed-state"
+    ],
+    "lineage": [
+      "kin_gc_45"
+    ]
+  }
+}

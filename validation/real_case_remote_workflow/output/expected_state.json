@@ -1,0 +1,35 @@
+{
+  "contract": "kernel_output",
+  "version": "v1",
+  "output_id": "kernel_output:kin_gc_45-expected_state",
+  "kernel_type": "expected_state",
+  "input_id": "kin_gc_45",
+  "status": "success",
+  "judgment": "expected_state_aligned",
+  "confidence": 0.9,
+  "reasons": [
+    "Observed values are aligned with the expected target state."
+  ],
+  "evidence_used": [
+    "gc_ev_45",
+    "gc_ev_8",
+    "gc_ev_22",
+    "gc_ev_14"
+  ],
+  "metadata": {
+    "object_id": "kernel_output:kin_gc_45-expected_state",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T11:45:00Z",
+    "updated_at": "2026-03-15T11:45:00Z",
+    "source_system": "jigsaw",
+    "pipeline_run_id": "real-case-remote-workflow",
+    "confidence": 0.9,
+    "tags": [
+      "kernel-lane",
+      "expected-state"
+    ],
+    "lineage": [
+      "kin_gc_45"
+    ]
+  }
+}
