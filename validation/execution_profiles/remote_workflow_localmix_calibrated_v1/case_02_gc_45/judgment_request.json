@@ -1,0 +1,50 @@
+{
+  "contract": "judgment_request",
+  "version": "v1",
+  "request_id": "judgment_request:gc_item_45-remote_workflow_localmix_calibrated_v1",
+  "artifact_id": "gc_item_45",
+  "subject": {
+    "title": "Remote workflow systems",
+    "type": "document"
+  },
+  "context": {
+    "source_system": "garbage_collector",
+    "source_type": "note",
+    "analysis_profile": "remote_workflow_localmix_calibrated_v1"
+  },
+  "chunks": [
+    {
+      "chunk_id": "chunk:gc_item_45-1",
+      "text": "Remote workflow systems\n\nAutomation ideas for consulting projects.",
+      "section_label": "section_1"
+    }
+  ],
+  "evidence": {
+    "provenance": {
+      "artifact_id": "gc_item_45",
+      "chunk_count": 1,
+      "lineage": [
+        "gc_item_45",
+        "chunk:gc_item_45-1"
+      ]
+    },
+    "hash_sha256": "07439f31bb5c6b1f3d3bdedc6646cae2db554d5f6dc7afc579d6ba2637826376"
+  },
+  "metadata": {
+    "object_id": "judgment_request:gc_item_45-remote_workflow_localmix_calibrated_v1",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T12:15:00Z",
+    "updated_at": "2026-03-15T12:15:00Z",
+    "source_system": "garbage_collector",
+    "pipeline_run_id": "remote_workflow_localmix_calibrated_v1-case-02",
+    "confidence": 1.0,
+    "tags": [
+      "artifact-lane",
+      "judgment-request"
+    ],
+    "lineage": [
+      "gc_item_45",
+      "chunk:gc_item_45-1"
+    ]
+  }
+}

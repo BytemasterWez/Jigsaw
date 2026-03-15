@@ -1,0 +1,47 @@
+{
+  "profile_name": "remote_workflow_localmix_calibrated_v1",
+  "primary_item_id": 9,
+  "supporting_item_ids": [
+    8,
+    45,
+    14
+  ],
+  "hypothesis_id": "hyp:gc:9",
+  "controller_state": "sufficient",
+  "controller_next_probe": "package_case",
+  "case_id": "case:hyp:gc:9",
+  "bundle_judgment": "partially_aligned",
+  "bundle_confidence": 0.6,
+  "arbiter_fit_score": 0.55,
+  "arbiter_judgement": "watchlist",
+  "recommended_action": "hold_for_recheck",
+  "kernel_engines": {
+    "observed_state": "lmstudio",
+    "expected_state": "lmstudio",
+    "contradiction": "deterministic"
+  },
+  "kernel_runtime": {
+    "observed_state": {
+      "engine_mode": "lmstudio",
+      "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
+      "retries_used": 0,
+      "elapsed_seconds": 1.7781,
+      "judgment": "observed_state_partial"
+    },
+    "expected_state": {
+      "engine_mode": "lmstudio",
+      "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
+      "retries_used": 0,
+      "elapsed_seconds": 1.4116,
+      "judgment": "expected_state_partial"
+    },
+    "contradiction": {
+      "engine_mode": "deterministic",
+      "model_name": null,
+      "retries_used": 0,
+      "elapsed_seconds": null,
+      "judgment": "contradiction_not_detected"
+    }
+  },
+  "shaping_issues": []
+}

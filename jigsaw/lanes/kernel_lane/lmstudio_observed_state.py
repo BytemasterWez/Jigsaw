@@ -85,7 +85,13 @@ def _generation_schema() -> dict[str, Any]:
     }
 
 
-def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
+def _prompts(
+    payload: KernelInputV1,
+    shell: dict[str, Any],
+    *,
+    prompt_config: dict[str, Any] | None = None,
+) -> tuple[str, str]:
+    prompt_config = prompt_config or {}
     minimum_expected = int(payload.context.get("minimum_expected_observations", 3))
     observed_count = len(payload.content.observed_items)
     evidence_records = [
@@ -97,6 +103,36 @@ def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
         }
         for record in payload.evidence
     ]
+    confidence_guidance = [
+        "Confidence measures support for the chosen observed_state judgment, not perfection of the whole case.",
+        "Do not use 0.0 unless the judgment is effectively unsupported by the evidence.",
+        "If you choose observed_state_partial and the observations are usable, confidence should normally be above 0.0.",
+        "For this case shape, observed_state_partial will usually imply confidence around 0.55 to 0.7 unless the evidence is nearly absent or deeply unreliable.",
+        "If three observations are present, the minimum expected observations is four, and the evidence records are real and moderately confident, do not default to 0.4 or below without a clear reason.",
+        "A conflicting claim may lower confidence somewhat, but it should not drive confidence near zero when the observed items themselves are still usable.",
+    ]
+    extra_rules: list[str] = []
+    requirements = [
+        "Return JSON only.",
+        "Write concise reasons focused on observation completeness and clarity.",
+        "Do not emit metadata, ids, timestamps, or evidence_used. Those will be added locally.",
+        "Set a nonzero confidence when the evidence provides real support for the chosen judgment.",
+        "If the judgment is observed_state_partial on this case shape, prefer confidence above 0.5 unless you can justify a lower value from near-absent or very weak evidence.",
+    ]
+    if prompt_config.get("complete_coverage_bias"):
+        confidence_guidance.append(
+            "If the minimum expected observations are present, treat the observed picture as strong on coverage grounds unless the evidence itself is unclear or missing."
+        )
+        extra_rules.append("Do not downgrade from observed_state_clear merely because one observed item has a false value if that value is still clearly evidenced.")
+    if prompt_config.get("prefer_clear_on_complete_coverage"):
+        requirements.append(
+            "If observed_count meets or exceeds the minimum expected observations and the evidence is direct, prefer observed_state_clear unless the observations themselves are ambiguous."
+        )
+    if "confidence_floor_clear" in prompt_config:
+        requirements.append(
+            f"If you choose observed_state_clear for this profile, keep confidence at or above {float(prompt_config['confidence_floor_clear']):.2f} unless the evidence is directly unreliable."
+        )
+
     user_payload = {
         "task": "Emit one kernel_output payload for observed_state only.",
         "rules": {
@@ -106,6 +142,7 @@ def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
                 "contradiction reasoning",
                 "consequence reasoning",
             ],
+            "profile_bias": extra_rules,
             "judgment_thresholds": {
                 "observed_state_clear": "observed_count >= minimum_expected_observations",
                 "observed_state_partial": "observed_count >= max(1, minimum_expected_observations - 1) and not clear",
@@ -118,14 +155,7 @@ def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
                 "0.75": "strong support",
                 "1.0": "near-complete support",
             },
-            "confidence_guidance": [
-                "Confidence measures support for the chosen observed_state judgment, not perfection of the whole case.",
-                "Do not use 0.0 unless the judgment is effectively unsupported by the evidence.",
-                "If you choose observed_state_partial and the observations are usable, confidence should normally be above 0.0.",
-                "For this case shape, observed_state_partial will usually imply confidence around 0.55 to 0.7 unless the evidence is nearly absent or deeply unreliable.",
-                "If three observations are present, the minimum expected observations is four, and the evidence records are real and moderately confident, do not default to 0.4 or below without a clear reason.",
-                "A conflicting claim may lower confidence somewhat, but it should not drive confidence near zero when the observed items themselves are still usable.",
-            ],
+            "confidence_guidance": confidence_guidance,
         },
         "input_summary": {
             "title": payload.content.title,
@@ -148,13 +178,7 @@ def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
             "full_kernel_output_shell": shell,
             "allowed_evidence_ids": shell["evidence_used"],
         },
-        "requirements": [
-            "Return JSON only.",
-            "Write concise reasons focused on observation completeness and clarity.",
-            "Do not emit metadata, ids, timestamps, or evidence_used. Those will be added locally.",
-            "Set a nonzero confidence when the evidence provides real support for the chosen judgment.",
-            "If the judgment is observed_state_partial on this case shape, prefer confidence above 0.5 unless you can justify a lower value from near-absent or very weak evidence.",
-        ],
+        "requirements": requirements,
     }
     user_prompt = (
         "You are the observed_state kernel inside Jigsaw.\n"
@@ -186,11 +210,12 @@ def run_lmstudio_observed_state(
     generated_at: str,
     max_retries: int = 1,
     client: LMStudioClient | None = None,
+    prompt_config: dict[str, Any] | None = None,
 ) -> LMObservedStateRun:
     client = client or LMStudioClient()
     shell = _build_output_shell(payload, pipeline_run_id=pipeline_run_id, generated_at=generated_at)
     schema = _generation_schema()
-    system_prompt, user_prompt = _prompts(payload, shell)
+    system_prompt, user_prompt = _prompts(payload, shell, prompt_config=prompt_config)
 
     last_error: Exception | None = None
     raw_response: dict[str, Any] | None = None

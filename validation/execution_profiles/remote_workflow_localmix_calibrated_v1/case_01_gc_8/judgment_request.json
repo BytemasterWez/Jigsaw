@@ -1,0 +1,50 @@
+{
+  "contract": "judgment_request",
+  "version": "v1",
+  "request_id": "judgment_request:gc_item_8-remote_workflow_localmix_calibrated_v1",
+  "artifact_id": "gc_item_8",
+  "subject": {
+    "title": "Remote income",
+    "type": "document"
+  },
+  "context": {
+    "source_system": "garbage_collector",
+    "source_type": "note",
+    "analysis_profile": "remote_workflow_localmix_calibrated_v1"
+  },
+  "chunks": [
+    {
+      "chunk_id": "chunk:gc_item_8-1",
+      "text": "Remote income\n\nConsulting idea around AI workflows.",
+      "section_label": "section_1"
+    }
+  ],
+  "evidence": {
+    "provenance": {
+      "artifact_id": "gc_item_8",
+      "chunk_count": 1,
+      "lineage": [
+        "gc_item_8",
+        "chunk:gc_item_8-1"
+      ]
+    },
+    "hash_sha256": "67ac67859134480f983c036a7905f55670e4cfa84f70c594e1e5821058414160"
+  },
+  "metadata": {
+    "object_id": "judgment_request:gc_item_8-remote_workflow_localmix_calibrated_v1",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T12:15:00Z",
+    "updated_at": "2026-03-15T12:15:00Z",
+    "source_system": "garbage_collector",
+    "pipeline_run_id": "remote_workflow_localmix_calibrated_v1-case-01",
+    "confidence": 1.0,
+    "tags": [
+      "artifact-lane",
+      "judgment-request"
+    ],
+    "lineage": [
+      "gc_item_8",
+      "chunk:gc_item_8-1"
+    ]
+  }
+}

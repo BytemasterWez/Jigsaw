@@ -82,6 +82,7 @@ def _run_observed_state_lmstudio(
         generated_at=generated_at,
         max_retries=int(config.get("max_retries", 1)),
         client=client,
+        prompt_config=config,
     )
     return KernelRunResult(
         kernel_name="observed_state",
@@ -115,6 +116,7 @@ def _run_expected_state_lmstudio(
         generated_at=generated_at,
         max_retries=int(config.get("max_retries", 1)),
         client=client,
+        prompt_config=config,
     )
     return KernelRunResult(
         kernel_name="expected_state",

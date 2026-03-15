@@ -1,0 +1,23 @@
+{
+  "contract": "artifact",
+  "version": "v1",
+  "artifact_id": "gc_item_45",
+  "source_system": "garbage_collector",
+  "source_type": "note",
+  "title": "Remote workflow systems",
+  "created_at": "2026-03-13T01:33:46.896302Z",
+  "ingested_at": "2026-03-13T10:03:09.435628Z",
+  "content_ref": "gc://items/45",
+  "raw_text": "Remote workflow systems\n\nAutomation ideas for consulting projects.",
+  "mime_type": "text/plain",
+  "language": "en",
+  "metadata": {
+    "gc_item_id": 45,
+    "pipeline_run_id": "remote_workflow_localmix_calibrated_v1-case-02"
+  },
+  "provenance": {
+    "origin": "gc_sqlite_item",
+    "path": "items/45",
+    "hash_sha256": "gc-item-45"
+  }
+}

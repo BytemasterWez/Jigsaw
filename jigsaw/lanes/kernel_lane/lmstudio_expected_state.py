@@ -79,7 +79,13 @@ def _generation_schema() -> dict[str, Any]:
     }
 
 
-def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
+def _prompts(
+    payload: KernelInputV1,
+    shell: dict[str, Any],
+    *,
+    prompt_config: dict[str, Any] | None = None,
+) -> tuple[str, str]:
+    prompt_config = prompt_config or {}
     observed_by_name = {
         item.get("name"): item.get("value")
         for item in payload.content.observed_items
@@ -98,6 +104,28 @@ def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
         )
 
     ratio = 1.0 if not expected_pairs else sum(1 for item in expected_pairs if item["aligned"]) / len(expected_pairs)
+    confidence_guidance = [
+        "Confidence measures support for the chosen expected_state judgment, not perfection of the overall case.",
+        "If one expectation is clearly misaligned while others are aligned, expected_state_partial is usually appropriate.",
+        "For this case shape with 2 of 3 expectations aligned, confidence should normally be moderate to strong, often around 0.6 to 0.85.",
+        "Do not default to very low confidence unless the evidence is absent or too contradictory to support the chosen judgment.",
+    ]
+    requirements = [
+        "Return JSON only.",
+        "Write concise reasons focused on alignment or misalignment against expected targets.",
+        "Do not emit metadata, ids, timestamps, or evidence_used. Those will be added locally.",
+        "If the judgment is expected_state_partial on this case shape, prefer confidence above 0.6 unless you can justify a lower value from weak or contradictory evidence.",
+    ]
+    profile_bias: list[str] = []
+    if prompt_config.get("prefer_aligned_at_threshold"):
+        profile_bias.append(
+            "If alignment_ratio is at least 0.75 and only one expectation is misaligned, prefer expected_state_aligned unless the evidence for the aligned items is weak."
+        )
+    if "confidence_floor_aligned" in prompt_config:
+        requirements.append(
+            f"If you choose expected_state_aligned for this profile, keep confidence at or above {float(prompt_config['confidence_floor_aligned']):.2f} unless the evidence is directly unreliable."
+        )
+
     user_payload = {
         "task": "Emit one kernel_output payload for expected_state only.",
         "rules": {
@@ -107,6 +135,7 @@ def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
                 "contradiction reasoning",
                 "consequence reasoning",
             ],
+            "profile_bias": profile_bias,
             "judgment_thresholds": {
                 "expected_state_aligned": "alignment_ratio >= 0.75",
                 "expected_state_partial": "alignment_ratio >= 0.40 and < 0.75",
@@ -119,12 +148,7 @@ def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
                 "0.75": "strong support",
                 "1.0": "near-complete support",
             },
-            "confidence_guidance": [
-                "Confidence measures support for the chosen expected_state judgment, not perfection of the overall case.",
-                "If one expectation is clearly misaligned while others are aligned, expected_state_partial is usually appropriate.",
-                "For this case shape with 2 of 3 expectations aligned, confidence should normally be moderate to strong, often around 0.6 to 0.85.",
-                "Do not default to very low confidence unless the evidence is absent or too contradictory to support the chosen judgment.",
-            ],
+            "confidence_guidance": confidence_guidance,
         },
         "input_summary": {
             "title": payload.content.title,
@@ -154,12 +178,7 @@ def _prompts(payload: KernelInputV1, shell: dict[str, Any]) -> tuple[str, str]:
             "full_kernel_output_shell": shell,
             "allowed_evidence_ids": shell["evidence_used"],
         },
-        "requirements": [
-            "Return JSON only.",
-            "Write concise reasons focused on alignment or misalignment against expected targets.",
-            "Do not emit metadata, ids, timestamps, or evidence_used. Those will be added locally.",
-            "If the judgment is expected_state_partial on this case shape, prefer confidence above 0.6 unless you can justify a lower value from weak or contradictory evidence.",
-        ],
+        "requirements": requirements,
     }
     user_prompt = (
         "You are the expected_state kernel inside Jigsaw.\n"
@@ -188,11 +207,12 @@ def run_lmstudio_expected_state(
     generated_at: str,
     max_retries: int = 1,
     client: LMStudioClient | None = None,
+    prompt_config: dict[str, Any] | None = None,
 ) -> LMExpectedStateRun:
     client = client or LMStudioClient()
     shell = _build_output_shell(payload, pipeline_run_id=pipeline_run_id, generated_at=generated_at)
     schema = _generation_schema()
-    system_prompt, user_prompt = _prompts(payload, shell)
+    system_prompt, user_prompt = _prompts(payload, shell, prompt_config=prompt_config)
 
     last_error: Exception | None = None
     raw_response: dict[str, Any] | None = None

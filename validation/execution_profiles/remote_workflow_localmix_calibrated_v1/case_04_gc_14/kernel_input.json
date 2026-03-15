@@ -1,0 +1,127 @@
+{
+  "contract": "kernel_input",
+  "version": "v1",
+  "input_id": "kin_gc_14_remote_workflow_localmix_calibrated_v1",
+  "subject_id": "gc_case:remote_workflow_localmix_calibrated_v1:14",
+  "subject_type": "opportunity_case",
+  "content": {
+    "title": "Business ops",
+    "summary": "A remote-workflow opportunity case assembled from GC material for primary item 14, with 3 supporting items under profile remote_workflow_localmix_calibrated_v1.",
+    "observed_items": [
+      {
+        "name": "workflow_automation_focus",
+        "value": false
+      },
+      {
+        "name": "consulting_use_case_defined",
+        "value": false
+      },
+      {
+        "name": "offer_pricing_defined",
+        "value": false
+      },
+      {
+        "name": "operations_scaffold_present",
+        "value": true
+      }
+    ],
+    "expected_items": [
+      {
+        "name": "workflow_automation_focus",
+        "target_value": true
+      },
+      {
+        "name": "consulting_use_case_defined",
+        "target_value": true
+      },
+      {
+        "name": "offer_pricing_defined",
+        "target_value": true
+      },
+      {
+        "name": "operations_scaffold_present",
+        "target_value": true
+      }
+    ],
+    "claims": []
+  },
+  "context": {
+    "minimum_expected_observations": 4,
+    "analysis_profile": "remote_workflow_localmix_calibrated_v1",
+    "gc_primary_item_id": 14,
+    "gc_supporting_item_ids": [
+      8,
+      45,
+      9
+    ],
+    "case_id": "case:hyp:gc:14",
+    "hypothesis_id": "hyp:gc:14",
+    "reason_for_packaging": "sufficient_support_low_conflict",
+    "current_confidence": 0.78
+  },
+  "evidence": [
+    {
+      "evidence_id": "gc_ev_14",
+      "kind": "observation",
+      "text": "Business ops\n\nInvoice template fixes.",
+      "confidence": 0.78,
+      "observed_at": "2026-03-13T00:28:53.517685Z",
+      "provenance": {
+        "source_system": "garbage_collector",
+        "item_id": 14
+      }
+    },
+    {
+      "evidence_id": "gc_ev_8",
+      "kind": "observation",
+      "text": "Remote income\n\nConsulting idea around AI workflows.",
+      "confidence": 0.72,
+      "observed_at": "2026-03-13T00:28:53.491666Z",
+      "provenance": {
+        "source_system": "garbage_collector",
+        "item_id": 8
+      }
+    },
+    {
+      "evidence_id": "gc_ev_45",
+      "kind": "observation",
+      "text": "Remote workflow systems\n\nAutomation ideas for consulting projects.",
+      "confidence": 0.72,
+      "observed_at": "2026-03-13T10:03:09.435628Z",
+      "provenance": {
+        "source_system": "garbage_collector",
+        "item_id": 45
+      }
+    },
+    {
+      "evidence_id": "gc_ev_9",
+      "kind": "observation",
+      "text": "AI tools\n\nPrompt library cleanup tasks.",
+      "confidence": 0.72,
+      "observed_at": "2026-03-13T00:28:53.495679Z",
+      "provenance": {
+        "source_system": "garbage_collector",
+        "item_id": 9
+      }
+    }
+  ],
+  "metadata": {
+    "object_id": "kin_gc_14_remote_workflow_localmix_calibrated_v1",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T12:15:00Z",
+    "updated_at": "2026-03-15T12:15:00Z",
+    "source_system": "garbage_collector",
+    "pipeline_run_id": "remote_workflow_localmix_calibrated_v1-case-04",
+    "confidence": 0.78,
+    "tags": [
+      "execution-profile",
+      "remote_workflow_localmix_calibrated_v1"
+    ],
+    "lineage": [
+      "gc:item:14",
+      "gc:item:8",
+      "gc:item:45",
+      "gc:item:9"
+    ]
+  }
+}

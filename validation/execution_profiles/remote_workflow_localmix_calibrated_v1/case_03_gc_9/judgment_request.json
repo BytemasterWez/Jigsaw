@@ -1,0 +1,50 @@
+{
+  "contract": "judgment_request",
+  "version": "v1",
+  "request_id": "judgment_request:gc_item_9-remote_workflow_localmix_calibrated_v1",
+  "artifact_id": "gc_item_9",
+  "subject": {
+    "title": "AI tools",
+    "type": "document"
+  },
+  "context": {
+    "source_system": "garbage_collector",
+    "source_type": "note",
+    "analysis_profile": "remote_workflow_localmix_calibrated_v1"
+  },
+  "chunks": [
+    {
+      "chunk_id": "chunk:gc_item_9-1",
+      "text": "AI tools\n\nPrompt library cleanup tasks.",
+      "section_label": "section_1"
+    }
+  ],
+  "evidence": {
+    "provenance": {
+      "artifact_id": "gc_item_9",
+      "chunk_count": 1,
+      "lineage": [
+        "gc_item_9",
+        "chunk:gc_item_9-1"
+      ]
+    },
+    "hash_sha256": "0096ab008b8c416573a5e5cc1bb78d8ec38ef5777fd8c7b335b7795bab630bb1"
+  },
+  "metadata": {
+    "object_id": "judgment_request:gc_item_9-remote_workflow_localmix_calibrated_v1",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T12:15:00Z",
+    "updated_at": "2026-03-15T12:15:00Z",
+    "source_system": "garbage_collector",
+    "pipeline_run_id": "remote_workflow_localmix_calibrated_v1-case-03",
+    "confidence": 1.0,
+    "tags": [
+      "artifact-lane",
+      "judgment-request"
+    ],
+    "lineage": [
+      "gc_item_9",
+      "chunk:gc_item_9-1"
+    ]
+  }
+}

@@ -37,6 +37,14 @@ def test_localmix_execution_profile_can_load() -> None:
     assert profile["kernel_engines"]["contradiction"] == "deterministic"
 
 
+def test_localmix_calibrated_execution_profile_can_load() -> None:
+    profile = load_execution_profile("remote_workflow_localmix_calibrated_v1")
+
+    assert profile["profile_name"] == "remote_workflow_localmix_calibrated_v1"
+    assert profile["engine"]["lmstudio"]["observed_state"]["complete_coverage_bias"] is True
+    assert profile["engine"]["lmstudio"]["expected_state"]["prefer_aligned_at_threshold"] is True
+
+
 def test_execution_profile_batch_generates_summary(tmp_path: Path) -> None:
     output_root = tmp_path / "execution_profile_batch"
     summary = run_profile_batch(case_limit=2, output_root_override=output_root)

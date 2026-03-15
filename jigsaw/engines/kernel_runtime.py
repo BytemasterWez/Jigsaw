@@ -21,10 +21,15 @@ def resolve_profile_engine(profile: dict[str, Any], kernel_name: str) -> str:
     return str(engine_mode)
 
 
-def engine_config_for_mode(profile: dict[str, Any], engine_mode: str) -> dict[str, Any]:
+def engine_config_for_mode(profile: dict[str, Any], engine_mode: str, *, kernel_name: str | None = None) -> dict[str, Any]:
     engine_section = profile.get("engine", {})
     config = engine_section.get(engine_mode, {})
-    return dict(config) if isinstance(config, dict) else {}
+    if not isinstance(config, dict):
+        return {}
+    merged = {key: value for key, value in config.items() if not isinstance(value, dict)}
+    if kernel_name and isinstance(config.get(kernel_name), dict):
+        merged.update(config[kernel_name])
+    return merged
 
 
 def run_kernel(
@@ -62,7 +67,7 @@ def run_kernel_for_profile(
     context: dict[str, Any] | None = None,
 ) -> KernelRunResult:
     engine_mode = resolve_profile_engine(profile, kernel_name)
-    config = engine_config_for_mode(profile, engine_mode)
+    config = engine_config_for_mode(profile, engine_mode, kernel_name=kernel_name)
     return run_kernel(
         kernel_name,
         engine_mode,
