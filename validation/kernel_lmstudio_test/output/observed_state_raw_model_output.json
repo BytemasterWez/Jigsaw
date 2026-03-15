@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-fkmaiaku6sbwe7qjik9fc",
+  "object": "chat.completion",
+  "created": 1773534340,
+  "model": "deepseek/deepseek-r1-0528-qwen3-8b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"kernel_type\": \"observed_state\",\n  \"status\": \"success\",\n  \"judgment\": \"observed_state_partial\",\n  \"confidence\": 0.7,\n  \"reasons\": [\n    \"The observed items include three key aspects: revenue model, customer validation, and operating mode.\",\n    \"There are four expected observations mentioned in the normalization context, but only three have been provided so far.\",\n    \"One of the observations is about a viable revenue model which has strong evidence with confidence 0.86.\",\n    \"Another observation concerns customer validation; it's explicitly stated as false by one source (ev_002) but contradicted by an internal claim (ev_003).\",\n    \"The third observation indicates the operating mode is remote, supported by moderate confidence.\"\n  ]\n}\n",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1193,
+    "completion_tokens": 170,
+    "total_tokens": 1363
+  },
+  "stats": {},
+  "system_fingerprint": "deepseek/deepseek-r1-0528-qwen3-8b"
+}

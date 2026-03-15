@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-a0pe1151yfze8iwmimdyq",
+  "object": "chat.completion",
+  "created": 1773533843,
+  "model": "mistralai/mistral-7b-instruct-v0.3",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"kernel_type\": \"observed_state\",\n  \"status\": \"success\",\n  \"judgment\": \"observed_state_partial\",\n  \"confidence\": 0.4,\n  \"reasons\": [\n    \"Three observations were made, but the revenue model and operating mode are clear while customer validation is not.\",\n    \"The evidence supports a partial observed state judgment.\"\n  ]\n}",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1327,
+    "completion_tokens": 96,
+    "total_tokens": 1423
+  },
+  "stats": {},
+  "system_fingerprint": "mistralai/mistral-7b-instruct-v0.3"
+}

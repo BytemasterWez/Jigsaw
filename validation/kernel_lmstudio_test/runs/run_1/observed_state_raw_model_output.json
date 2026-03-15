@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-jpnv9vhnmsh65lpew0ifzm",
+  "object": "chat.completion",
+  "created": 1773533842,
+  "model": "mistralai/mistral-7b-instruct-v0.3",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"kernel_type\": \"observed_state\",\n  \"status\": \"success\",\n  \"judgment\": \"observed_state_partial\",\n  \"confidence\": 0.4,\n  \"reasons\": [\n    \"Three observations were made, but the revenue model and operating mode are clear while customer validation is not.\",\n    \"The conflicting claim about customer validation adds uncertainty.\"\n  ]\n}",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1327,
+    "completion_tokens": 97,
+    "total_tokens": 1424
+  },
+  "stats": {},
+  "system_fingerprint": "mistralai/mistral-7b-instruct-v0.3"
+}

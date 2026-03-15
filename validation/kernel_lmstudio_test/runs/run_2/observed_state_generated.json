@@ -1,0 +1,10 @@
+{
+  "kernel_type": "observed_state",
+  "status": "success",
+  "judgment": "observed_state_partial",
+  "confidence": 0.4,
+  "reasons": [
+    "Three observations were made, but the revenue model and operating mode are clear while customer validation is not.",
+    "The evidence supports a partial observed state judgment."
+  ]
+}

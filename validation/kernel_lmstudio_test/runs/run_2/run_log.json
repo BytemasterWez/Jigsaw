@@ -1,0 +1,11 @@
+{
+  "pipeline_run_id": "kernel-lmstudio-observed-test",
+  "generated_at": "2026-03-14T12:30:00Z",
+  "model_name": "mistralai/mistral-7b-instruct-v0.3",
+  "retries_used": 0,
+  "elapsed_seconds": 0.7458,
+  "observed_state_judgment": "observed_state_partial",
+  "bundle_judgment": "contradictory",
+  "arbiter_judgement": "rejected",
+  "status": "success"
+}

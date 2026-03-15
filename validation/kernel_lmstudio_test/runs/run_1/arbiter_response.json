@@ -1,0 +1,12 @@
+{
+  "candidate_id": "case:jigsaw-kernel-1",
+  "judgement": "rejected",
+  "confidence": 0.78,
+  "reason_summary": "Current evidence does not support prioritising this candidate.",
+  "key_factors": [
+    "Low fit to target profile",
+    "Insufficient evidence strength",
+    "Action would not be justified at this stage"
+  ],
+  "recommended_action": "suppress"
+}
