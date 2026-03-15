@@ -10,6 +10,20 @@ The current system consists of three aligned layers:
 
 These are not just conceptually aligned. A bounded operational proof now exists across the framework.
 
+## Garbage Collector as substrate intelligence
+
+Garbage Collector is not just storage or preprocessing.
+
+Its role is to accept arbitrary material, organize it, preserve provenance, link related items, and surface usable context without constant user prompting.
+
+That makes GC the substrate intelligence layer of the wider framework:
+
+- **Garbage Collector** ingests, organizes, enriches, cross-references, and surfaces material
+- **Jigsaw** shapes cases, runs kernels, and composes bounded analysis
+- **Arbiter** decides what should happen next
+
+GC creates grounded context and substrate for downstream work, but it is not the final judgment layer, the full composition layer, or the main adjudication engine.
+
 ## Proven execution path
 
 `material -> normalized form -> shaped kernel bundle -> thin adapter -> Arbiter judgment`

@@ -46,6 +46,30 @@ An end-to-end integration proof now exists across the wider framework:
 
 Jigsaw can still be used standalone in demo mode. In that mode it ships with local demo adapters for memory and judgment so the kernel chain can be inspected without any other repo.
 
+## Garbage Collector As Intelligence Substrate
+
+Garbage Collector is not just storage or preprocessing.
+
+Its role is to accept arbitrary material, organize it, preserve provenance, link related items, and surface usable context without requiring constant user prompting.
+
+This makes GC the substrate intelligence layer of the wider framework.
+
+In the current architecture:
+
+- **Garbage Collector** ingests, organizes, enriches, cross-references, and surfaces material
+- **Jigsaw** shapes cases, runs kernels, and composes bounded analysis
+- **Arbiter** decides what should happen next
+
+The purpose of GC is to make raw material progressively more legible and actionable for downstream layers.
+
+GC may be proactive in organizing, linking, and surfacing useful structure, but it is not:
+
+- the final judgment layer
+- the full composition layer
+- the main adjudication engine
+
+That boundary is intentional. GC creates grounded context and substrate; Jigsaw and Arbiter operate on top of that substrate.
+
 ## What Has Been Proven
 
 Jigsaw currently has operational proof for three bounded surfaces:
