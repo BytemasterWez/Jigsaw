@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/case_input/v1.json",
+  "title": "JigsawCaseInputV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "case_id",
+    "hypothesis_id",
+    "question_or_claim",
+    "primary_evidence_ids",
+    "supporting_evidence_ids",
+    "conflicting_evidence_ids",
+    "missing_evidence",
+    "current_confidence",
+    "reason_for_packaging"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "case_input"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hypothesis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "question_or_claim": {
+      "type": "string",
+      "minLength": 1
+    },
+    "primary_evidence_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "supporting_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "conflicting_evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "current_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "reason_for_packaging": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

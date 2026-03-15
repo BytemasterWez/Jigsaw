@@ -9,7 +9,8 @@ from pydantic import BaseModel, Field
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SCHEMA_PATH = REPO_ROOT / "contracts" / "hypothesis_state" / "v1.json"
+HYPOTHESIS_SCHEMA_PATH = REPO_ROOT / "contracts" / "hypothesis_state" / "v1.json"
+CASE_INPUT_SCHEMA_PATH = REPO_ROOT / "contracts" / "case_input" / "v1.json"
 
 HypothesisStateValue = Literal["open", "gathering_evidence", "conflicted", "sufficient", "escalate", "closed"]
 
@@ -27,14 +28,33 @@ class HypothesisStateV1(BaseModel):
     next_probe: str
 
 
-def _load_schema() -> dict[str, Any]:
-    with SCHEMA_PATH.open("r", encoding="utf-8") as handle:
+class CaseInputV1(BaseModel):
+    contract: str = "case_input"
+    version: str = "v1"
+    case_id: str
+    hypothesis_id: str
+    question_or_claim: str
+    primary_evidence_ids: list[str] = Field(default_factory=list)
+    supporting_evidence_ids: list[str] = Field(default_factory=list)
+    conflicting_evidence_ids: list[str] = Field(default_factory=list)
+    missing_evidence: list[str] = Field(default_factory=list)
+    current_confidence: float = Field(ge=0, le=1)
+    reason_for_packaging: str
+
+
+def _load_schema(path: Path) -> dict[str, Any]:
+    with path.open("r", encoding="utf-8") as handle:
         return json.load(handle)
 
 
 def validate_hypothesis_state_v1(payload: dict[str, Any]) -> HypothesisStateV1:
-    Draft202012Validator(_load_schema()).validate(payload)
+    Draft202012Validator(_load_schema(HYPOTHESIS_SCHEMA_PATH)).validate(payload)
     return HypothesisStateV1.model_validate(payload)
+
+
+def validate_case_input_v1(payload: dict[str, Any]) -> CaseInputV1:
+    Draft202012Validator(_load_schema(CASE_INPUT_SCHEMA_PATH)).validate(payload)
+    return CaseInputV1.model_validate(payload)
 
 
 def _supporting_evidence_ids(primary_item_id: int | str, related_item_ids: list[int | str]) -> list[str]:
@@ -128,3 +148,27 @@ def refresh_hypothesis_state(
         question_or_claim=state.question_or_claim,
     )
     return refreshed
+
+
+def build_case_input(hypothesis_state: HypothesisStateV1, gc_context: dict[str, Any]) -> CaseInputV1:
+    if hypothesis_state.state != "sufficient" and hypothesis_state.next_probe != "package_case":
+        raise ValueError("Hypothesis must be sufficient or explicitly marked for package_case before building case_input.")
+
+    primary_item_id = gc_context["primary_item_id"]
+    primary_evidence_id = f"gc:item:{primary_item_id}"
+    supporting_evidence_ids = [evidence_id for evidence_id in hypothesis_state.supporting_evidence_ids if evidence_id != primary_evidence_id]
+
+    payload = {
+        "contract": "case_input",
+        "version": "v1",
+        "case_id": f"case:{hypothesis_state.hypothesis_id}",
+        "hypothesis_id": hypothesis_state.hypothesis_id,
+        "question_or_claim": hypothesis_state.question_or_claim,
+        "primary_evidence_ids": [primary_evidence_id],
+        "supporting_evidence_ids": supporting_evidence_ids,
+        "conflicting_evidence_ids": hypothesis_state.conflicting_evidence_ids,
+        "missing_evidence": hypothesis_state.missing_evidence,
+        "current_confidence": hypothesis_state.confidence,
+        "reason_for_packaging": "sufficient_support_low_conflict",
+    }
+    return validate_case_input_v1(payload)

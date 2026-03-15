@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from jigsaw.controller.hypothesis_controller import (
+    build_case_input,
     hypothesis_state_from_gc_context,
     refresh_hypothesis_state,
     select_next_probe,
@@ -134,3 +135,21 @@ def test_transition_state_moves_open_hypothesis_to_package_case_when_support_is_
 
     assert transitioned.state == "sufficient"
     assert transitioned.next_probe == "package_case"
+
+
+def test_sufficient_hypothesis_can_build_case_input() -> None:
+    gc_context = {
+        "primary_item_id": 8,
+        "related_item_ids": [22, 45, 14],
+        "summary": "Remote income opportunity has enough nearby support.",
+        "freshness": "recent",
+        "known_gaps": [],
+    }
+    state = hypothesis_state_from_gc_context(gc_context)
+
+    case_input = build_case_input(state, gc_context)
+
+    assert case_input.contract == "case_input"
+    assert case_input.hypothesis_id == state.hypothesis_id
+    assert case_input.primary_evidence_ids == ["gc:item:8"]
+    assert case_input.reason_for_packaging == "sufficient_support_low_conflict"
