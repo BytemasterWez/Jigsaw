@@ -1,0 +1,11 @@
+{
+  "primary_item_id": 45,
+  "related_item_ids": [
+    8,
+    14,
+    18
+  ],
+  "summary": "Assess whether GC item 45 should be packaged as a remote workflow opportunity case.",
+  "freshness": "recent",
+  "known_gaps": []
+}

@@ -53,7 +53,11 @@
       8,
       45,
       9
-    ]
+    ],
+    "case_id": "case:hyp:gc:14",
+    "hypothesis_id": "hyp:gc:14",
+    "reason_for_packaging": "sufficient_support_low_conflict",
+    "current_confidence": 0.78
   },
   "evidence": [
     {

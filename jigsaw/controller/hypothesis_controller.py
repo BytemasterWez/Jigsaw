@@ -75,13 +75,21 @@ def _transition_for_counts(
     conflicting_count: int,
     missing_evidence_count: int,
     freshness: str,
+    minimum_supporting_evidence: int = 3,
+    conflict_threshold: int = 1,
+    escalate_if_gaps: bool = True,
 ) -> tuple[HypothesisStateValue, float]:
     freshness_value = freshness.strip().lower()
-    if conflicting_count > 0:
+    if conflict_threshold > 0 and conflicting_count >= conflict_threshold:
         return ("conflicted", 0.4)
-    if supporting_count >= 3 and missing_evidence_count > 0 and freshness_value in {"fresh", "recent"}:
+    if (
+        supporting_count >= minimum_supporting_evidence
+        and missing_evidence_count > 0
+        and escalate_if_gaps
+        and freshness_value in {"fresh", "recent"}
+    ):
         return ("escalate", 0.64)
-    if supporting_count >= 3 and missing_evidence_count == 0 and freshness_value in {"fresh", "recent"}:
+    if supporting_count >= minimum_supporting_evidence and freshness_value in {"fresh", "recent"}:
         return ("sufficient", 0.78)
     return ("gathering_evidence", 0.46)
 
@@ -96,12 +104,21 @@ def select_next_probe(hypothesis_state: HypothesisStateV1) -> str:
     return "gather_related_context"
 
 
-def transition_state(hypothesis_state: HypothesisStateV1) -> HypothesisStateV1:
+def transition_state(
+    hypothesis_state: HypothesisStateV1,
+    *,
+    freshness: str = "recent",
+    controller_config: dict[str, Any] | None = None,
+) -> HypothesisStateV1:
+    config = controller_config or {}
     state, confidence = _transition_for_counts(
         supporting_count=len(hypothesis_state.supporting_evidence_ids),
         conflicting_count=len(hypothesis_state.conflicting_evidence_ids),
         missing_evidence_count=len(hypothesis_state.missing_evidence),
-        freshness="recent",
+        freshness=freshness,
+        minimum_supporting_evidence=int(config.get("minimum_supporting_evidence", 3)),
+        conflict_threshold=int(config.get("conflict_threshold", 1)),
+        escalate_if_gaps=bool(config.get("escalate_if_gaps", True)),
     )
     payload = hypothesis_state.model_dump(mode="python")
     payload["state"] = state
@@ -115,6 +132,7 @@ def hypothesis_state_from_gc_context(
     *,
     hypothesis_id: str | None = None,
     question_or_claim: str | None = None,
+    controller_config: dict[str, Any] | None = None,
 ) -> HypothesisStateV1:
     primary_item_id = gc_context["primary_item_id"]
     related_item_ids = list(gc_context.get("related_item_ids", []))
@@ -134,18 +152,24 @@ def hypothesis_state_from_gc_context(
         "state": "open",
         "next_probe": "gather_related_context",
     }
-    return transition_state(validate_hypothesis_state_v1(payload))
+    return transition_state(
+        validate_hypothesis_state_v1(payload),
+        freshness=str(gc_context.get("freshness", "recent")),
+        controller_config=controller_config,
+    )
 
 
 def refresh_hypothesis_state(
     state: HypothesisStateV1,
     *,
     gc_context: dict[str, Any],
+    controller_config: dict[str, Any] | None = None,
 ) -> HypothesisStateV1:
     refreshed = hypothesis_state_from_gc_context(
         gc_context,
         hypothesis_id=state.hypothesis_id,
         question_or_claim=state.question_or_claim,
+        controller_config=controller_config,
     )
     return refreshed
 

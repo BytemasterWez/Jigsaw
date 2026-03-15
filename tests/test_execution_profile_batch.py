@@ -24,6 +24,7 @@ def test_calibrated_execution_profile_can_load() -> None:
     assert profile["profile_name"] == "remote_workflow_v1b"
     assert profile["selection"]["supporting_max_per_cluster"] == 1
     assert profile["shaping"]["require_primary_signal_anchor"] is True
+    assert profile["controller"]["escalate_if_gaps"] is False
     assert profile["kernel_engines"]["observed_state"] == "deterministic"
 
 
@@ -40,3 +41,8 @@ def test_execution_profile_batch_generates_summary(tmp_path: Path) -> None:
 
     assert saved["profile_name"] == "remote_workflow_v1b"
     assert len(saved["cases"]) == 2
+    first_case_dir = output_root / f"case_01_gc_{saved['cases'][0]['primary_item_id']}"
+    assert (first_case_dir / "gc_context.json").exists()
+    assert (first_case_dir / "hypothesis_state.json").exists()
+    assert (first_case_dir / "case_input.json").exists()
+    assert saved["cases"][0]["controller_next_probe"] == "package_case"

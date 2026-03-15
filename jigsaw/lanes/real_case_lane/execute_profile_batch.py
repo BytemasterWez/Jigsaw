@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from jigsaw.engines.kernel_runtime import run_kernel_for_profile
+from jigsaw.controller.hypothesis_controller import build_case_input, hypothesis_state_from_gc_context
 from jigsaw.lanes.artifact_lane.transforms import artifact_to_extraction, chunks_to_judgment_request, extraction_to_chunks
 from jigsaw.lanes.artifact_lane.validators import (
     validate_artifact_v1,
@@ -18,7 +18,6 @@ from jigsaw.lanes.artifact_lane.validators import (
     validate_judgment_request_v1,
 )
 from jigsaw.lanes.kernel_lane.arbiter_integration import adjudicate_via_current_arbiter, kernel_bundle_result_to_arbiter_request
-from jigsaw.lanes.kernel_lane.compose import compose_kernel_bundle
 from jigsaw.lanes.kernel_lane.validators import (
     validate_kernel_bundle_result_v1,
     validate_kernel_input_v1,
@@ -331,7 +330,25 @@ def _build_kernel_input_for_profile(
     return validate_kernel_input_v1(payload)
 
 
+def _known_gaps_for_profile(profile: dict[str, Any], primary_item: GCItem, supporting_items: list[GCItem]) -> list[str]:
+    signal_terms = profile["shaping"]["signal_terms"]
+    texts = [primary_item.content] + [item.content for item in supporting_items]
+    missing: list[str] = []
+    gap_labels = {
+        "workflow_automation_focus": "workflow automation focus is not yet clear",
+        "consulting_use_case_defined": "consulting use case is not yet clearly framed",
+        "offer_pricing_defined": "pricing is not yet clearly defined",
+        "operations_scaffold_present": "operational setup is still incomplete",
+    }
+    for signal_key, terms in signal_terms.items():
+        if not _case_signal_value(terms, texts):
+            missing.append(gap_labels.get(signal_key, signal_key))
+    return missing
+
+
 def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_items: list[GCItem], output_dir: Path, case_index: int) -> dict[str, Any]:
+    from jigsaw.lanes.real_case_lane.case_input_composition import compose_case_from_case_input
+
     pipeline_run_id = f"{profile['profile_name']}-case-{case_index:02d}"
     generated_at = "2026-03-15T12:15:00Z"
 
@@ -357,47 +374,39 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
             generated_at=generated_at,
         ).model_dump(mode="python")
     )
-    kernel_input = _build_kernel_input_for_profile(
-        profile,
-        primary_item,
-        supporting_items,
+    gc_context = {
+        "primary_item_id": primary_item.item_id,
+        "related_item_ids": [item.item_id for item in supporting_items],
+        "summary": f"Assess whether GC item {primary_item.item_id} should be packaged as a remote workflow opportunity case.",
+        "freshness": "recent",
+        "known_gaps": _known_gaps_for_profile(profile, primary_item, supporting_items),
+    }
+    hypothesis_state = hypothesis_state_from_gc_context(
+        gc_context,
+        question_or_claim=f"Should GC item {primary_item.item_id} be packaged for remote workflow review?",
+        controller_config=profile.get("controller"),
+    )
+    case_input = build_case_input(hypothesis_state, gc_context)
+    composition = compose_case_from_case_input(
+        case_input,
+        {
+            "primary_item": primary_item.__dict__,
+            "supporting_items": [item.__dict__ for item in supporting_items],
+        },
+        profile_name=profile["profile_name"],
         pipeline_run_id=pipeline_run_id,
         generated_at=generated_at,
     )
-    observed_result = run_kernel_for_profile(
-        "observed_state",
-        kernel_input,
-        profile,
-        pipeline_run_id=pipeline_run_id,
-        generated_at=generated_at,
-    )
-    expected_result = run_kernel_for_profile(
-        "expected_state",
-        kernel_input,
-        profile,
-        pipeline_run_id=pipeline_run_id,
-        generated_at=generated_at,
-    )
-    contradiction_result = run_kernel_for_profile(
-        "contradiction",
-        kernel_input,
-        profile,
-        pipeline_run_id=pipeline_run_id,
-        generated_at=generated_at,
-    )
-    bundle_result = validate_kernel_bundle_result_v1(
-        compose_kernel_bundle(
-            kernel_input,
-            [observed_result.validated_output, expected_result.validated_output, contradiction_result.validated_output],
-            pipeline_run_id=pipeline_run_id,
-            generated_at=generated_at,
-        ).model_dump(mode="python")
-    )
+    kernel_input = validate_kernel_input_v1(composition["kernel_input"])
+    bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
     arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, bundle_result)
     arbiter_response = adjudicate_via_current_arbiter(arbiter_request)
 
     _dump_json(output_dir / "primary_item.json", primary_item.__dict__)
     _dump_json(output_dir / "supporting_items.json", [item.__dict__ for item in supporting_items])
+    _dump_json(output_dir / "gc_context.json", gc_context)
+    _dump_json(output_dir / "hypothesis_state.json", hypothesis_state.model_dump(mode="python"))
+    _dump_json(output_dir / "case_input.json", case_input.model_dump(mode="python"))
     _dump_json(output_dir / "artifact.json", artifact.model_dump(mode="python"))
     _dump_json(output_dir / "extraction.json", extraction.model_dump(mode="python"))
     _dump_json(output_dir / "chunks.json", [chunk.model_dump(mode="python") for chunk in chunks])
@@ -411,16 +420,16 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
         "profile_name": profile["profile_name"],
         "primary_item_id": primary_item.item_id,
         "supporting_item_ids": [item.item_id for item in supporting_items],
+        "hypothesis_id": hypothesis_state.hypothesis_id,
+        "controller_state": hypothesis_state.state,
+        "controller_next_probe": hypothesis_state.next_probe,
+        "case_id": case_input.case_id,
         "bundle_judgment": bundle_result.composed_summary.bundle_judgment,
         "bundle_confidence": bundle_result.metadata.confidence,
         "arbiter_fit_score": arbiter_request["evidence"]["fit_score"],
         "arbiter_judgement": arbiter_response["judgement"],
         "recommended_action": arbiter_response["recommended_action"],
-        "kernel_engines": {
-            "observed_state": observed_result.engine_mode,
-            "expected_state": expected_result.engine_mode,
-            "contradiction": contradiction_result.engine_mode,
-        },
+        "kernel_engines": composition["case_summary"]["kernel_engines"],
         "shaping_issues": [] if supporting_items else ["no_supporting_items"],
     }
     _dump_json(output_dir / "case_summary.json", case_summary)

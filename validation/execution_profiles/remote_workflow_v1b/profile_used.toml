@@ -29,6 +29,11 @@ consulting_use_case_defined = ["consulting", "client", "offer", "service"]
 offer_pricing_defined = ["pricing", "price", "offer", "invoice", "budget"]
 operations_scaffold_present = ["ops", "invoice", "template", "system", "process", "workflow"]
 
+[controller]
+minimum_supporting_evidence = 3
+conflict_threshold = 1
+escalate_if_gaps = false
+
 [kernel_engines]
 observed_state = "deterministic"
 expected_state = "deterministic"

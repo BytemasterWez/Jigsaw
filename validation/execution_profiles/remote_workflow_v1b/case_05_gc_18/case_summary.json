@@ -6,6 +6,10 @@
     45,
     14
   ],
+  "hypothesis_id": "hyp:gc:18",
+  "controller_state": "sufficient",
+  "controller_next_probe": "package_case",
+  "case_id": "case:hyp:gc:18",
   "bundle_judgment": "partially_aligned",
   "bundle_confidence": 0.72,
   "arbiter_fit_score": 0.67,
