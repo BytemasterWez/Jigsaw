@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Remote workflow systems Automation ideas for consulting projects. - Opportunity Brief</title>
+  <style>
+    :root {
+      --bg: #f4efe4;
+      --paper: #fffdf7;
+      --ink: #1d1b16;
+      --muted: #635b4f;
+      --border: #d8cdb7;
+      --promoted: #1f7a4d;
+      --promoted-bg: #d9f3e4;
+      --watchlist: #9a6700;
+      --watchlist-bg: #fff0c2;
+      --rejected: #a1271f;
+      --rejected-bg: #f8d9d5;
+      --shadow: rgba(59, 48, 31, 0.08);
+      --accent: #c7692b;
+      --font-serif: Georgia, "Times New Roman", serif;
+      --font-sans: "Segoe UI", Tahoma, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(199, 105, 43, 0.14), transparent 30%),
+        linear-gradient(180deg, #f8f3e9 0%, var(--bg) 100%);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      line-height: 1.55;
+    }
+    .shell {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 20px 56px;
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 40px var(--shadow);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .hero {
+      padding: 32px 32px 20px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(242,233,215,0.7));
+    }
+    .eyebrow {
+      margin: 0 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-family: var(--font-serif);
+      font-size: clamp(32px, 4vw, 46px);
+      line-height: 1.05;
+    }
+    .headline {
+      margin: 0 0 18px;
+      max-width: 760px;
+      font-size: 20px;
+      color: var(--muted);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .badge.promoted { color: var(--promoted); background: var(--promoted-bg); }
+    .badge.watchlist { color: var(--watchlist); background: var(--watchlist-bg); }
+    .badge.rejected { color: var(--rejected); background: var(--rejected-bg); }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      padding: 28px 32px 32px;
+    }
+    .panel {
+      padding: 20px 22px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.65);
+    }
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      font-family: var(--font-serif);
+    }
+    .meta-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+    .meta-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed rgba(99, 91, 79, 0.18);
+    }
+    .meta-label { color: var(--muted); }
+    .meta-value { font-weight: 600; text-align: right; }
+    .summary {
+      margin: 0;
+      font-size: 17px;
+    }
+    .primary-box, .action-box {
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: #f8f3ea;
+      border: 1px solid var(--border);
+    }
+    .primary-title {
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+    .item-meta {
+      color: var(--muted);
+      font-size: 13px;
+      margin-left: 8px;
+    }
+    .item-content {
+      margin-top: 8px;
+      color: var(--muted);
+    }
+    .supporting-list {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 14px;
+    }
+    .reason-block + .reason-block {
+      margin-top: 16px;
+    }
+    .reason-block h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .reason-block ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .action-box {
+      border-left: 6px solid var(--accent);
+    }
+    .action-box p {
+      margin: 0;
+      font-size: 17px;
+    }
+    @media (max-width: 820px) {
+      .grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+      .hero {
+        padding: 24px 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <article class="card">
+      <header class="hero">
+        <p class="eyebrow">Remote Workflow Opportunity Brief</p>
+        <h1>Remote workflow systems Automation ideas for consulting projects.</h1>
+        <p class="headline">Remote workflow systems Automation ideas for consulting projects. looks strong enough to prioritize now.</p>
+        <span class="badge promoted">Promoted</span>
+      </header>
+      <section class="grid">
+        <div class="panel">
+          <h2>Decision Snapshot</h2>
+          <ul class="meta-list">
+            <li><span class="meta-label">Bundle judgment</span><span class="meta-value">Aligned</span></li>
+            <li><span class="meta-label">Bundle confidence</span><span class="meta-value">0.72</span></li>
+            <li><span class="meta-label">Arbiter confidence</span><span class="meta-value">0.81</span></li>
+            <li><span class="meta-label">Recommended action</span><span class="meta-value">prioritise_for_review</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2>Case Summary</h2>
+          <p class="summary">The case is clear enough and aligns with the expected state. Strong fit, recent supporting evidence, and acceptable evidence depth justify immediate review.</p>
+        </div>
+        <div class="panel">
+          <h2>Primary Item</h2>
+          <div class="primary-box">
+            <p class="primary-title">Remote workflow systems Automation ideas for consulting projects. <span class="item-meta">#45 · pasted_text</span></p>
+            <div class="item-content">Remote workflow systems | Automation ideas for consulting projects.</div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Supporting Items</h2>
+          <ul class="supporting-list"><li><strong>Remote income</strong> <span class="item-meta">#8</span><div class="item-content">Remote income | Consulting idea around AI workflows.</div></li><li><strong>Business ops</strong> <span class="item-meta">#14</span><div class="item-content">Business ops | Invoice template fixes.</div></li><li><strong>AI systems</strong> <span class="item-meta">#18</span><div class="item-content">AI systems | Memory tool behavior notes.</div></li></ul>
+        </div>
+        <div class="panel">
+          <h2>Why It Landed Here</h2>
+          <section class="reason-block"><h3>Observed picture</h3><ul><li>Observed coverage meets the minimum expected threshold.</li></ul></section><section class="reason-block"><h3>Expected fit</h3><ul><li>offer_pricing_defined is not aligned with the expected target.</li></ul></section><section class="reason-block"><h3>Contradiction check</h3><ul><li>No material contradiction detected across the provided input set.</li></ul></section><section class="reason-block"><h3>Arbiter factors</h3><ul><li>High relevance to target profile</li><li>Evidence is recent</li><li>Multiple sources support the candidate</li></ul></section>
+        </div>
+        <div class="panel">
+          <h2>Recommended Next Action</h2>
+          <div class="action-box">
+            <p>Prioritize for human review and concrete follow-up.</p>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

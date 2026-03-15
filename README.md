@@ -84,7 +84,7 @@ Jigsaw now supports standardized execution profiles for repeatable real-case run
 
 ### Product-slice proof
 
-The calibrated `remote_workflow_v1b` profile now also produces a user-consumable Remote Workflow Opportunity Brief pack, with one markdown brief per case covering the primary item, supporting items, case summary, bundle judgment, Arbiter result, bounded rationale, and next-action guidance.
+The calibrated `remote_workflow_v1b` profile now also produces a user-consumable Remote Workflow Opportunity Brief pack, with one markdown brief and one polished static HTML brief per case covering the primary item, supporting items, case summary, bundle judgment, Arbiter result, bounded rationale, and next-action guidance.
 
 ## Boundary Discipline
 
@@ -251,6 +251,7 @@ The point is not to maximize actions. The point is to show that:
 - [validation/kernel_lmstudio_mixed_test/VALIDATION_NOTE.md](./validation/kernel_lmstudio_mixed_test/VALIDATION_NOTE.md)
 - [validation/execution_profiles/remote_workflow_v1b/SUMMARY.md](./validation/execution_profiles/remote_workflow_v1b/SUMMARY.md)
 - [validation/execution_profiles/remote_workflow_v1b/briefs/README.md](./validation/execution_profiles/remote_workflow_v1b/briefs/README.md)
+- [validation/execution_profiles/remote_workflow_v1b/briefs/case_01_gc_8.html](./validation/execution_profiles/remote_workflow_v1b/briefs/case_01_gc_8.html)
 - [MESSAGE_BUS_SCHEMA.md](./MESSAGE_BUS_SCHEMA.md)
 - [MEMORY_CONTRACT.md](./MEMORY_CONTRACT.md)
 - [ARBITER_DECISION_CONTRACT.md](./ARBITER_DECISION_CONTRACT.md)

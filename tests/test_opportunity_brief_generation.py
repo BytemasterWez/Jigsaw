@@ -16,3 +16,5 @@ def test_generate_opportunity_briefs_after_profile_batch() -> None:
     brief_root = Path(result["generated_files"][0]).parent
     assert (brief_root / "README.md").exists()
     assert len(result["generated_files"]) == 5
+    assert len(result["generated_html_files"]) == 5
+    assert Path(result["generated_html_files"][0]).exists()

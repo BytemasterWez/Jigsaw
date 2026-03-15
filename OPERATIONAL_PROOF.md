@@ -99,6 +99,8 @@ For each case, the brief includes:
 - bounded rationale
 - recommended next action
 
+The brief pack now ships in both markdown and polished static HTML.
+
 This is the first current-stack output that reads like a usable product artifact rather than an internal proof pack.
 
 ## What this means

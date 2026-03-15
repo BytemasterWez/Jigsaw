@@ -1,8 +1,20 @@
 # Remote Workflow Opportunity Brief
 
+## Headline
+
+Remote workflow systems Automation ideas for consulting projects. looks strong enough to prioritize now.
+
 ## Title
 
 Remote workflow systems Automation ideas for consulting projects.
+
+## Decision Snapshot
+
+- outcome: `promoted`
+- bundle judgment: `aligned`
+- bundle confidence: `0.72`
+- Arbiter confidence: `0.81`
+- recommended action: `prioritise_for_review`
 
 ## Primary Item
 
@@ -18,34 +30,34 @@ Remote workflow systems Automation ideas for consulting projects.
 
 ## Case Summary
 
-The case is clear enough and aligns with the expected state.
+The case is clear enough and aligns with the expected state. Strong fit, recent supporting evidence, and acceptable evidence depth justify immediate review.
 
 ## Bundle Result
 
-- judgment: `aligned`
+- judgment: `Aligned`
 - confidence: `0.72`
 
 ## Arbiter Result
 
-- judgement: `promoted`
+- judgement: `Promoted`
 - confidence: `0.81`
 - recommended action: `prioritise_for_review`
 
 ## Why It Landed Here
 
-### Observed State
+### Observed picture
 
 - Observed coverage meets the minimum expected threshold.
 
-### Expected State
+### Expected fit
 
 - offer_pricing_defined is not aligned with the expected target.
 
-### Contradiction
+### Contradiction check
 
 - No material contradiction detected across the provided input set.
 
-### Arbiter Factors
+### Arbiter factors
 
 - High relevance to target profile
 - Evidence is recent

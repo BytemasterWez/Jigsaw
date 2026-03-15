@@ -1,8 +1,20 @@
 # Remote Workflow Opportunity Brief
 
+## Headline
+
+AI systems looks promising but needs more evidence before action.
+
 ## Title
 
 AI systems
+
+## Decision Snapshot
+
+- outcome: `watchlist`
+- bundle judgment: `partially_aligned`
+- bundle confidence: `0.72`
+- Arbiter confidence: `0.63`
+- recommended action: `hold_for_recheck`
 
 ## Primary Item
 
@@ -18,35 +30,35 @@ AI systems
 
 ## Case Summary
 
-The case is only partially aligned and should be treated cautiously.
+The case is only partially aligned and should be treated cautiously. Candidate shows some relevance but does not yet justify immediate action.
 
 ## Bundle Result
 
-- judgment: `partially_aligned`
+- judgment: `Partially Aligned`
 - confidence: `0.72`
 
 ## Arbiter Result
 
-- judgement: `watchlist`
+- judgement: `Watchlist`
 - confidence: `0.63`
 - recommended action: `hold_for_recheck`
 
 ## Why It Landed Here
 
-### Observed State
+### Observed picture
 
 - Observed coverage meets the minimum expected threshold.
 
-### Expected State
+### Expected fit
 
 - consulting_use_case_defined is not aligned with the expected target.
 - offer_pricing_defined is not aligned with the expected target.
 
-### Contradiction
+### Contradiction check
 
 - No material contradiction detected across the provided input set.
 
-### Arbiter Factors
+### Arbiter factors
 
 - Moderate fit to target profile
 - Evidence is incomplete or weaker
