@@ -2,7 +2,7 @@
 
 ## Headline
 
-Business ops shows promise but needs more evidence.
+Keep Business ops on watch until the case is stronger.
 
 ## Title
 
@@ -10,23 +10,23 @@ Business ops
 
 ## At a glance
 
-- outcome: `watchlist`
-- overall assessment: `partially_aligned`
-- case confidence: `0.6375`
-- decision confidence: `0.63`
-- next step: `hold_for_recheck`
+- outcome: Watchlist
+- overall assessment: Partially aligned
+- case confidence: 0.6375
+- decision confidence: 0.63
+- next step: hold for recheck
 
-## Primary Item
+## Primary source
 
-- id: `14`
-- type: `pasted_text`
+- id: 14
+- type: pasted text
 - content: Business ops | Invoice template fixes.
 
-## Supporting Items
+## Supporting sources
 
-- `8` Remote income: Remote income | Consulting idea around AI workflows.
-- `45` Remote workflow systems Automation ideas for consulting projects.: Remote workflow systems | Automation ideas for consulting projects.
-- `9` AI tools: AI tools | Prompt library cleanup tasks.
+- 8 Remote income: Remote income | Consulting idea around AI workflows.
+- 45 Remote workflow systems Automation ideas for consulting projects.: Remote workflow systems | Automation ideas for consulting projects.
+- 9 AI tools: AI tools | Prompt library cleanup tasks.
 
 ## Case Summary
 
@@ -34,14 +34,14 @@ The case is only partially aligned and should be treated cautiously. Candidate s
 
 ## Overall assessment
 
-- status: `Partially aligned`
-- confidence: `0.6375`
+- status: Partially aligned
+- confidence: 0.6375
 
 ## Final decision
 
-- decision: `Watchlist`
-- confidence: `0.63`
-- next step: `hold_for_recheck`
+- decision: Watchlist
+- confidence: 0.63
+- next step: hold for recheck
 
 ## Why this case landed here
 

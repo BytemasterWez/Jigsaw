@@ -2,7 +2,7 @@
 
 ## Headline
 
-AI systems shows promise but needs more evidence.
+Keep AI systems on watch until the case is stronger.
 
 ## Title
 
@@ -10,23 +10,23 @@ AI systems
 
 ## At a glance
 
-- outcome: `watchlist`
-- overall assessment: `partially_aligned`
-- case confidence: `0.72`
-- decision confidence: `0.63`
-- next step: `hold_for_recheck`
+- outcome: Watchlist
+- overall assessment: Partially aligned
+- case confidence: 0.72
+- decision confidence: 0.63
+- next step: hold for recheck
 
-## Primary Item
+## Primary source
 
-- id: `18`
-- type: `pasted_text`
+- id: 18
+- type: pasted text
 - content: AI systems | Memory tool behavior notes.
 
-## Supporting Items
+## Supporting sources
 
-- `8` Remote income: Remote income | Consulting idea around AI workflows.
-- `45` Remote workflow systems Automation ideas for consulting projects.: Remote workflow systems | Automation ideas for consulting projects.
-- `14` Business ops: Business ops | Invoice template fixes.
+- 8 Remote income: Remote income | Consulting idea around AI workflows.
+- 45 Remote workflow systems Automation ideas for consulting projects.: Remote workflow systems | Automation ideas for consulting projects.
+- 14 Business ops: Business ops | Invoice template fixes.
 
 ## Case Summary
 
@@ -34,14 +34,14 @@ The case is only partially aligned and should be treated cautiously. Candidate s
 
 ## Overall assessment
 
-- status: `Partially aligned`
-- confidence: `0.72`
+- status: Partially aligned
+- confidence: 0.72
 
 ## Final decision
 
-- decision: `Watchlist`
-- confidence: `0.63`
-- next step: `hold_for_recheck`
+- decision: Watchlist
+- confidence: 0.63
+- next step: hold for recheck
 
 ## Why this case landed here
 

@@ -2,7 +2,7 @@
 
 ## Headline
 
-Remote income is ready for priority review.
+Prioritize Remote income for review.
 
 ## Title
 
@@ -10,23 +10,23 @@ Remote income
 
 ## At a glance
 
-- outcome: `promoted`
-- overall assessment: `aligned`
-- case confidence: `0.72`
-- decision confidence: `0.81`
-- next step: `prioritise_for_review`
+- outcome: Promoted
+- overall assessment: Aligned
+- case confidence: 0.72
+- decision confidence: 0.81
+- next step: prioritise for review
 
-## Primary Item
+## Primary source
 
-- id: `8`
-- type: `pasted_text`
+- id: 8
+- type: pasted text
 - content: Remote income | Consulting idea around AI workflows.
 
-## Supporting Items
+## Supporting sources
 
-- `22` Remote income: Remote income | Client offer pricing notes.
-- `45` Remote workflow systems Automation ideas for consulting projects.: Remote workflow systems | Automation ideas for consulting projects.
-- `14` Business ops: Business ops | Invoice template fixes.
+- 22 Remote income: Remote income | Client offer pricing notes.
+- 45 Remote workflow systems Automation ideas for consulting projects.: Remote workflow systems | Automation ideas for consulting projects.
+- 14 Business ops: Business ops | Invoice template fixes.
 
 ## Case Summary
 
@@ -34,14 +34,14 @@ The case is clear enough and aligns with the expected state. Strong fit, recent 
 
 ## Overall assessment
 
-- status: `Aligned`
-- confidence: `0.72`
+- status: Aligned
+- confidence: 0.72
 
 ## Final decision
 
-- decision: `Promoted`
-- confidence: `0.81`
-- next step: `prioritise_for_review`
+- decision: Promoted
+- confidence: 0.81
+- next step: prioritise for review
 
 ## Why this case landed here
 

@@ -45,7 +45,7 @@ def _supporting_lines(supporting_items: list[dict[str, Any]]) -> str:
     lines = []
     for item in supporting_items:
         content = item.get("content", "").strip().replace("\n\n", " | ")
-        lines.append(f"- `{item['item_id']}` { _title_from_content(item) }: {content}")
+        lines.append(f"- {item['item_id']} { _title_from_content(item) }: {content}")
     return "\n".join(lines) + ("\n" if lines else "")
 
 
@@ -90,19 +90,23 @@ def _headline(case_summary: dict[str, Any], arbiter_response: dict[str, Any], pr
     title = _title_from_content(primary_item)
     judgement = arbiter_response.get("judgement", "")
     if judgement == "promoted":
-        return f"{title} is ready for priority review."
+        return f"Prioritize {title} for review."
     if judgement == "watchlist":
-        return f"{title} shows promise but needs more evidence."
-    return f"{title} does not currently justify further work."
+        return f"Keep {title} on watch until the case is stronger."
+    return f"Do not prioritize {title} without stronger evidence."
+
+
+def _display_value(value: str) -> str:
+    return value.replace("_", " ").strip()
 
 
 def _status_snapshot(case_summary: dict[str, Any], arbiter_response: dict[str, Any]) -> str:
     return (
-        f"- outcome: `{arbiter_response['judgement']}`\n"
-        f"- overall assessment: `{case_summary['bundle_judgment']}`\n"
-        f"- case confidence: `{case_summary['bundle_confidence']}`\n"
-        f"- decision confidence: `{arbiter_response['confidence']}`\n"
-        f"- next step: `{arbiter_response['recommended_action']}`\n"
+        f"- outcome: {_title_case(arbiter_response['judgement'])}\n"
+        f"- overall assessment: {_sentence_case(case_summary['bundle_judgment'])}\n"
+        f"- case confidence: {case_summary['bundle_confidence']}\n"
+        f"- decision confidence: {arbiter_response['confidence']}\n"
+        f"- next step: {_display_value(arbiter_response['recommended_action'])}\n"
     )
 
 
@@ -147,21 +151,21 @@ def build_case_brief(case_dir: Path) -> str:
         f"{title}\n\n"
         f"## At a glance\n\n"
         f"{_status_snapshot(case_summary, arbiter_response)}\n"
-        f"## Primary Item\n\n"
-        f"- id: `{primary_item['item_id']}`\n"
-        f"- type: `{primary_item['item_type']}`\n"
+        f"## Primary source\n\n"
+        f"- id: {primary_item['item_id']}\n"
+        f"- type: {_display_value(primary_item['item_type'])}\n"
         f"- content: {primary_item['content'].strip().replace(chr(10) + chr(10), ' | ')}\n\n"
-        f"## Supporting Items\n\n"
+        f"## Supporting sources\n\n"
         f"{_supporting_lines(supporting_items)}\n"
         f"## Case Summary\n\n"
         f"{brief_rationale}\n\n"
         f"## Overall assessment\n\n"
-        f"- status: `{_sentence_case(case_summary['bundle_judgment'])}`\n"
-        f"- confidence: `{case_summary['bundle_confidence']}`\n\n"
+        f"- status: {_sentence_case(case_summary['bundle_judgment'])}\n"
+        f"- confidence: {case_summary['bundle_confidence']}\n\n"
         f"## Final decision\n\n"
-        f"- decision: `{_title_case(arbiter_response['judgement'])}`\n"
-        f"- confidence: `{arbiter_response['confidence']}`\n"
-        f"- next step: `{arbiter_response['recommended_action']}`\n\n"
+        f"- decision: {_title_case(arbiter_response['judgement'])}\n"
+        f"- confidence: {arbiter_response['confidence']}\n"
+        f"- next step: {_display_value(arbiter_response['recommended_action'])}\n\n"
         f"## Why this case landed here\n\n"
         f"{_human_reason_lines(bundle, arbiter_response)}\n"
         f"## What to do next\n\n"
@@ -425,14 +429,14 @@ def build_case_brief_html(case_dir: Path) -> str:
           <p class="summary">{html.escape(case_summary_text)}</p>
         </div>
         <div class="panel">
-          <h2>Primary Item</h2>
+          <h2>Primary source</h2>
           <div class="primary-box">
-            <p class="primary-title">{html.escape(title)} <span class="item-meta">#{primary_item['item_id']} · {html.escape(primary_item['item_type'])}</span></p>
+            <p class="primary-title">{html.escape(title)} <span class="item-meta">#{primary_item['item_id']} · {html.escape(_display_value(primary_item['item_type']))}</span></p>
             <div class="item-content">{html.escape(primary_item['content'].strip().replace(chr(10) + chr(10), ' | '))}</div>
           </div>
         </div>
         <div class="panel">
-          <h2>Supporting Items</h2>
+          <h2>Supporting sources</h2>
           {_html_supporting_items(supporting_items)}
         </div>
         <div class="panel">
