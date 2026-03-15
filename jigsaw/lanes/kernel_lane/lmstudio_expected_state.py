@@ -57,22 +57,37 @@ def _generation_schema() -> dict[str, Any]:
         "title": "expected_state_generation_payload",
         "type": "object",
         "additionalProperties": False,
-        "required": ["kernel_type", "status", "judgment", "confidence", "reasons"],
+        "required": [
+            "kernel_type",
+            "status",
+            "expected_slots_present",
+            "aligned_slots",
+            "misaligned_slots",
+            "missing_slots",
+            "fit_reason",
+            "missing_reason",
+        ],
         "properties": {
             "kernel_type": {"type": "string", "enum": ["expected_state"]},
             "status": {"type": "string", "enum": ["success"]},
-            "judgment": {
-                "type": "string",
-                "enum": [
-                    "expected_state_aligned",
-                    "expected_state_partial",
-                    "expected_state_misaligned",
-                ],
-            },
-            "confidence": {"type": "number", "minimum": 0, "maximum": 1},
-            "reasons": {
+            "expected_slots_present": {"type": "integer", "minimum": 0},
+            "aligned_slots": {
                 "type": "array",
-                "minItems": 1,
+                "items": {"type": "string", "minLength": 1},
+            },
+            "misaligned_slots": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1},
+            },
+            "missing_slots": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1},
+            },
+            "alignment_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+            "fit_reason": {"type": "string", "minLength": 1},
+            "missing_reason": {"type": "string", "minLength": 1},
+            "notes": {
+                "type": "array",
                 "items": {"type": "string", "minLength": 1},
             },
         },
@@ -105,29 +120,26 @@ def _prompts(
 
     ratio = 1.0 if not expected_pairs else sum(1 for item in expected_pairs if item["aligned"]) / len(expected_pairs)
     confidence_guidance = [
-        "Confidence measures support for the chosen expected_state judgment, not perfection of the overall case.",
-        "If one expectation is clearly misaligned while others are aligned, expected_state_partial is usually appropriate.",
-        "For this case shape with 2 of 3 expectations aligned, confidence should normally be moderate to strong, often around 0.6 to 0.85.",
-        "Do not default to very low confidence unless the evidence is absent or too contradictory to support the chosen judgment.",
+        "Report expected-fit facts, not the final expected_state class.",
+        "Do not collapse all mixed-fit cases into one narrative middle bucket.",
+        "A case with 3 of 4 slots aligned should still be reported as mostly aligned even if one slot is misaligned.",
+        "A case with only 1 of 4 slots aligned should be reported as mostly misaligned, not merely mixed.",
     ]
     requirements = [
         "Return JSON only.",
-        "Write concise reasons focused on alignment or misalignment against expected targets.",
+        "Write concise reasons focused on which expected slots align, which do not, and which are missing.",
         "Do not emit metadata, ids, timestamps, or evidence_used. Those will be added locally.",
-        "If the judgment is expected_state_partial on this case shape, prefer confidence above 0.6 unless you can justify a lower value from weak or contradictory evidence.",
+        "Do not emit the final expected_state class. Local logic will determine the final class.",
+        "Do not treat any mixture of aligned and misaligned slots as automatically 'partial'.",
     ]
     profile_bias: list[str] = []
     if prompt_config.get("prefer_aligned_at_threshold"):
         profile_bias.append(
-            "If alignment_ratio is at least 0.75 and only one expectation is misaligned, prefer expected_state_aligned unless the evidence for the aligned items is weak."
-        )
-    if "confidence_floor_aligned" in prompt_config:
-        requirements.append(
-            f"If you choose expected_state_aligned for this profile, keep confidence at or above {float(prompt_config['confidence_floor_aligned']):.2f} unless the evidence is directly unreliable."
+            "If three quarters or more of the expected slots align, report that the fit is mostly aligned even if one slot remains misaligned."
         )
 
     user_payload = {
-        "task": "Emit one kernel_output payload for expected_state only.",
+        "task": "Report structured expected-fit facts for expected_state only.",
         "rules": {
             "evaluate_only": "alignment between observed values and expected targets",
             "do_not_do": [
@@ -136,17 +148,19 @@ def _prompts(
                 "consequence reasoning",
             ],
             "profile_bias": profile_bias,
-            "judgment_thresholds": {
-                "expected_state_aligned": "alignment_ratio >= 0.75",
-                "expected_state_partial": "alignment_ratio >= 0.40 and < 0.75",
-                "expected_state_misaligned": "alignment_ratio < 0.40",
-            },
-            "confidence_scale": {
-                "0.0": "no meaningful support for the stated judgment",
-                "0.25": "weak but real support",
-                "0.5": "partial support",
-                "0.75": "strong support",
-                "1.0": "near-complete support",
+            "reporting_rubric": {
+                "core_question": "Which expected slots align, which do not, and which are missing from the observed picture?",
+                "important_distinction": [
+                    "Fit reporting is not the same as final class assignment.",
+                    "If three quarters of slots align, report that alignment clearly rather than flattening it into a generic mixed-fit description.",
+                    "If only one quarter of slots aligns, report that the fit is mostly misaligned rather than generic partial fit.",
+                    "Missing slots should be reported separately from directly misaligned slots.",
+                ],
+                "target_thresholds": {
+                    "mostly_aligned": "alignment_ratio >= 0.75",
+                    "mixed_fit": "alignment_ratio >= 0.40 and < 0.75",
+                    "mostly_misaligned": "alignment_ratio < 0.40",
+                },
             },
             "confidence_guidance": confidence_guidance,
         },
@@ -168,10 +182,13 @@ def _prompts(
         "generation_target": {
             "kernel_type": "expected_state",
             "status": "success",
-            "allowed_judgments": [
-                "expected_state_aligned",
-                "expected_state_partial",
-                "expected_state_misaligned",
+            "required_fields": [
+                "expected_slots_present",
+                "aligned_slots",
+                "misaligned_slots",
+                "missing_slots",
+                "fit_reason",
+                "missing_reason",
             ],
         },
         "normalization_context": {
@@ -189,14 +206,43 @@ def _prompts(
 
 
 def _normalize_generated_payload(generated_payload: dict[str, Any], shell: dict[str, Any]) -> dict[str, Any]:
+    expected_slots_present = int(generated_payload["expected_slots_present"])
+    aligned_slots = list(generated_payload.get("aligned_slots", []))
+    misaligned_slots = list(generated_payload.get("misaligned_slots", []))
+    missing_slots = list(generated_payload.get("missing_slots", []))
+    fit_reason = generated_payload["fit_reason"]
+    missing_reason = generated_payload["missing_reason"]
+    notes = list(generated_payload.get("notes", []))
+
+    if expected_slots_present <= 0:
+        ratio = 0.0
+    else:
+        ratio = round(len(aligned_slots) / expected_slots_present, 4)
+
+    if ratio >= 0.75:
+        judgment = "expected_state_aligned"
+    elif ratio >= 0.40:
+        judgment = "expected_state_partial"
+    else:
+        judgment = "expected_state_misaligned"
+
+    confidence = round(min(0.95, 0.55 + 0.35 * ratio), 4)
+
+    reasons = [fit_reason]
+    if misaligned_slots:
+        reasons.append(f"Misaligned expected slots: {', '.join(misaligned_slots)}.")
+    if missing_slots:
+        reasons.append(missing_reason)
+    reasons.extend(notes[:1])
+
     normalized = dict(shell)
     normalized["kernel_type"] = generated_payload["kernel_type"]
     normalized["status"] = generated_payload["status"]
-    normalized["judgment"] = generated_payload["judgment"]
-    normalized["confidence"] = generated_payload["confidence"]
-    normalized["reasons"] = generated_payload["reasons"]
+    normalized["judgment"] = judgment
+    normalized["confidence"] = confidence
+    normalized["reasons"] = reasons
     normalized["evidence_used"] = shell["evidence_used"]
-    normalized["metadata"]["confidence"] = generated_payload["confidence"]
+    normalized["metadata"]["confidence"] = confidence
     return normalized
 
 

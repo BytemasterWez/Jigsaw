@@ -11,11 +11,12 @@
       "kernel_type": "observed_state",
       "input_id": "kin_gc_8_remote_workflow_localmix_v1",
       "status": "success",
-      "judgment": "observed_state_partial",
-      "confidence": 0.7,
+      "judgment": "observed_state_clear",
+      "confidence": 0.78,
       "reasons": [
-        "The observed_count is exactly equal to the minimum_expected_observations (4), which suggests that all required observations are present, but there might be missing ones or some could be uncertain.",
-        "Among the four observations, three have a value of true and one has false (offer_pricing_defined). This indicates that not all expected items were observed clearly."
+        "The observed_count is equal to the minimum_expected_observations (4), and all observation slots are directly evidenced with provided evidence.",
+        "Three out of four observed values are favorable, while one is false. This indicates a mix in polarity despite complete coverage.",
+        "Observation Coverage: All required observation slots have been filled with direct evidence."
       ],
       "evidence_used": [
         "gc_ev_8",
@@ -30,7 +31,7 @@
         "updated_at": "2026-03-15T12:15:00Z",
         "source_system": "jigsaw",
         "pipeline_run_id": "remote_workflow_localmix_v1-case-01",
-        "confidence": 0.7,
+        "confidence": 0.78,
         "tags": [
           "kernel-lane",
           "observed-state",
@@ -48,10 +49,11 @@
       "kernel_type": "expected_state",
       "input_id": "kin_gc_8_remote_workflow_localmix_v1",
       "status": "success",
-      "judgment": "expected_state_partial",
-      "confidence": 0.75,
+      "judgment": "expected_state_aligned",
+      "confidence": 0.8125,
       "reasons": [
-        "The observed values for 'workflow_automation_focus' and 'operations_scaffold_present' align with the expected targets, but there is a misalignment in 'offer_pricing_defined'."
+        "The expected_state profile remote_workflow_localmix_v1 requires four slots. The observed picture includes evidence for three of them: workflow_automation_focus, consulting_use_case_defined, and operations_scaffold_present are all aligned with the expected values (true). However, offer_pricing_defined is misaligned because it expects true but the observation does not mention or confirm pricing details.",
+        "Misaligned expected slots: offer_pricing_defined."
       ],
       "evidence_used": [
         "gc_ev_8",
@@ -66,7 +68,7 @@
         "updated_at": "2026-03-15T12:15:00Z",
         "source_system": "jigsaw",
         "pipeline_run_id": "remote_workflow_localmix_v1-case-01",
-        "confidence": 0.75,
+        "confidence": 0.8125,
         "tags": [
           "kernel-lane",
           "expected-state",
@@ -114,11 +116,11 @@
     }
   ],
   "composed_summary": {
-    "bundle_judgment": "partially_aligned",
-    "summary": "The case is only partially aligned and should be treated cautiously."
+    "bundle_judgment": "aligned",
+    "summary": "The case is clear enough and aligns with the expected state."
   },
   "composition_notes": [
-    "Alignment remains partial even though the observed picture is usable."
+    "No contradiction detected across the first kernel bundle."
   ],
   "metadata": {
     "object_id": "kernel_bundle:kin_gc_8_remote_workflow_localmix_v1",
@@ -127,7 +129,7 @@
     "updated_at": "2026-03-15T12:15:00Z",
     "source_system": "jigsaw",
     "pipeline_run_id": "remote_workflow_localmix_v1-case-01",
-    "confidence": 0.7,
+    "confidence": 0.72,
     "tags": [
       "kernel-lane",
       "bundle-result"

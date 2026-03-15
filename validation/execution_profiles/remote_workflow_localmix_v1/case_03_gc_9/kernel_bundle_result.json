@@ -11,11 +11,12 @@
       "kernel_type": "observed_state",
       "input_id": "kin_gc_9_remote_workflow_localmix_v1",
       "status": "success",
-      "judgment": "observed_state_partial",
-      "confidence": 0.7,
+      "judgment": "observed_state_clear",
+      "confidence": 0.78,
       "reasons": [
-        "The observed_count is exactly equal to the minimum_expected_observations, which suggests that all necessary observations are present but not necessarily clear or distinct.",
-        "However, upon closer examination of the evidence items, it becomes evident that only one observation (workflow_automation_focus) has a true value. The other three observations have false values, indicating that they were either not observed or not applicable in this context."
+        "The observed_count is equal to the minimum_expected_observations (4), and all observation slots are directly evidenced by the provided evidence items.",
+        "Three out of four observed values are false, which indicates mixed polarity. However, coverage remains sufficient as per the rules.",
+        "The case has complete observation coverage with three observations being favorable or complete (though in this context, all but one are true would be ideal for strong polarity)."
       ],
       "evidence_used": [
         "gc_ev_9",
@@ -30,7 +31,7 @@
         "updated_at": "2026-03-15T12:15:00Z",
         "source_system": "jigsaw",
         "pipeline_run_id": "remote_workflow_localmix_v1-case-03",
-        "confidence": 0.7,
+        "confidence": 0.78,
         "tags": [
           "kernel-lane",
           "observed-state",
@@ -48,10 +49,11 @@
       "kernel_type": "expected_state",
       "input_id": "kin_gc_9_remote_workflow_localmix_v1",
       "status": "success",
-      "judgment": "expected_state_partial",
-      "confidence": 0.75,
+      "judgment": "expected_state_misaligned",
+      "confidence": 0.6375,
       "reasons": [
-        "The observed state for 'workflow_automation_focus' is aligned with the expected value, but two out of four other expectations are not met due to missing evidence or contradictions."
+        "The observed picture includes evidence of workflow automation, specifically from the 'Prompt library cleanup tasks' and 'Automation ideas for consulting projects'. However, it does not align with expected slots like consulting_use_case_defined, offer_pricing_defined, or operations_scaffold_present.",
+        "Misaligned expected slots: consulting_use_case_defined, offer_pricing_defined, operations_scaffold_present."
       ],
       "evidence_used": [
         "gc_ev_9",
@@ -66,7 +68,7 @@
         "updated_at": "2026-03-15T12:15:00Z",
         "source_system": "jigsaw",
         "pipeline_run_id": "remote_workflow_localmix_v1-case-03",
-        "confidence": 0.75,
+        "confidence": 0.6375,
         "tags": [
           "kernel-lane",
           "expected-state",
@@ -127,7 +129,7 @@
     "updated_at": "2026-03-15T12:15:00Z",
     "source_system": "jigsaw",
     "pipeline_run_id": "remote_workflow_localmix_v1-case-03",
-    "confidence": 0.7,
+    "confidence": 0.6375,
     "tags": [
       "kernel-lane",
       "bundle-result"

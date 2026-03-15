@@ -6,7 +6,7 @@
   "evidence": {
     "source_count": 4,
     "freshness_days": 2,
-    "fit_score": 0.65,
+    "fit_score": 0.5875,
     "estimated_value_band": "partially_aligned"
   },
   "context": {

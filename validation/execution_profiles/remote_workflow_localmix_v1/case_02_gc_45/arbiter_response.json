@@ -1,12 +1,12 @@
 {
   "candidate_id": "gc_case:remote_workflow_localmix_v1:45",
-  "judgement": "watchlist",
-  "confidence": 0.63,
-  "reason_summary": "Candidate shows some relevance but does not yet justify immediate action.",
+  "judgement": "promoted",
+  "confidence": 0.81,
+  "reason_summary": "Strong fit, recent supporting evidence, and acceptable evidence depth justify immediate review.",
   "key_factors": [
-    "Moderate fit to target profile",
-    "Evidence is incomplete or weaker",
-    "Worth monitoring or enriching"
+    "High relevance to target profile",
+    "Evidence is recent",
+    "Multiple sources support the candidate"
   ],
-  "recommended_action": "hold_for_recheck"
+  "recommended_action": "prioritise_for_review"
 }

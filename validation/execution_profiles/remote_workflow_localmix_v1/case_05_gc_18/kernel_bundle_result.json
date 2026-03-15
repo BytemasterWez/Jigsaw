@@ -11,12 +11,12 @@
       "kernel_type": "observed_state",
       "input_id": "kin_gc_18_remote_workflow_localmix_v1",
       "status": "success",
-      "judgment": "observed_state_partial",
-      "confidence": 0.7,
+      "judgment": "observed_state_clear",
+      "confidence": 0.78,
       "reasons": [
-        "The observed_count is exactly equal to the minimum_expected_observations (4), which suggests that all required observations are present, but there might be some missing or unclear ones.",
-        "Among the four observations listed in input_summary.observed_items, three have a value of true and one has false. This indicates partial clarity as not all items were observed directly by the user.",
-        "The evidence_used includes GC material that supports remote_workflow_localmix_v1 but does not fully confirm every aspect with high confidence."
+        "All four observation slots are directly evidenced by the provided observations. The evidence includes specific details about AI systems, remote income, automation ideas for consulting projects, and business operations.",
+        "Two observed values (workflow_automation_focus: true) are favorable while two (consulting_use_case_defined: false, offer_pricing_defined: false, operations_scaffold_present: true but note the value is present which might be considered complete in this context?) wait no - let's recheck. The observed_true_count is 2 and observed_false_count is 2. However, note that 'operations_scaffold_present' has a value of true, so it should not be counted as false. Let me correct: the two false are consulting_use_case_defined and offer_pricing_defined.",
+        "The observation coverage appears complete with all four slots having direct evidence."
       ],
       "evidence_used": [
         "gc_ev_18",
@@ -31,7 +31,7 @@
         "updated_at": "2026-03-15T12:15:00Z",
         "source_system": "jigsaw",
         "pipeline_run_id": "remote_workflow_localmix_v1-case-05",
-        "confidence": 0.7,
+        "confidence": 0.78,
         "tags": [
           "kernel-lane",
           "observed-state",
@@ -50,12 +50,10 @@
       "input_id": "kin_gc_18_remote_workflow_localmix_v1",
       "status": "success",
       "judgment": "expected_state_partial",
-      "confidence": 0.75,
+      "confidence": 0.725,
       "reasons": [
-        "The expected state for 'workflow_automation_focus' is true, and the observed value aligns with it.",
-        "The expected state for 'operations_scaffold_present' is true, and the observed value aligns with it.",
-        "However, two of the three expectations are not aligned: 'consulting_use_case_defined' and 'offer_pricing_defined'.",
-        "Given that two out of four expected pairs are misaligned (50%), but considering the context provided by the evidence which includes items related to remote workflow systems and business ops, a partial alignment is appropriate with moderate confidence."
+        "The observed picture aligns with the expected_state for workflow automation focus and operations scaffold, as evidenced by the memory tool behavior notes (gc_ev_18) and business ops evidence (gc_ev_14). The consulting use case defined slot is misaligned because there are no specific details about consulting projects in the provided observations. Similarly, offer pricing defined is not addressed.",
+        "Misaligned expected slots: consulting_use_case_defined, offer_pricing_defined."
       ],
       "evidence_used": [
         "gc_ev_18",
@@ -70,7 +68,7 @@
         "updated_at": "2026-03-15T12:15:00Z",
         "source_system": "jigsaw",
         "pipeline_run_id": "remote_workflow_localmix_v1-case-05",
-        "confidence": 0.75,
+        "confidence": 0.725,
         "tags": [
           "kernel-lane",
           "expected-state",
@@ -131,7 +129,7 @@
     "updated_at": "2026-03-15T12:15:00Z",
     "source_system": "jigsaw",
     "pipeline_run_id": "remote_workflow_localmix_v1-case-05",
-    "confidence": 0.7,
+    "confidence": 0.72,
     "tags": [
       "kernel-lane",
       "bundle-result"

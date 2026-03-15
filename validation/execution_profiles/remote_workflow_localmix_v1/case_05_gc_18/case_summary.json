@@ -11,8 +11,8 @@
   "controller_next_probe": "package_case",
   "case_id": "case:hyp:gc:18",
   "bundle_judgment": "partially_aligned",
-  "bundle_confidence": 0.7,
-  "arbiter_fit_score": 0.65,
+  "bundle_confidence": 0.72,
+  "arbiter_fit_score": 0.67,
   "arbiter_judgement": "watchlist",
   "recommended_action": "hold_for_recheck",
   "kernel_engines": {
@@ -25,14 +25,14 @@
       "engine_mode": "lmstudio",
       "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
       "retries_used": 0,
-      "elapsed_seconds": 3.1805,
-      "judgment": "observed_state_partial"
+      "elapsed_seconds": 4.5983,
+      "judgment": "observed_state_clear"
     },
     "expected_state": {
       "engine_mode": "lmstudio",
       "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
       "retries_used": 0,
-      "elapsed_seconds": 2.2877,
+      "elapsed_seconds": 1.9872,
       "judgment": "expected_state_partial"
     },
     "contradiction": {

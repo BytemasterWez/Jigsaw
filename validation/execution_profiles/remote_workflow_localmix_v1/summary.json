@@ -2,8 +2,8 @@
   "profile_name": "remote_workflow_localmix_v1",
   "profile_version": "v1",
   "cases_run": 5,
-  "promoted": 0,
-  "watchlist": 5,
+  "promoted": 2,
+  "watchlist": 3,
   "rejected": 0,
   "cases": [
     {
@@ -18,11 +18,11 @@
       "controller_state": "sufficient",
       "controller_next_probe": "package_case",
       "case_id": "case:hyp:gc:8",
-      "bundle_judgment": "partially_aligned",
-      "bundle_confidence": 0.7,
-      "arbiter_fit_score": 0.65,
-      "arbiter_judgement": "watchlist",
-      "recommended_action": "hold_for_recheck",
+      "bundle_judgment": "aligned",
+      "bundle_confidence": 0.72,
+      "arbiter_fit_score": 0.8,
+      "arbiter_judgement": "promoted",
+      "recommended_action": "prioritise_for_review",
       "kernel_engines": {
         "observed_state": "lmstudio",
         "expected_state": "lmstudio",
@@ -33,15 +33,15 @@
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 15.9018,
-          "judgment": "observed_state_partial"
+          "elapsed_seconds": 3.5325,
+          "judgment": "observed_state_clear"
         },
         "expected_state": {
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 1.3711,
-          "judgment": "expected_state_partial"
+          "elapsed_seconds": 3.5352,
+          "judgment": "expected_state_aligned"
         },
         "contradiction": {
           "engine_mode": "deterministic",
@@ -65,11 +65,11 @@
       "controller_state": "sufficient",
       "controller_next_probe": "package_case",
       "case_id": "case:hyp:gc:45",
-      "bundle_judgment": "partially_aligned",
-      "bundle_confidence": 0.6,
-      "arbiter_fit_score": 0.55,
-      "arbiter_judgement": "watchlist",
-      "recommended_action": "hold_for_recheck",
+      "bundle_judgment": "aligned",
+      "bundle_confidence": 0.72,
+      "arbiter_fit_score": 0.8,
+      "arbiter_judgement": "promoted",
+      "recommended_action": "prioritise_for_review",
       "kernel_engines": {
         "observed_state": "lmstudio",
         "expected_state": "lmstudio",
@@ -80,15 +80,15 @@
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 1.6698,
-          "judgment": "observed_state_partial"
+          "elapsed_seconds": 3.5342,
+          "judgment": "observed_state_clear"
         },
         "expected_state": {
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 1.8647,
-          "judgment": "expected_state_partial"
+          "elapsed_seconds": 3.2391,
+          "judgment": "expected_state_aligned"
         },
         "contradiction": {
           "engine_mode": "deterministic",
@@ -113,8 +113,8 @@
       "controller_next_probe": "package_case",
       "case_id": "case:hyp:gc:9",
       "bundle_judgment": "partially_aligned",
-      "bundle_confidence": 0.7,
-      "arbiter_fit_score": 0.65,
+      "bundle_confidence": 0.6375,
+      "arbiter_fit_score": 0.5875,
       "arbiter_judgement": "watchlist",
       "recommended_action": "hold_for_recheck",
       "kernel_engines": {
@@ -127,15 +127,15 @@
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 1.8592,
-          "judgment": "observed_state_partial"
+          "elapsed_seconds": 3.9825,
+          "judgment": "observed_state_clear"
         },
         "expected_state": {
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 1.3665,
-          "judgment": "expected_state_partial"
+          "elapsed_seconds": 3.2217,
+          "judgment": "expected_state_misaligned"
         },
         "contradiction": {
           "engine_mode": "deterministic",
@@ -160,8 +160,8 @@
       "controller_next_probe": "package_case",
       "case_id": "case:hyp:gc:14",
       "bundle_judgment": "partially_aligned",
-      "bundle_confidence": 0.7,
-      "arbiter_fit_score": 0.65,
+      "bundle_confidence": 0.6375,
+      "arbiter_fit_score": 0.5875,
       "arbiter_judgement": "watchlist",
       "recommended_action": "hold_for_recheck",
       "kernel_engines": {
@@ -174,15 +174,15 @@
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 2.4083,
-          "judgment": "observed_state_partial"
+          "elapsed_seconds": 3.3289,
+          "judgment": "observed_state_clear"
         },
         "expected_state": {
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 1.8669,
-          "judgment": "expected_state_partial"
+          "elapsed_seconds": 1.7367,
+          "judgment": "expected_state_misaligned"
         },
         "contradiction": {
           "engine_mode": "deterministic",
@@ -207,8 +207,8 @@
       "controller_next_probe": "package_case",
       "case_id": "case:hyp:gc:18",
       "bundle_judgment": "partially_aligned",
-      "bundle_confidence": 0.7,
-      "arbiter_fit_score": 0.65,
+      "bundle_confidence": 0.72,
+      "arbiter_fit_score": 0.67,
       "arbiter_judgement": "watchlist",
       "recommended_action": "hold_for_recheck",
       "kernel_engines": {
@@ -221,14 +221,14 @@
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 3.1805,
-          "judgment": "observed_state_partial"
+          "elapsed_seconds": 4.5983,
+          "judgment": "observed_state_clear"
         },
         "expected_state": {
           "engine_mode": "lmstudio",
           "model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
           "retries_used": 0,
-          "elapsed_seconds": 2.2877,
+          "elapsed_seconds": 1.9872,
           "judgment": "expected_state_partial"
         },
         "contradiction": {

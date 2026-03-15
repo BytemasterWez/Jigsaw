@@ -60,25 +60,40 @@ def _generation_schema() -> dict[str, Any]:
         "required": [
             "kernel_type",
             "status",
-            "judgment",
-            "confidence",
-            "reasons",
+            "coverage_status",
+            "polarity_status",
+            "observed_slots_present",
+            "missing_slots",
+            "coverage_reason",
+            "polarity_reason",
         ],
         "properties": {
             "kernel_type": {"type": "string", "enum": ["observed_state"]},
             "status": {"type": "string", "enum": ["success"]},
-            "judgment": {
+            "coverage_status": {
+                "type": "string",
+                "enum": ["sufficient", "insufficient"],
+            },
+            "polarity_status": {
                 "type": "string",
                 "enum": [
-                    "observed_state_clear",
-                    "observed_state_partial",
-                    "observed_state_sparse",
+                    "strong",
+                    "mixed",
+                    "weak",
                 ],
             },
-            "confidence": {"type": "number", "minimum": 0, "maximum": 1},
-            "reasons": {
+            "observed_slots_present": {
+                "type": "integer",
+                "minimum": 0,
+            },
+            "missing_slots": {
                 "type": "array",
-                "minItems": 1,
+                "items": {"type": "string", "minLength": 1},
+            },
+            "coverage_reason": {"type": "string", "minLength": 1},
+            "polarity_reason": {"type": "string", "minLength": 1},
+            "notes": {
+                "type": "array",
                 "items": {"type": "string", "minLength": 1},
             },
         },
@@ -94,6 +109,8 @@ def _prompts(
     prompt_config = prompt_config or {}
     minimum_expected = int(payload.context.get("minimum_expected_observations", 3))
     observed_count = len(payload.content.observed_items)
+    observed_true_count = sum(1 for item in payload.content.observed_items if item.get("value") is True)
+    observed_false_count = sum(1 for item in payload.content.observed_items if item.get("value") is False)
     evidence_records = [
         {
             "evidence_id": record.evidence_id,
@@ -114,10 +131,11 @@ def _prompts(
     extra_rules: list[str] = []
     requirements = [
         "Return JSON only.",
-        "Write concise reasons focused on observation completeness and clarity.",
+        "Write concise reasons focused on observation coverage first, then note any mixed or unfavorable observed values second.",
         "Do not emit metadata, ids, timestamps, or evidence_used. Those will be added locally.",
         "Set a nonzero confidence when the evidence provides real support for the chosen judgment.",
         "If the judgment is observed_state_partial on this case shape, prefer confidence above 0.5 unless you can justify a lower value from near-absent or very weak evidence.",
+        "Do not downgrade from observed_state_clear to observed_state_partial solely because one or more observed values are false if the observation slots are all present and directly evidenced.",
     ]
     if prompt_config.get("complete_coverage_bias"):
         confidence_guidance.append(
@@ -134,19 +152,37 @@ def _prompts(
         )
 
     user_payload = {
-        "task": "Emit one kernel_output payload for observed_state only.",
+        "task": "Report observation coverage and polarity separately for observed_state only.",
         "rules": {
-            "evaluate_only": "observation coverage and clarity",
+            "evaluate_only": "observation coverage first, then observation polarity/completeness as a secondary note",
             "do_not_do": [
                 "expected-state reasoning",
                 "contradiction reasoning",
                 "consequence reasoning",
             ],
             "profile_bias": extra_rules,
-            "judgment_thresholds": {
-                "observed_state_clear": "observed_count >= minimum_expected_observations",
-                "observed_state_partial": "observed_count >= max(1, minimum_expected_observations - 1) and not clear",
-                "observed_state_sparse": "otherwise",
+            "rubric": {
+                "coverage_question": "Are the observation slots populated with direct evidence?",
+                "polarity_question": "Are the observed values favorable, complete, or mixed once coverage is already established?",
+                "core_rule": "Coverage and polarity are not the same test.",
+                "important_distinction": [
+                    "A case can have complete observation coverage even when one observed value is false.",
+                    "A false observed value may be worth noting, but it should not by itself imply missing observation coverage.",
+                    "Coverage_status should be sufficient when the observation surface is fully populated and directly evidenced, even if polarity is mixed.",
+                    "Coverage_status should be insufficient only when slots are missing, ambiguous, or under-evidenced.",
+                ],
+            },
+            "reporting_thresholds": {
+                "coverage_status.sufficient": (
+                    "observed_count >= minimum_expected_observations and the observation slots are directly evidenced; "
+                    "do not require all observed values to be true"
+                ),
+                "coverage_status.insufficient": (
+                    "observed_count < minimum_expected_observations or the observation slots are materially ambiguous or unsupported"
+                ),
+                "polarity_status.strong": "most observed values are favorable / complete",
+                "polarity_status.mixed": "coverage is real but one or more observed values are false, weak, or incomplete",
+                "polarity_status.weak": "coverage is present but the observed values are mostly weak, absent, or unfavorable",
             },
             "confidence_scale": {
                 "0.0": "no meaningful support for the stated judgment",
@@ -162,16 +198,21 @@ def _prompts(
             "summary": payload.content.summary,
             "observed_count": observed_count,
             "minimum_expected_observations": minimum_expected,
+            "observed_true_count": observed_true_count,
+            "observed_false_count": observed_false_count,
             "observed_items": payload.content.observed_items,
             "evidence": evidence_records,
         },
         "generation_target": {
             "kernel_type": "observed_state",
             "status": "success",
-            "allowed_judgments": [
-                "observed_state_clear",
-                "observed_state_partial",
-                "observed_state_sparse",
+            "required_fields": [
+                "coverage_status",
+                "polarity_status",
+                "observed_slots_present",
+                "missing_slots",
+                "coverage_reason",
+                "polarity_reason",
             ],
         },
         "normalization_context": {
@@ -182,7 +223,7 @@ def _prompts(
     }
     user_prompt = (
         "You are the observed_state kernel inside Jigsaw.\n"
-        "Return one strict kernel_output JSON object and nothing else.\n\n"
+        "Return one strict observed-state analysis JSON object and nothing else.\n\n"
         f"{json.dumps(user_payload, indent=2)}"
     )
     return "", user_prompt
@@ -192,14 +233,51 @@ def _normalize_generated_payload(
     generated_payload: dict[str, Any],
     shell: dict[str, Any],
 ) -> dict[str, Any]:
+    coverage_status = generated_payload["coverage_status"]
+    polarity_status = generated_payload["polarity_status"]
+    observed_slots_present = int(generated_payload["observed_slots_present"])
+    missing_slots = list(generated_payload.get("missing_slots", []))
+    coverage_reason = generated_payload["coverage_reason"]
+    polarity_reason = generated_payload["polarity_reason"]
+    notes = list(generated_payload.get("notes", []))
+
+    if coverage_status == "sufficient":
+        judgment = "observed_state_clear"
+        confidence_map = {
+            "strong": 0.85,
+            "mixed": 0.78,
+            "weak": 0.68,
+        }
+    else:
+        if observed_slots_present >= max(1, len(shell["evidence_used"]) - 1):
+            judgment = "observed_state_partial"
+            confidence_map = {
+                "strong": 0.58,
+                "mixed": 0.5,
+                "weak": 0.42,
+            }
+        else:
+            judgment = "observed_state_sparse"
+            confidence_map = {
+                "strong": 0.35,
+                "mixed": 0.25,
+                "weak": 0.15,
+            }
+
+    confidence = confidence_map.get(polarity_status, 0.5)
+    reasons = [coverage_reason, polarity_reason]
+    if missing_slots:
+        reasons.append(f"Missing observation slots: {', '.join(missing_slots)}.")
+    reasons.extend(notes[:1])
+
     normalized = dict(shell)
     normalized["kernel_type"] = generated_payload["kernel_type"]
     normalized["status"] = generated_payload["status"]
-    normalized["judgment"] = generated_payload["judgment"]
-    normalized["confidence"] = generated_payload["confidence"]
-    normalized["reasons"] = generated_payload["reasons"]
+    normalized["judgment"] = judgment
+    normalized["confidence"] = confidence
+    normalized["reasons"] = reasons
     normalized["evidence_used"] = shell["evidence_used"]
-    normalized["metadata"]["confidence"] = generated_payload["confidence"]
+    normalized["metadata"]["confidence"] = confidence
     return normalized
 
 
