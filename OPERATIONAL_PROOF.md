@@ -34,18 +34,19 @@ and emit a composed `kernel_bundle_result` with evidence and lineage preserved.
 
 A Jigsaw `kernel_bundle_result` can be adapted into Arbiter's existing public request/response surface and receive a valid Arbiter judgment without redesigning Arbiter.
 
-### 4. Bounded local-model kernel proof
+### 4. Bounded local-model kernel proofs
 
-A small local LM can now operate inside the `observed_state` kernel slot under strict Jigsaw contract discipline.
+Small local LMs can now operate inside both the `observed_state` and `expected_state` kernel slots under strict Jigsaw contract discipline.
 
-In this bounded proof:
+In these bounded proofs:
 
-- LM Studio generated the observed-state payload through a simplified transport schema
-- Jigsaw normalized that payload into the full internal `kernel_output/v1` shape
+- LM Studio generated transport-compatible payloads through simplified schemas
+- Jigsaw normalized those payloads into the full internal `kernel_output/v1` shape
 - the real validator remained unchanged
 - bundle composition remained unchanged
 - the current Arbiter handoff remained unchanged
-- after narrow confidence calibration, the local path recovered downstream `watchlist` parity with the deterministic baseline on the tested case
+- the `observed_state` path recovered downstream `watchlist` parity after narrow confidence calibration
+- the `expected_state` path reached downstream `watchlist` parity on the tested case under the same bounded discipline
 
 ## What this means
 
@@ -73,6 +74,6 @@ What exists today is:
 - a middle capability layer
 - a final judgment membrane
 - one successful cross-layer integration proof
-- one bounded local-model kernel proof inside Jigsaw
+- two bounded local-model kernel proofs inside Jigsaw
 
 That is the current foundation for future expansion.

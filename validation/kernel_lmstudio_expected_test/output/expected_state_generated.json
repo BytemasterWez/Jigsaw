@@ -1,0 +1,11 @@
+{
+  "kernel_type": "expected_state",
+  "status": "success",
+  "judgment": "expected_state_partial",
+  "confidence": 0.75,
+  "reasons": [
+    "The revenue model is documented and appears viable, which aligns with the expected value for that pair.",
+    "Customer validation has conflicting evidence: field notes indicate it's not achieved (aligned false), but an internal claim states it is present (which may be incorrect).",
+    "Operating mode matches exactly as remote."
+  ]
+}

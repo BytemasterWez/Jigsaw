@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-rk33madyump1jd4e8rem",
+  "object": "chat.completion",
+  "created": 1773535475,
+  "model": "deepseek/deepseek-r1-0528-qwen3-8b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"kernel_type\": \"expected_state\",\n  \"status\": \"success\",\n  \"judgment\": \"expected_state_partial\",\n  \"confidence\": 0.75,\n  \"reasons\": [\n    \"The revenue model is documented and appears viable, which aligns with the expected value for that pair.\",\n    \"Customer validation has conflicting evidence: field notes indicate it's not achieved (aligned false), but an internal claim states it is present (which may be incorrect).\",\n    \"Operating mode matches exactly as remote.\"\n  ]\n}\n  ",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1149,
+    "completion_tokens": 114,
+    "total_tokens": 1263
+  },
+  "stats": {},
+  "system_fingerprint": "deepseek/deepseek-r1-0528-qwen3-8b"
+}

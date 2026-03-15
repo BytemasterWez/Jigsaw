@@ -1,0 +1,34 @@
+{
+  "contract": "kernel_output",
+  "version": "v1",
+  "output_id": "kernel_output:kin_0001-observed_state",
+  "kernel_type": "observed_state",
+  "input_id": "kin_0001",
+  "status": "success",
+  "judgment": "observed_state_partial",
+  "confidence": 0.74,
+  "reasons": [
+    "Observed coverage is usable but still incomplete across core categories."
+  ],
+  "evidence_used": [
+    "ev_001",
+    "ev_002",
+    "ev_003"
+  ],
+  "metadata": {
+    "object_id": "kernel_output:kin_0001-observed_state",
+    "schema_version": "v1",
+    "created_at": "2026-03-15T00:30:00Z",
+    "updated_at": "2026-03-15T00:30:00Z",
+    "source_system": "jigsaw",
+    "pipeline_run_id": "kernel-lmstudio-expected-test",
+    "confidence": 0.74,
+    "tags": [
+      "kernel-lane",
+      "observed-state"
+    ],
+    "lineage": [
+      "kin_0001"
+    ]
+  }
+}
