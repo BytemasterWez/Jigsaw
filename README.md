@@ -62,6 +62,10 @@ A shared `kernel_input` can enter Jigsaw, run through three fixed kernels (`obse
 
 A Jigsaw `kernel_bundle_result` can be passed through a thin adapter into Arbiter's current public request/response membrane and receive a valid Arbiter judgment without redesigning Arbiter.
 
+### Bounded local-model proof
+
+A small local LM was inserted into the `observed_state` kernel slot using LM Studio, with the real Jigsaw contract, validator, bundle composition, and Arbiter handoff left unchanged. After isolating transport, template, schema-subset, and confidence-calibration issues, the local path achieved downstream `watchlist` parity with the deterministic baseline on the tested case. This is a bounded proof of local-model viability inside Jigsaw, not a claim of universal parity.
+
 This proves Jigsaw is not just passive schema storage. It is an operational middle capability layer.
 
 ## Boundary Discipline
@@ -218,6 +222,9 @@ The point is not to maximize actions. The point is to show that:
 - [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)
 - [EXTERNAL_SUMMARY.md](./EXTERNAL_SUMMARY.md)
 - [OPERATIONAL_PROOF.md](./OPERATIONAL_PROOF.md)
+- [validation/kernel_lmstudio_test/FINAL_RESULT.md](./validation/kernel_lmstudio_test/FINAL_RESULT.md)
+- [validation/kernel_lmstudio_test/VALIDATION_NOTE.md](./validation/kernel_lmstudio_test/VALIDATION_NOTE.md)
+- [validation/kernel_lmstudio_test/ADAPTER_SENSITIVITY_NOTE.md](./validation/kernel_lmstudio_test/ADAPTER_SENSITIVITY_NOTE.md)
 - [MESSAGE_BUS_SCHEMA.md](./MESSAGE_BUS_SCHEMA.md)
 - [MEMORY_CONTRACT.md](./MEMORY_CONTRACT.md)
 - [ARBITER_DECISION_CONTRACT.md](./ARBITER_DECISION_CONTRACT.md)
