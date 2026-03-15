@@ -1,12 +1,49 @@
 from __future__ import annotations
 
 from jigsaw.controller.hypothesis_controller import (
+    build_gc_context_snapshot,
     build_case_input,
     hypothesis_state_from_gc_context,
     refresh_hypothesis_state,
     select_next_probe,
     transition_state,
+    validate_gc_context_snapshot_v1,
 )
+
+
+def test_gc_context_snapshot_builds_from_gc_backed_shape() -> None:
+    snapshot = build_gc_context_snapshot(
+        {
+            "primary_item_id": 8,
+            "related_item_ids": [22, 45, 14],
+            "summary": "Remote income opportunity has enough nearby support.",
+            "freshness": "recent",
+            "known_gaps": [],
+        }
+    )
+
+    assert snapshot.contract == "gc_context_snapshot"
+    assert snapshot.snapshot_id == "gcs:gc:8"
+    assert snapshot.surface_summary == "Remote income opportunity has enough nearby support."
+
+
+def test_gc_context_snapshot_validates_explicit_payload() -> None:
+    snapshot = validate_gc_context_snapshot_v1(
+        {
+            "contract": "gc_context_snapshot",
+            "version": "v1",
+            "snapshot_id": "gcs:gc:9",
+            "primary_item_id": 9,
+            "related_item_ids": [8, 45],
+            "surface_summary": "AI tools branch has mixed evidence.",
+            "source_types": ["gc_item", "note"],
+            "freshness": "recent",
+            "known_gaps": ["pricing"],
+        }
+    )
+
+    assert snapshot.primary_item_id == 9
+    assert snapshot.source_types == ["gc_item", "note"]
 
 
 def test_hypothesis_state_builds_with_gathering_evidence_when_support_is_thin() -> None:
@@ -138,13 +175,15 @@ def test_transition_state_moves_open_hypothesis_to_package_case_when_support_is_
 
 
 def test_sufficient_hypothesis_can_build_case_input() -> None:
-    gc_context = {
+    gc_context = build_gc_context_snapshot(
+        {
         "primary_item_id": 8,
         "related_item_ids": [22, 45, 14],
         "summary": "Remote income opportunity has enough nearby support.",
         "freshness": "recent",
         "known_gaps": [],
-    }
+        }
+    )
     state = hypothesis_state_from_gc_context(gc_context)
 
     case_input = build_case_input(state, gc_context)

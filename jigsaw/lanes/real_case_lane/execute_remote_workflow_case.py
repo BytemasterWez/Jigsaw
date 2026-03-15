@@ -5,7 +5,7 @@ import sqlite3
 from dataclasses import dataclass
 from pathlib import Path
 
-from jigsaw.controller.hypothesis_controller import build_case_input, hypothesis_state_from_gc_context
+from jigsaw.controller.hypothesis_controller import build_case_input, build_gc_context_snapshot, hypothesis_state_from_gc_context
 from jigsaw.lanes.artifact_lane.transforms import (
     artifact_to_extraction,
     chunks_to_judgment_request,
@@ -141,13 +141,16 @@ def run_remote_workflow_case() -> dict[str, object]:
         ).model_dump(mode="python")
     )
 
-    gc_context = {
+    gc_context = build_gc_context_snapshot(
+        {
         "primary_item_id": primary_item.item_id,
         "related_item_ids": [item.item_id for item in supporting_items],
         "summary": "Assess whether this remote workflow opportunity is ready to package for review.",
         "freshness": "recent",
         "known_gaps": [],
-    }
+        "source_types": [primary_item.item_type] + [item.item_type for item in supporting_items],
+        }
+    )
     hypothesis_state = hypothesis_state_from_gc_context(
         gc_context,
         question_or_claim="Should this remote workflow opportunity be packaged for review?",
@@ -169,7 +172,7 @@ def run_remote_workflow_case() -> dict[str, object]:
 
     _dump_json(OUTPUT_DIR / "gc_primary_item.json", primary_item.__dict__)
     _dump_json(OUTPUT_DIR / "gc_supporting_items.json", [item.__dict__ for item in supporting_items])
-    _dump_json(OUTPUT_DIR / "gc_context.json", gc_context)
+    _dump_json(OUTPUT_DIR / "gc_context.json", gc_context.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "hypothesis_state.json", hypothesis_state.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "case_input.json", case_input.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "artifact.json", artifact.model_dump(mode="python"))

@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 REPO_ROOT = Path(__file__).resolve().parents[2]
 HYPOTHESIS_SCHEMA_PATH = REPO_ROOT / "contracts" / "hypothesis_state" / "v1.json"
 CASE_INPUT_SCHEMA_PATH = REPO_ROOT / "contracts" / "case_input" / "v1.json"
+GC_CONTEXT_SNAPSHOT_SCHEMA_PATH = REPO_ROOT / "contracts" / "gc_context_snapshot" / "v1.json"
 
 HypothesisStateValue = Literal["open", "gathering_evidence", "conflicted", "sufficient", "escalate", "closed"]
 
@@ -26,6 +27,20 @@ class HypothesisStateV1(BaseModel):
     confidence: float = Field(ge=0, le=1)
     state: HypothesisStateValue
     next_probe: str
+
+
+class GCContextSnapshotV1(BaseModel):
+    contract: str = "gc_context_snapshot"
+    version: str = "v1"
+    snapshot_id: str
+    primary_item_id: int
+    related_item_ids: list[int] = Field(default_factory=list)
+    surface_summary: str
+    source_types: list[str] = Field(default_factory=list)
+    freshness: str
+    known_gaps: list[str] = Field(default_factory=list)
+    conflicting_item_ids: list[int] = Field(default_factory=list)
+    question_or_claim: str | None = None
 
 
 class CaseInputV1(BaseModel):
@@ -52,9 +67,36 @@ def validate_hypothesis_state_v1(payload: dict[str, Any]) -> HypothesisStateV1:
     return HypothesisStateV1.model_validate(payload)
 
 
+def validate_gc_context_snapshot_v1(payload: dict[str, Any]) -> GCContextSnapshotV1:
+    Draft202012Validator(_load_schema(GC_CONTEXT_SNAPSHOT_SCHEMA_PATH)).validate(payload)
+    return GCContextSnapshotV1.model_validate(payload)
+
+
 def validate_case_input_v1(payload: dict[str, Any]) -> CaseInputV1:
     Draft202012Validator(_load_schema(CASE_INPUT_SCHEMA_PATH)).validate(payload)
     return CaseInputV1.model_validate(payload)
+
+
+def build_gc_context_snapshot(
+    payload: dict[str, Any],
+    *,
+    snapshot_id: str | None = None,
+) -> GCContextSnapshotV1:
+    built_payload = {
+        "contract": "gc_context_snapshot",
+        "version": "v1",
+        "snapshot_id": snapshot_id or str(payload.get("snapshot_id") or f"gcs:gc:{payload['primary_item_id']}"),
+        "primary_item_id": int(payload["primary_item_id"]),
+        "related_item_ids": [int(item_id) for item_id in payload.get("related_item_ids", [])],
+        "surface_summary": str(payload.get("surface_summary") or payload.get("summary") or f"Assess item {payload['primary_item_id']}"),
+        "source_types": [str(value) for value in payload.get("source_types", ["gc_item"])],
+        "freshness": str(payload.get("freshness", "recent")),
+        "known_gaps": [str(value) for value in payload.get("known_gaps", [])],
+        "conflicting_item_ids": [int(item_id) for item_id in payload.get("conflicting_item_ids", [])],
+    }
+    if payload.get("question_or_claim"):
+        built_payload["question_or_claim"] = str(payload["question_or_claim"])
+    return validate_gc_context_snapshot_v1(built_payload)
 
 
 def _supporting_evidence_ids(primary_item_id: int | str, related_item_ids: list[int | str]) -> list[str]:
@@ -128,17 +170,18 @@ def transition_state(
 
 
 def hypothesis_state_from_gc_context(
-    gc_context: dict[str, Any],
+    gc_context: GCContextSnapshotV1 | dict[str, Any],
     *,
     hypothesis_id: str | None = None,
     question_or_claim: str | None = None,
     controller_config: dict[str, Any] | None = None,
 ) -> HypothesisStateV1:
-    primary_item_id = gc_context["primary_item_id"]
-    related_item_ids = list(gc_context.get("related_item_ids", []))
-    known_gaps = list(gc_context.get("known_gaps", []))
-    conflicting_item_ids = list(gc_context.get("conflicting_item_ids", []))
-    question = question_or_claim or gc_context.get("question_or_claim") or gc_context.get("summary") or f"Assess item {primary_item_id}"
+    snapshot = gc_context if isinstance(gc_context, GCContextSnapshotV1) else build_gc_context_snapshot(gc_context)
+    primary_item_id = snapshot.primary_item_id
+    related_item_ids = list(snapshot.related_item_ids)
+    known_gaps = list(snapshot.known_gaps)
+    conflicting_item_ids = list(snapshot.conflicting_item_ids)
+    question = question_or_claim or snapshot.question_or_claim or snapshot.surface_summary or f"Assess item {primary_item_id}"
 
     payload = {
         "contract": "hypothesis_state",
@@ -154,7 +197,7 @@ def hypothesis_state_from_gc_context(
     }
     return transition_state(
         validate_hypothesis_state_v1(payload),
-        freshness=str(gc_context.get("freshness", "recent")),
+        freshness=snapshot.freshness,
         controller_config=controller_config,
     )
 
@@ -162,7 +205,7 @@ def hypothesis_state_from_gc_context(
 def refresh_hypothesis_state(
     state: HypothesisStateV1,
     *,
-    gc_context: dict[str, Any],
+    gc_context: GCContextSnapshotV1 | dict[str, Any],
     controller_config: dict[str, Any] | None = None,
 ) -> HypothesisStateV1:
     refreshed = hypothesis_state_from_gc_context(
@@ -174,11 +217,12 @@ def refresh_hypothesis_state(
     return refreshed
 
 
-def build_case_input(hypothesis_state: HypothesisStateV1, gc_context: dict[str, Any]) -> CaseInputV1:
+def build_case_input(hypothesis_state: HypothesisStateV1, gc_context: GCContextSnapshotV1 | dict[str, Any]) -> CaseInputV1:
     if hypothesis_state.state != "sufficient" and hypothesis_state.next_probe != "package_case":
         raise ValueError("Hypothesis must be sufficient or explicitly marked for package_case before building case_input.")
 
-    primary_item_id = gc_context["primary_item_id"]
+    snapshot = gc_context if isinstance(gc_context, GCContextSnapshotV1) else build_gc_context_snapshot(gc_context)
+    primary_item_id = snapshot.primary_item_id
     primary_evidence_id = f"gc:item:{primary_item_id}"
     supporting_evidence_ids = [evidence_id for evidence_id in hypothesis_state.supporting_evidence_ids if evidence_id != primary_evidence_id]
 

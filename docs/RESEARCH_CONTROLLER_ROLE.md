@@ -39,19 +39,23 @@ The scaffold only supports basic transitions:
 
 No Autoresearcher or deeper probe orchestration is included yet.
 
-## Current GC-backed input shape
+## Current GC-backed input contract
 
-The controller currently accepts a documented internal GC-backed context shape with:
+The controller now accepts `gc_context_snapshot/v1` as the GC -> Controller handoff object.
 
+The snapshot contains:
+
+- `snapshot_id`
 - `primary_item_id`
 - `related_item_ids`
-- `summary`
+- `surface_summary`
+- `source_types`
 - `freshness`
 - `known_gaps`
 - optional `conflicting_item_ids`
 - optional `question_or_claim`
 
-That shape is intentionally internal for now. The first public contract is `hypothesis_state/v1`.
+This keeps the upstream boundary explicit before the controller turns context into `hypothesis_state/v1`.
 
 ## Working principle
 

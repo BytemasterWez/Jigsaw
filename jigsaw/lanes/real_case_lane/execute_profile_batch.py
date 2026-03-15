@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from jigsaw.controller.hypothesis_controller import build_case_input, hypothesis_state_from_gc_context
+from jigsaw.controller.hypothesis_controller import build_case_input, build_gc_context_snapshot, hypothesis_state_from_gc_context
 from jigsaw.lanes.artifact_lane.transforms import artifact_to_extraction, chunks_to_judgment_request, extraction_to_chunks
 from jigsaw.lanes.artifact_lane.validators import (
     validate_artifact_v1,
@@ -374,13 +374,16 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
             generated_at=generated_at,
         ).model_dump(mode="python")
     )
-    gc_context = {
+    gc_context = build_gc_context_snapshot(
+        {
         "primary_item_id": primary_item.item_id,
         "related_item_ids": [item.item_id for item in supporting_items],
         "summary": f"Assess whether GC item {primary_item.item_id} should be packaged as a remote workflow opportunity case.",
         "freshness": "recent",
         "known_gaps": _known_gaps_for_profile(profile, primary_item, supporting_items),
-    }
+        "source_types": [primary_item.item_type] + [item.item_type for item in supporting_items],
+        }
+    )
     hypothesis_state = hypothesis_state_from_gc_context(
         gc_context,
         question_or_claim=f"Should GC item {primary_item.item_id} be packaged for remote workflow review?",
@@ -404,7 +407,7 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
 
     _dump_json(output_dir / "primary_item.json", primary_item.__dict__)
     _dump_json(output_dir / "supporting_items.json", [item.__dict__ for item in supporting_items])
-    _dump_json(output_dir / "gc_context.json", gc_context)
+    _dump_json(output_dir / "gc_context.json", gc_context.model_dump(mode="python"))
     _dump_json(output_dir / "hypothesis_state.json", hypothesis_state.model_dump(mode="python"))
     _dump_json(output_dir / "case_input.json", case_input.model_dump(mode="python"))
     _dump_json(output_dir / "artifact.json", artifact.model_dump(mode="python"))

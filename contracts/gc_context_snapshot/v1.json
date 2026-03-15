@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw/contracts/gc_context_snapshot/v1.json",
+  "title": "GC Context Snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "snapshot_id",
+    "primary_item_id",
+    "related_item_ids",
+    "surface_summary",
+    "source_types",
+    "freshness",
+    "known_gaps"
+  ],
+  "properties": {
+    "contract": {
+      "const": "gc_context_snapshot"
+    },
+    "version": {
+      "const": "v1"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "primary_item_id": {
+      "type": "integer"
+    },
+    "related_item_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "surface_summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "freshness": {
+      "type": "string",
+      "minLength": 1
+    },
+    "known_gaps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conflicting_item_ids": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "question_or_claim": {
+      "type": "string"
+    }
+  }
+}

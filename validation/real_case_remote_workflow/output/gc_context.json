@@ -1,11 +1,22 @@
 {
+  "contract": "gc_context_snapshot",
+  "version": "v1",
+  "snapshot_id": "gcs:gc:45",
   "primary_item_id": 45,
   "related_item_ids": [
     8,
     22,
     14
   ],
-  "summary": "Assess whether this remote workflow opportunity is ready to package for review.",
+  "surface_summary": "Assess whether this remote workflow opportunity is ready to package for review.",
+  "source_types": [
+    "pasted_text",
+    "pasted_text",
+    "pasted_text",
+    "pasted_text"
+  ],
   "freshness": "recent",
-  "known_gaps": []
+  "known_gaps": [],
+  "conflicting_item_ids": [],
+  "question_or_claim": null
 }

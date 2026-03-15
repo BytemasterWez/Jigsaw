@@ -1,11 +1,22 @@
 {
+  "contract": "gc_context_snapshot",
+  "version": "v1",
+  "snapshot_id": "gcs:gc:45",
   "primary_item_id": 45,
   "related_item_ids": [
     8,
     14,
     18
   ],
-  "summary": "Assess whether GC item 45 should be packaged as a remote workflow opportunity case.",
+  "surface_summary": "Assess whether GC item 45 should be packaged as a remote workflow opportunity case.",
+  "source_types": [
+    "pasted_text",
+    "pasted_text",
+    "pasted_text",
+    "pasted_text"
+  ],
   "freshness": "recent",
-  "known_gaps": []
+  "known_gaps": [],
+  "conflicting_item_ids": [],
+  "question_or_claim": null
 }
