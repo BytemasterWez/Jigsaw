@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-xv6u1ln0y2e5mh0i180bh9",
+  "object": "chat.completion",
+  "created": 1773572840,
+  "model": "deepseek/deepseek-r1-0528-qwen3-8b",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"kernel_type\": \"observed_state\",\n  \"status\": \"success\",\n  \"judgment\": \"observed_state_partial\",\n  \"confidence\": 0.7,\n  \"reasons\": [\n    \"The observed items include three out of four minimum expected observations, with two being positive and one negative regarding the revenue model and customer validation.\",\n    \"There is a conflicting claim about customer validation which adds uncertainty but does not invalidate the existing evidence.\"\n  ]\n}\n  ",
+        "tool_calls": []
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1192,
+    "completion_tokens": 100,
+    "total_tokens": 1292
+  },
+  "stats": {},
+  "system_fingerprint": "deepseek/deepseek-r1-0528-qwen3-8b"
+}

@@ -64,7 +64,17 @@ A Jigsaw `kernel_bundle_result` can be passed through a thin adapter into Arbite
 
 ### Bounded local-model proofs
 
-Small local LMs were inserted into the `observed_state` and `expected_state` kernel slots using LM Studio, with the real Jigsaw contract, validator, bundle composition, and Arbiter handoff left unchanged. In both cases the local path achieved downstream `watchlist` parity with the deterministic baseline on the tested case. This is a bounded proof of local-model viability inside Jigsaw, not a claim of universal parity across all slots or cases.
+Small local LMs were inserted into the `observed_state` and `expected_state` kernel slots using LM Studio, with the real Jigsaw contract, validator, bundle composition, and Arbiter handoff left unchanged. In both single-slot cases the local path achieved downstream `watchlist` parity with the deterministic baseline on the tested case.
+
+Jigsaw now also has a bounded mixed-bundle proof:
+
+- LM-backed `observed_state`
+- LM-backed `expected_state`
+- deterministic `contradiction`
+
+That mixed local bundle remained contract-valid, composed cleanly, and still produced downstream `watchlist` through the current Arbiter membrane on the tested case.
+
+This is a bounded proof of local-model viability inside Jigsaw, not a claim of universal parity across all slots or cases.
 
 This proves Jigsaw is not just passive schema storage. It is an operational middle capability layer.
 
@@ -222,11 +232,14 @@ The point is not to maximize actions. The point is to show that:
 - [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md)
 - [EXTERNAL_SUMMARY.md](./EXTERNAL_SUMMARY.md)
 - [OPERATIONAL_PROOF.md](./OPERATIONAL_PROOF.md)
+- [ARBITER_COMPRESSION_AUDIT.md](./ARBITER_COMPRESSION_AUDIT.md)
 - [validation/kernel_lmstudio_test/FINAL_RESULT.md](./validation/kernel_lmstudio_test/FINAL_RESULT.md)
 - [validation/kernel_lmstudio_test/VALIDATION_NOTE.md](./validation/kernel_lmstudio_test/VALIDATION_NOTE.md)
 - [validation/kernel_lmstudio_test/ADAPTER_SENSITIVITY_NOTE.md](./validation/kernel_lmstudio_test/ADAPTER_SENSITIVITY_NOTE.md)
 - [validation/kernel_lmstudio_expected_test/FINAL_RESULT.md](./validation/kernel_lmstudio_expected_test/FINAL_RESULT.md)
 - [validation/kernel_lmstudio_expected_test/VALIDATION_NOTE.md](./validation/kernel_lmstudio_expected_test/VALIDATION_NOTE.md)
+- [validation/kernel_lmstudio_mixed_test/FINAL_RESULT.md](./validation/kernel_lmstudio_mixed_test/FINAL_RESULT.md)
+- [validation/kernel_lmstudio_mixed_test/VALIDATION_NOTE.md](./validation/kernel_lmstudio_mixed_test/VALIDATION_NOTE.md)
 - [MESSAGE_BUS_SCHEMA.md](./MESSAGE_BUS_SCHEMA.md)
 - [MEMORY_CONTRACT.md](./MEMORY_CONTRACT.md)
 - [ARBITER_DECISION_CONTRACT.md](./ARBITER_DECISION_CONTRACT.md)

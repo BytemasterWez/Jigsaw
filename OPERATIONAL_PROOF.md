@@ -48,6 +48,22 @@ In these bounded proofs:
 - the `observed_state` path recovered downstream `watchlist` parity after narrow confidence calibration
 - the `expected_state` path reached downstream `watchlist` parity on the tested case under the same bounded discipline
 
+### 5. Bounded mixed local bundle proof
+
+Jigsaw can now sustain a mixed local bundle in which:
+
+- `observed_state` is LM-backed
+- `expected_state` is LM-backed
+- `contradiction` remains deterministic
+
+In this bounded proof:
+
+- both LM-backed outputs normalized into the real internal `kernel_output/v1` contract
+- the unchanged local validator still governed acceptance
+- bundle composition stayed unchanged
+- the current Arbiter membrane still produced a usable bounded result
+- downstream `watchlist` parity was preserved on the tested case
+
 ## What this means
 
 This proves the three repositories are not just related ideas. They form an operationally aligned modular framework with preserved boundaries:
@@ -64,6 +80,8 @@ Jigsaw's bundle surface is richer than Arbiter's current public membrane.
 
 In the current proof, some of that richer structure is compressed into narrower Arbiter request fields such as `fit_score`. This is not a failure. It is useful evidence for potential future Arbiter membrane evolution.
 
+That compression pressure is now documented directly in [ARBITER_COMPRESSION_AUDIT.md](./ARBITER_COMPRESSION_AUDIT.md), which shows that the current membrane remains acceptable for bounded use while `fit_score` remains the dominant lossy projection.
+
 ## Current conclusion
 
 The framework is now operationally real at bounded scope.
@@ -74,6 +92,7 @@ What exists today is:
 - a middle capability layer
 - a final judgment membrane
 - one successful cross-layer integration proof
-- two bounded local-model kernel proofs inside Jigsaw
+- two bounded single-slot local-model kernel proofs inside Jigsaw
+- one bounded mixed local-model bundle proof inside Jigsaw
 
 That is the current foundation for future expansion.

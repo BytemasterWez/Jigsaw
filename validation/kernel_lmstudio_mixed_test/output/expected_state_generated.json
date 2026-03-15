@@ -1,0 +1,10 @@
+{
+  "kernel_type": "expected_state",
+  "status": "success",
+  "judgment": "expected_state_partial",
+  "confidence": 0.75,
+  "reasons": [
+    "The revenue model is documented and appears viable, which aligns with the expected state.",
+    "Customer validation has not been achieved according to field notes, but there's an internal claim suggesting it is present. This creates a conflict that prevents full alignment."
+  ]
+}

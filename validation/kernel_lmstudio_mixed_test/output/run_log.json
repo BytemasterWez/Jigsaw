@@ -1,0 +1,17 @@
+{
+  "pipeline_run_id": "kernel-lmstudio-mixed-test",
+  "generated_at": "2026-03-15T09:30:00Z",
+  "observed_state_model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
+  "expected_state_model_name": "deepseek/deepseek-r1-0528-qwen3-8b",
+  "observed_state_retries_used": 0,
+  "expected_state_retries_used": 0,
+  "observed_state_elapsed_seconds": 7.3472,
+  "expected_state_elapsed_seconds": 1.1933,
+  "observed_state_judgment": "observed_state_partial",
+  "expected_state_judgment": "expected_state_partial",
+  "bundle_judgment": "contradictory",
+  "bundle_confidence": 0.7,
+  "arbiter_fit_score": 0.5,
+  "arbiter_judgement": "watchlist",
+  "status": "success"
+}
