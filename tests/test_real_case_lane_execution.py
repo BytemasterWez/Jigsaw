@@ -14,6 +14,9 @@ def test_real_case_remote_workflow_runner_generates_outputs() -> None:
     expected_files = [
         "gc_primary_item.json",
         "gc_supporting_items.json",
+        "gc_context.json",
+        "hypothesis_state.json",
+        "case_input.json",
         "artifact.json",
         "extraction.json",
         "chunks.json",
@@ -31,3 +34,4 @@ def test_real_case_remote_workflow_runner_generates_outputs() -> None:
         response = json.load(handle)
 
     assert response["judgement"] == result["arbiter_judgement"]
+    assert result["controller_state"] == "sufficient"

@@ -1,0 +1,11 @@
+{
+  "primary_item_id": 45,
+  "related_item_ids": [
+    8,
+    22,
+    14
+  ],
+  "summary": "Assess whether this remote workflow opportunity is ready to package for review.",
+  "freshness": "recent",
+  "known_gaps": []
+}

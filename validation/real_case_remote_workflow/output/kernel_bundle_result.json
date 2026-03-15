@@ -1,15 +1,15 @@
 {
   "contract": "kernel_bundle_result",
   "version": "v1",
-  "bundle_id": "kernel_bundle:kin_gc_45",
-  "input_id": "kin_gc_45",
+  "bundle_id": "kernel_bundle:kin_gc_45_remote_workflow_v1b",
+  "input_id": "kin_gc_45_remote_workflow_v1b",
   "kernel_outputs": [
     {
       "contract": "kernel_output",
       "version": "v1",
-      "output_id": "kernel_output:kin_gc_45-observed_state",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_v1b-observed_state",
       "kernel_type": "observed_state",
-      "input_id": "kin_gc_45",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
       "status": "success",
       "judgment": "observed_state_clear",
       "confidence": 0.85,
@@ -23,7 +23,7 @@
         "gc_ev_14"
       ],
       "metadata": {
-        "object_id": "kernel_output:kin_gc_45-observed_state",
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_v1b-observed_state",
         "schema_version": "v1",
         "created_at": "2026-03-15T11:45:00Z",
         "updated_at": "2026-03-15T11:45:00Z",
@@ -35,21 +35,21 @@
           "observed-state"
         ],
         "lineage": [
-          "kin_gc_45"
+          "kin_gc_45_remote_workflow_v1b"
         ]
       }
     },
     {
       "contract": "kernel_output",
       "version": "v1",
-      "output_id": "kernel_output:kin_gc_45-expected_state",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_v1b-expected_state",
       "kernel_type": "expected_state",
-      "input_id": "kin_gc_45",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
       "status": "success",
       "judgment": "expected_state_aligned",
-      "confidence": 0.9,
+      "confidence": 0.8125,
       "reasons": [
-        "Observed values are aligned with the expected target state."
+        "offer_pricing_defined is not aligned with the expected target."
       ],
       "evidence_used": [
         "gc_ev_45",
@@ -58,28 +58,28 @@
         "gc_ev_14"
       ],
       "metadata": {
-        "object_id": "kernel_output:kin_gc_45-expected_state",
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_v1b-expected_state",
         "schema_version": "v1",
         "created_at": "2026-03-15T11:45:00Z",
         "updated_at": "2026-03-15T11:45:00Z",
         "source_system": "jigsaw",
         "pipeline_run_id": "real-case-remote-workflow",
-        "confidence": 0.9,
+        "confidence": 0.8125,
         "tags": [
           "kernel-lane",
           "expected-state"
         ],
         "lineage": [
-          "kin_gc_45"
+          "kin_gc_45_remote_workflow_v1b"
         ]
       }
     },
     {
       "contract": "kernel_output",
       "version": "v1",
-      "output_id": "kernel_output:kin_gc_45-contradiction",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_v1b-contradiction",
       "kernel_type": "contradiction",
-      "input_id": "kin_gc_45",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
       "status": "success",
       "judgment": "contradiction_not_detected",
       "confidence": 0.72,
@@ -93,7 +93,7 @@
         "gc_ev_14"
       ],
       "metadata": {
-        "object_id": "kernel_output:kin_gc_45-contradiction",
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_v1b-contradiction",
         "schema_version": "v1",
         "created_at": "2026-03-15T11:45:00Z",
         "updated_at": "2026-03-15T11:45:00Z",
@@ -105,7 +105,7 @@
           "contradiction"
         ],
         "lineage": [
-          "kin_gc_45"
+          "kin_gc_45_remote_workflow_v1b"
         ]
       }
     }
@@ -118,7 +118,7 @@
     "No contradiction detected across the first kernel bundle."
   ],
   "metadata": {
-    "object_id": "kernel_bundle:kin_gc_45",
+    "object_id": "kernel_bundle:kin_gc_45_remote_workflow_v1b",
     "schema_version": "v1",
     "created_at": "2026-03-15T11:45:00Z",
     "updated_at": "2026-03-15T11:45:00Z",
@@ -130,10 +130,10 @@
       "bundle-result"
     ],
     "lineage": [
-      "kin_gc_45",
-      "kernel_output:kin_gc_45-observed_state",
-      "kernel_output:kin_gc_45-expected_state",
-      "kernel_output:kin_gc_45-contradiction"
+      "kin_gc_45_remote_workflow_v1b",
+      "kernel_output:kin_gc_45_remote_workflow_v1b-observed_state",
+      "kernel_output:kin_gc_45_remote_workflow_v1b-expected_state",
+      "kernel_output:kin_gc_45_remote_workflow_v1b-contradiction"
     ]
   }
 }

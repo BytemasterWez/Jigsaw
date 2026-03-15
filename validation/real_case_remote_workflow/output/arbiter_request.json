@@ -1,5 +1,5 @@
 {
-  "candidate_id": "gc_case:remote_workflow:45",
+  "candidate_id": "gc_case:remote_workflow_v1b:45",
   "domain": "jigsaw_kernel_bundle",
   "candidate_type": "opportunity_case",
   "summary": "The case is clear enough and aligns with the expected state.",
@@ -10,10 +10,10 @@
     "estimated_value_band": "aligned"
   },
   "context": {
-    "buyer_profile": "real_remote_workflow_case",
+    "buyer_profile": "remote_workflow_v1b",
     "current_queue_pressure": "medium",
     "action_cost": "medium",
-    "jigsaw_bundle_id": "kernel_bundle:kin_gc_45",
+    "jigsaw_bundle_id": "kernel_bundle:kin_gc_45_remote_workflow_v1b",
     "jigsaw_bundle_judgment": "aligned",
     "kernel_sequence": [
       "observed_state",

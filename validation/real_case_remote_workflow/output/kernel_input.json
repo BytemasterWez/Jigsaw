@@ -1,12 +1,12 @@
 {
   "contract": "kernel_input",
   "version": "v1",
-  "input_id": "kin_gc_45",
-  "subject_id": "gc_case:remote_workflow:45",
+  "input_id": "kin_gc_45_remote_workflow_v1b",
+  "subject_id": "gc_case:remote_workflow_v1b:45",
   "subject_type": "opportunity_case",
   "content": {
     "title": "Remote workflow systems Automation ideas for consulting projects.",
-    "summary": "A remote workflow opportunity case assembled from live Garbage Collector notes covering workflow automation, consulting use, pricing, and basic operations.",
+    "summary": "A remote-workflow opportunity case assembled from GC material for primary item 45, with 3 supporting items under profile remote_workflow_v1b.",
     "observed_items": [
       {
         "name": "workflow_automation_focus",
@@ -18,7 +18,7 @@
       },
       {
         "name": "offer_pricing_defined",
-        "value": true
+        "value": false
       },
       {
         "name": "operations_scaffold_present",
@@ -47,20 +47,24 @@
   },
   "context": {
     "minimum_expected_observations": 4,
-    "analysis_profile": "real_remote_workflow_case",
+    "analysis_profile": "remote_workflow_v1b",
     "gc_primary_item_id": 45,
     "gc_supporting_item_ids": [
       8,
       22,
       14
-    ]
+    ],
+    "case_id": "case:hyp:gc:45",
+    "hypothesis_id": "hyp:gc:45",
+    "reason_for_packaging": "sufficient_support_low_conflict",
+    "current_confidence": 0.78
   },
   "evidence": [
     {
       "evidence_id": "gc_ev_45",
       "kind": "observation",
       "text": "Remote workflow systems\n\nAutomation ideas for consulting projects.",
-      "confidence": 0.82,
+      "confidence": 0.78,
       "observed_at": "2026-03-13T10:03:09.435628Z",
       "provenance": {
         "source_system": "garbage_collector",
@@ -71,7 +75,7 @@
       "evidence_id": "gc_ev_8",
       "kind": "observation",
       "text": "Remote income\n\nConsulting idea around AI workflows.",
-      "confidence": 0.8,
+      "confidence": 0.72,
       "observed_at": "2026-03-13T00:28:53.491666Z",
       "provenance": {
         "source_system": "garbage_collector",
@@ -82,7 +86,7 @@
       "evidence_id": "gc_ev_22",
       "kind": "observation",
       "text": "Remote income\n\nClient offer pricing notes.",
-      "confidence": 0.79,
+      "confidence": 0.72,
       "observed_at": "2026-03-13T00:28:53.548607Z",
       "provenance": {
         "source_system": "garbage_collector",
@@ -102,16 +106,16 @@
     }
   ],
   "metadata": {
-    "object_id": "kin_gc_45",
+    "object_id": "kin_gc_45_remote_workflow_v1b",
     "schema_version": "v1",
     "created_at": "2026-03-15T11:45:00Z",
     "updated_at": "2026-03-15T11:45:00Z",
     "source_system": "garbage_collector",
     "pipeline_run_id": "real-case-remote-workflow",
-    "confidence": 0.8,
+    "confidence": 0.78,
     "tags": [
-      "real-case-lane",
-      "remote-workflow"
+      "execution-profile",
+      "remote_workflow_v1b"
     ],
     "lineage": [
       "gc:item:45",

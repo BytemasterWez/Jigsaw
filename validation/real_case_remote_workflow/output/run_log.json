@@ -7,8 +7,12 @@
     22,
     14
   ],
+  "hypothesis_id": "hyp:gc:45",
+  "controller_state": "sufficient",
+  "controller_next_probe": "package_case",
+  "case_id": "case:hyp:gc:45",
   "artifact_id": "gc_item_45",
-  "kernel_input_id": "kin_gc_45",
+  "kernel_input_id": "kin_gc_45_remote_workflow_v1b",
   "bundle_judgment": "aligned",
   "bundle_confidence": 0.72,
   "arbiter_judgement": "promoted",

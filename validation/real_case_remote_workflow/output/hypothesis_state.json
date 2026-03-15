@@ -1,0 +1,17 @@
+{
+  "contract": "hypothesis_state",
+  "version": "v1",
+  "hypothesis_id": "hyp:gc:45",
+  "question_or_claim": "Should this remote workflow opportunity be packaged for review?",
+  "supporting_evidence_ids": [
+    "gc:item:45",
+    "gc:item:8",
+    "gc:item:22",
+    "gc:item:14"
+  ],
+  "conflicting_evidence_ids": [],
+  "missing_evidence": [],
+  "confidence": 0.78,
+  "state": "sufficient",
+  "next_probe": "package_case"
+}
