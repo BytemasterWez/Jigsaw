@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/case_state/v1.json",
+  "title": "JigsawCaseStateV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "case_id",
+    "hypothesis_id",
+    "current_status",
+    "latest_decision",
+    "latest_snapshot_id",
+    "confidence_current",
+    "confidence_trajectory",
+    "last_reviewed_at",
+    "reopen_conditions",
+    "revision_count"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "case_state"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hypothesis_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "watching",
+        "promoted",
+        "rejected",
+        "closed"
+      ]
+    },
+    "latest_decision": {
+      "type": "string",
+      "enum": [
+        "promoted",
+        "watchlist",
+        "rejected"
+      ]
+    },
+    "latest_snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidence_current": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "confidence_trajectory": {
+      "type": "string",
+      "enum": [
+        "up",
+        "down",
+        "flat",
+        "stale"
+      ]
+    },
+    "last_reviewed_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reopen_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "revision_count": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}
