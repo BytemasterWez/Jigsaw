@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from jigsaw.config import resolve_workspace_path
 from jigsaw.controller import (
     list_reopen_cases,
     mark_case_reviewed,
@@ -16,8 +17,9 @@ from jigsaw.controller import (
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_LIFECYCLE_ROOT = REPO_ROOT / "validation" / "case_lifecycle"
-DEFAULT_OUTPUT_ROOT = REPO_ROOT / "deliverables" / "reopen_review"
+DEFAULT_WORKSPACE = "local"
+DEFAULT_LIFECYCLE_ROOT = resolve_workspace_path("lifecycle_root", DEFAULT_WORKSPACE)
+DEFAULT_OUTPUT_ROOT = resolve_workspace_path("reopen_review_root", DEFAULT_WORKSPACE)
 
 
 def _load_json(path: Path) -> Any:

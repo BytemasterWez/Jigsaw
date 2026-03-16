@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-03-16T17:00:00Z",
+  "blocked_cases": [
+    {
+      "case_id": "case:hyp:gc:45",
+      "queue_reason": "watchdog_warn",
+      "blocked_reason": "watchdog_warn",
+      "since": "2026-03-16T11:00:00Z",
+      "last_update_at": "2026-03-16T11:00:00Z",
+      "available_actions": [
+        "override_and_continue",
+        "close_as_invalid",
+        "defer_for_manual_review"
+      ],
+      "priority_hint": "review_soon"
+    }
+  ],
+  "count": 1
+}

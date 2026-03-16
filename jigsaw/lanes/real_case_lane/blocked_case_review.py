@@ -7,6 +7,7 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
+from jigsaw.config import resolve_workspace_path
 from jigsaw.controller import validate_case_state_v1
 from jigsaw.engines.watchdog import validate_kernel_watchdog_result_v1
 from jigsaw.controller.watchdog_override_manager import validate_watchdog_override_record_v1
@@ -14,8 +15,9 @@ from jigsaw.controller.watchdog_override_manager import validate_watchdog_overri
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 BLOCKED_CASE_REVIEW_PACKET_SCHEMA_PATH = REPO_ROOT / "contracts" / "blocked_case_review_packet" / "v1.json"
-DEFAULT_LIFECYCLE_ROOT = REPO_ROOT / "validation" / "case_lifecycle"
-DEFAULT_QUEUE_OUTPUT_ROOT = REPO_ROOT / "validation" / "blocked_case_review"
+DEFAULT_WORKSPACE = "local"
+DEFAULT_LIFECYCLE_ROOT = resolve_workspace_path("lifecycle_root", DEFAULT_WORKSPACE)
+DEFAULT_QUEUE_OUTPUT_ROOT = resolve_workspace_path("blocked_review_root", DEFAULT_WORKSPACE)
 DEFAULT_PACKET_OUTPUT_ROOT = DEFAULT_QUEUE_OUTPUT_ROOT / "packets"
 BLOCKED_REASONS = {
     "watchdog_fail",

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from jigsaw.config import resolve_workspace_path
 from jigsaw.controller import (
     validate_action_record_v1,
     validate_case_relevance_signal_v1,
@@ -15,8 +16,9 @@ from jigsaw.lanes.kernel_lane.arbiter_exchange import validate_arbiter_exchange_
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_LIFECYCLE_ROOT = REPO_ROOT / "validation" / "case_lifecycle"
-DEFAULT_OUTPUT_ROOT = REPO_ROOT / "validation" / "case_timelines"
+DEFAULT_WORKSPACE = "local"
+DEFAULT_LIFECYCLE_ROOT = resolve_workspace_path("lifecycle_root", DEFAULT_WORKSPACE)
+DEFAULT_OUTPUT_ROOT = resolve_workspace_path("timeline_root", DEFAULT_WORKSPACE)
 
 
 def _load_json(path: Path) -> Any:

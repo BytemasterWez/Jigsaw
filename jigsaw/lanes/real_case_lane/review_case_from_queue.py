@@ -6,6 +6,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Literal
 
+from jigsaw.config import resolve_workspace_path
 from jigsaw.controller import (
     apply_watchdog_result,
     build_manual_review_action_record,
@@ -28,8 +29,9 @@ from jigsaw.lanes.real_case_lane.generate_case_timeline import generate_case_tim
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_LIFECYCLE_ROOT = REPO_ROOT / "validation" / "case_lifecycle"
-DEFAULT_OUTPUT_ROOT = REPO_ROOT / "validation" / "case_reviews"
+DEFAULT_WORKSPACE = "local"
+DEFAULT_LIFECYCLE_ROOT = resolve_workspace_path("lifecycle_root", DEFAULT_WORKSPACE)
+DEFAULT_OUTPUT_ROOT = resolve_workspace_path("review_root", DEFAULT_WORKSPACE)
 OperatorDecision = Literal["review_now", "defer", "close", "rerun_forward_pass"]
 
 
@@ -288,10 +290,11 @@ def review_case_from_queue(
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Review a queued case and optionally rerun the governed forward pass.")
     parser.add_argument("--case-id", required=True)
+    parser.add_argument("--workspace", default="local")
     parser.add_argument("--decision", required=True, choices=["review_now", "defer", "close", "rerun_forward_pass"])
-    parser.add_argument("--lifecycle-root", default=str(DEFAULT_LIFECYCLE_ROOT))
-    parser.add_argument("--timeline-root", default=str(DEFAULT_TIMELINE_ROOT))
-    parser.add_argument("--output-root", default=str(DEFAULT_OUTPUT_ROOT))
+    parser.add_argument("--lifecycle-root", default=None)
+    parser.add_argument("--timeline-root", default=None)
+    parser.add_argument("--output-root", default=None)
     parser.add_argument("--reviewed-at", default="2026-03-16T13:00:00Z")
     parser.add_argument("--notes", default="")
     return parser.parse_args()
@@ -302,9 +305,9 @@ if __name__ == "__main__":
     result = review_case_from_queue(
         case_id=args.case_id,
         decision=args.decision,
-        lifecycle_root=args.lifecycle_root,
-        timeline_root=args.timeline_root,
-        output_root=args.output_root,
+        lifecycle_root=args.lifecycle_root or str(resolve_workspace_path("lifecycle_root", args.workspace)),
+        timeline_root=args.timeline_root or str(resolve_workspace_path("timeline_root", args.workspace)),
+        output_root=args.output_root or str(resolve_workspace_path("review_root", args.workspace)),
         reviewed_at=args.reviewed_at,
         notes=args.notes,
     )

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 from typing import Any, Literal
 
+from jigsaw.config import resolve_workspace_path
 from jigsaw.controller import (
     apply_watchdog_override,
     build_watchdog_override_record,
@@ -17,8 +18,9 @@ from jigsaw.lanes.real_case_lane.generate_case_timeline import generate_case_tim
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_LIFECYCLE_ROOT = REPO_ROOT / "validation" / "case_lifecycle"
-DEFAULT_OUTPUT_ROOT = REPO_ROOT / "validation" / "blocked_case_reviews"
+DEFAULT_WORKSPACE = "local"
+DEFAULT_LIFECYCLE_ROOT = resolve_workspace_path("lifecycle_root", DEFAULT_WORKSPACE)
+DEFAULT_OUTPUT_ROOT = resolve_workspace_path("blocked_review_root", DEFAULT_WORKSPACE)
 BlockedDecision = Literal["override_and_continue", "close_as_invalid", "defer_for_manual_review"]
 
 
@@ -126,6 +128,7 @@ def override_blocked_case(
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Record an operator override for a watchdog-flagged case.")
     parser.add_argument("--case-id", required=True)
+    parser.add_argument("--workspace", default="local")
     parser.add_argument(
         "--decision",
         required=True,
@@ -133,9 +136,9 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--override-reason", required=True)
     parser.add_argument("--overridden-by", default="human_operator")
-    parser.add_argument("--lifecycle-root", default=str(DEFAULT_LIFECYCLE_ROOT))
-    parser.add_argument("--timeline-root", default=str(DEFAULT_TIMELINE_ROOT))
-    parser.add_argument("--output-root", default=str(DEFAULT_OUTPUT_ROOT))
+    parser.add_argument("--lifecycle-root", default=None)
+    parser.add_argument("--timeline-root", default=None)
+    parser.add_argument("--output-root", default=None)
     parser.add_argument("--timestamp", default="2026-03-16T16:30:00Z")
     return parser.parse_args()
 
@@ -147,9 +150,9 @@ if __name__ == "__main__":
         decision=args.decision,
         override_reason=args.override_reason,
         overridden_by=args.overridden_by,
-        lifecycle_root=args.lifecycle_root,
-        timeline_root=args.timeline_root,
-        output_root=args.output_root,
+        lifecycle_root=args.lifecycle_root or str(resolve_workspace_path("lifecycle_root", args.workspace)),
+        timeline_root=args.timeline_root or str(resolve_workspace_path("timeline_root", args.workspace)),
+        output_root=args.output_root or str(resolve_workspace_path("blocked_review_root", args.workspace)),
         timestamp=args.timestamp,
     )
     print(json.dumps(result, indent=2))

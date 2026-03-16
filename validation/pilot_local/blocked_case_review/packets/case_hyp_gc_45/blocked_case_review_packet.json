@@ -1,0 +1,62 @@
+{
+  "contract": "blocked_case_review_packet",
+  "version": "v1",
+  "case_id": "case:hyp:gc:45",
+  "generated_at": "2026-03-16T17:00:00Z",
+  "case_state": {
+    "contract": "case_state",
+    "version": "v1",
+    "case_id": "case:hyp:gc:45",
+    "hypothesis_id": "hyp:gc:45",
+    "current_status": "watching",
+    "latest_decision": "promoted",
+    "latest_snapshot_id": "gcs:gc:45",
+    "confidence_current": 0.69,
+    "confidence_trajectory": "down",
+    "last_reviewed_at": "2026-03-16T11:00:00Z",
+    "last_outcome_at": "2026-03-16T09:00:00Z",
+    "latest_outcome": "weakened",
+    "latest_relevance_signal_id": "crs:case:hyp:gc:45:gc:item:18",
+    "latest_reopen_reason": "watchdog_warn",
+    "reopen_required": true,
+    "reopen_conditions": [
+      "watchdog_warn"
+    ],
+    "revision_count": 4
+  },
+  "blocked_status": "watchdog_manual_review",
+  "blocked_reason": "watchdog_warn",
+  "watchdog_status": {
+    "contract": "kernel_watchdog_result",
+    "version": "v1",
+    "watchdog_id": "kw:kx:lifecycle-demo:expected_state",
+    "exchange_id": "kx:lifecycle-demo:expected_state",
+    "kernel_name": "expected_state",
+    "verdict": "warn",
+    "reasons": [
+      "engine_mode_mismatch"
+    ],
+    "timestamp": "2026-03-16T11:00:00Z"
+  },
+  "reopen_flag": true,
+  "latest_case_summary_ref": null,
+  "latest_evidence_refs": [
+    "gc:item:45",
+    "gc:item:8",
+    "gc:item:22",
+    "gc:item:14"
+  ],
+  "latest_watchdog_event_refs": [
+    "E:\\codex projects\\Jigsaw\\validation\\pilot_local\\case_lifecycle\\case_01\\kernel_watchdog_result.json",
+    "kx:lifecycle-demo:expected_state"
+  ],
+  "override_history_refs": [],
+  "recommended_operator_actions": [
+    "override_and_continue",
+    "close_as_invalid",
+    "defer_for_manual_review"
+  ],
+  "days_blocked": 0,
+  "last_meaningful_update_at": "2026-03-16T11:00:00Z",
+  "priority_hint": "review_soon"
+}

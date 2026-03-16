@@ -1,0 +1,19 @@
+{
+  "contract": "case_input",
+  "version": "v1",
+  "case_id": "case:hyp:gc:45",
+  "hypothesis_id": "hyp:gc:45",
+  "question_or_claim": "Assess whether this remote workflow opportunity is ready to package for review.",
+  "primary_evidence_ids": [
+    "gc:item:45"
+  ],
+  "supporting_evidence_ids": [
+    "gc:item:8",
+    "gc:item:22",
+    "gc:item:14"
+  ],
+  "conflicting_evidence_ids": [],
+  "missing_evidence": [],
+  "current_confidence": 0.78,
+  "reason_for_packaging": "sufficient_support_low_conflict"
+}

@@ -1,0 +1,11 @@
+{
+  "contract": "action_record",
+  "version": "v1",
+  "action_id": "action:case:hyp:gc:45:1",
+  "case_id": "case:hyp:gc:45",
+  "recommended_action": "prioritise_for_review",
+  "action_taken": "reviewed",
+  "taken_by": "human",
+  "timestamp": "2026-03-15T12:30:00Z",
+  "notes": "Seeded lifecycle demo analyst review."
+}

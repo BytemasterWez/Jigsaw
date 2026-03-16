@@ -1,0 +1,13 @@
+{
+  "workspace_name": "pilot_local",
+  "active_profile": "remote_workflow_v1b",
+  "intake_root": "validation/pilot_local/intake",
+  "lifecycle_root": "validation/pilot_local/case_lifecycle",
+  "timeline_root": "validation/pilot_local/case_timelines",
+  "review_root": "validation/pilot_local/case_reviews",
+  "blocked_review_root": "validation/pilot_local/blocked_case_review",
+  "reopen_review_root": "validation/pilot_local/reopen_review",
+  "case_monitor_root": "validation/pilot_local/case_monitor_queue",
+  "logs_root": "validation/pilot_local/logs",
+  "export_root": "validation/pilot_local/export"
+}

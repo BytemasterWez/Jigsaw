@@ -1,0 +1,11 @@
+{
+  "workspace": "pilot_local",
+  "active_profile": "remote_workflow_v1b",
+  "lifecycle_root": "E:\\codex projects\\Jigsaw\\validation\\pilot_local\\case_lifecycle",
+  "case_monitor_queue_path": "E:\\codex projects\\Jigsaw\\validation\\pilot_local\\case_monitor_queue\\CASE_MONITOR_QUEUE.md",
+  "timeline_path": "E:\\codex projects\\Jigsaw\\validation\\pilot_local\\case_timelines\\case_hyp_gc_45\\CASE_TIMELINE.md",
+  "reopen_queue_path": "E:\\codex projects\\Jigsaw\\validation\\pilot_local\\reopen_review\\REOPEN_QUEUE.md",
+  "blocked_queue_path": "E:\\codex projects\\Jigsaw\\validation\\pilot_local\\blocked_case_review\\BLOCKED_CASE_QUEUE.md",
+  "blocked_packet_path": "E:\\codex projects\\Jigsaw\\validation\\pilot_local\\blocked_case_review\\packets\\case_hyp_gc_45\\BLOCKED_CASE_REVIEW_PACKET.md",
+  "status": "success"
+}
