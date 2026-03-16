@@ -19,6 +19,11 @@ from .outcome_manager import (
     build_outcome_event,
     validate_outcome_event_v1,
 )
+from .relevance_manager import (
+    CaseRelevanceSignalV1,
+    build_case_relevance_signal,
+    validate_case_relevance_signal_v1,
+)
 from .hypothesis_controller import (
     CaseInputV1,
     GCContextSnapshotV1,
@@ -37,6 +42,7 @@ from .hypothesis_controller import (
 __all__ = [
     "ActionRecordV1",
     "CaseStateV1",
+    "CaseRelevanceSignalV1",
     "CaseInputV1",
     "GCContextSnapshotV1",
     "HypothesisStateV1",
@@ -45,6 +51,7 @@ __all__ = [
     "build_action_record",
     "build_manual_review_action_record",
     "build_case_state",
+    "build_case_relevance_signal",
     "build_gc_context_snapshot",
     "build_case_input",
     "build_outcome_event",
@@ -58,6 +65,7 @@ __all__ = [
     "validate_action_record_v1",
     "validate_case_input_v1",
     "validate_case_state_v1",
+    "validate_case_relevance_signal_v1",
     "validate_gc_context_snapshot_v1",
     "validate_hypothesis_state_v1",
     "validate_outcome_event_v1",

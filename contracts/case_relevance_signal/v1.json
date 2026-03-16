@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/case_relevance_signal/v1.json",
+  "title": "JigsawCaseRelevanceSignalV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "signal_id",
+    "case_id",
+    "candidate_item_id",
+    "match_score",
+    "match_reason",
+    "recommended_effect",
+    "timestamp"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "case_relevance_signal"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "signal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_item_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "match_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "match_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recommended_effect": {
+      "type": "string",
+      "enum": [
+        "ignore",
+        "attach_context",
+        "reopen_case"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
