@@ -70,6 +70,33 @@ GC may be proactive in organizing, linking, and surfacing useful structure, but 
 
 That boundary is intentional. GC creates grounded context and substrate; Jigsaw and Arbiter operate on top of that substrate.
 
+## Systems Alignment Contribution
+
+Jigsaw is not a complete answer to alignment in the broadest philosophical sense.
+
+It does, however, contribute to a serious systems-alignment question:
+
+**How do you build AI-capable systems whose context, exploration, analysis, judgment, and action remain modular, inspectable, and governable instead of collapsing into one opaque agent loop?**
+
+The current stack answers that question in a bounded but practical way:
+
+- **GC** grounds context in provenance-bearing substrate
+- **Controller** keeps exploration state explicit
+- **Jigsaw** produces bounded analytical outputs under stable contracts
+- **Arbiter** acts as a final judgment membrane before action
+
+This matters because failures can be localized to the layer that caused them rather than blamed on "the AI" in general.
+
+The localmix kernel work is a concrete proof of that property:
+
+- runtime remained stable
+- retrieval remained stable
+- controller and Arbiter boundaries remained stable
+- the fault was isolated to kernel semantics
+- parity was recovered by moving class-boundary enforcement back into local deterministic normalization
+
+That is a meaningful contribution to operational alignment and governable system design, even though it does not claim to solve deeper value alignment or long-horizon autonomous safety.
+
 ## What Has Been Proven
 
 Jigsaw currently has operational proof for three bounded surfaces:

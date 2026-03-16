@@ -125,6 +125,26 @@ This proves the three repositories are not just related ideas. They form an oper
 - Jigsaw does not need to become Arbiter
 - Arbiter does not need to absorb kernel execution or substrate concerns
 
+## Systems-alignment significance
+
+This framework does not claim to solve alignment in the broadest possible sense.
+
+It does prove something important at the system level:
+
+**an AI-capable stack can remain modular, inspectable, and governable when context, exploration, analysis, judgment, and action are separated by explicit contracts and decision membranes.**
+
+That matters because it makes failures diagnosable by layer.
+
+In the current proofs, the stack was able to show that specific failures lived in LM kernel semantics rather than in:
+
+- runtime transport
+- retrieval
+- controller state handling
+- contradiction logic
+- Arbiter judgment
+
+That is a serious operational-alignment property. It means the system can localize faults, preserve action gating, and recover parity by fixing the right boundary rather than changing the whole architecture.
+
 ## Most important current tension
 
 The main pressure signal discovered through execution is this:
