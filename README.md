@@ -12,6 +12,14 @@ It currently proves a bounded forward pass in which:
 
 The current proof domain is remote-workflow or opportunity triage over live GC-backed material.
 
+## Start Here
+
+This repo currently has three best entry points:
+
+- [Governed forward-pass demo](docs/demo/README.md) — the fastest way to see the system working
+- [Case study](CASE_STUDY.md) — what was built, what changed, and why it matters
+- [Operational proof](OPERATIONAL_PROOF.md) — the bounded claims the repo can currently support
+
 ## Current Architecture
 
 The current stack is:
