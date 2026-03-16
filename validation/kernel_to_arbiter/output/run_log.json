@@ -2,6 +2,7 @@
   "pipeline_run_id": "kernel-to-arbiter-integration",
   "source_bundle_id": "kernel_bundle:kin_0001",
   "candidate_id": "case:jigsaw-kernel-1",
+  "arbiter_exchange_id": "ax:kernel-to-arbiter-integration:case:jigsaw-kernel-1",
   "arbiter_judgement": "watchlist",
   "status": "success"
 }

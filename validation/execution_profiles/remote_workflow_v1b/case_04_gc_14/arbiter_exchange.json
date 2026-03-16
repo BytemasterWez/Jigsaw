@@ -1,0 +1,47 @@
+{
+  "contract": "arbiter_exchange",
+  "version": "v1",
+  "exchange_id": "ax:remote_workflow_v1b-case-04:case:hyp:gc:14",
+  "case_id": "case:hyp:gc:14",
+  "sent_packet": {
+    "candidate_id": "gc_case:remote_workflow_v1b:14",
+    "domain": "jigsaw_kernel_bundle",
+    "candidate_type": "opportunity_case",
+    "summary": "The case is only partially aligned and should be treated cautiously.",
+    "evidence": {
+      "source_count": 4,
+      "freshness_days": 2,
+      "fit_score": 0.5875,
+      "estimated_value_band": "partially_aligned"
+    },
+    "context": {
+      "buyer_profile": "remote_workflow_v1b",
+      "current_queue_pressure": "medium",
+      "action_cost": "medium",
+      "jigsaw_bundle_id": "kernel_bundle:kin_gc_14_remote_workflow_v1b",
+      "jigsaw_bundle_judgment": "partially_aligned",
+      "kernel_sequence": [
+        "observed_state",
+        "expected_state",
+        "contradiction"
+      ]
+    }
+  },
+  "received_packet": {
+    "candidate_id": "gc_case:remote_workflow_v1b:14",
+    "judgement": "watchlist",
+    "confidence": 0.63,
+    "reason_summary": "Candidate shows some relevance but does not yet justify immediate action.",
+    "key_factors": [
+      "Moderate fit to target profile",
+      "Evidence is incomplete or weaker",
+      "Worth monitoring or enriching"
+    ],
+    "recommended_action": "hold_for_recheck"
+  },
+  "validation_passed": true,
+  "arbiter_metadata": {
+    "profile_name": "remote_workflow_v1b"
+  },
+  "timestamp": "2026-03-15T12:15:00Z"
+}

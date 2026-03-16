@@ -9,6 +9,7 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
+from .arbiter_exchange import ArbiterExchangeV1, build_arbiter_exchange
 from .models import KernelBundleResultV1, KernelInputV1
 
 
@@ -112,3 +113,27 @@ def adjudicate_via_current_arbiter(request: dict[str, Any]) -> dict[str, Any]:
     response = module.adjudicate(request)
     validate_arbiter_response(response)
     return response
+
+
+def adjudicate_with_exchange(
+    request: dict[str, Any],
+    *,
+    case_id: str,
+    timestamp: str,
+    exchange_scope: str,
+    arbiter_metadata: dict[str, Any] | None = None,
+) -> tuple[dict[str, Any], ArbiterExchangeV1]:
+    validate_arbiter_request(request)
+    module = _load_arbiter_run_module()
+    response = module.adjudicate(request)
+    validate_arbiter_response(response)
+    exchange = build_arbiter_exchange(
+        case_id=case_id,
+        sent_packet=request,
+        received_packet=response,
+        validation_passed=True,
+        timestamp=timestamp,
+        exchange_scope=exchange_scope,
+        arbiter_metadata=arbiter_metadata,
+    )
+    return response, exchange

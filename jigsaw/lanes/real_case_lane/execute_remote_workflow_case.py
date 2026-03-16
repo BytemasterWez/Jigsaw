@@ -19,7 +19,7 @@ from jigsaw.lanes.artifact_lane.validators import (
     validate_judgment_request_v1,
 )
 from jigsaw.lanes.kernel_lane.arbiter_integration import (
-    adjudicate_via_current_arbiter,
+    adjudicate_with_exchange,
     kernel_bundle_result_to_arbiter_request,
 )
 from jigsaw.lanes.kernel_lane.validators import validate_kernel_bundle_result_v1, validate_kernel_input_v1
@@ -181,7 +181,13 @@ def run_remote_workflow_case() -> dict[str, object]:
     kernel_input = validate_kernel_input_v1(composition["kernel_input"])
     bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
     arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, bundle_result)
-    arbiter_response = adjudicate_via_current_arbiter(arbiter_request)
+    arbiter_response, arbiter_exchange = adjudicate_with_exchange(
+        arbiter_request,
+        case_id=case_input.case_id,
+        timestamp=generated_at,
+        exchange_scope=pipeline_run_id,
+        arbiter_metadata={"profile_name": PROFILE_NAME},
+    )
 
     _dump_json(OUTPUT_DIR / "gc_primary_item.json", primary_item.__dict__)
     _dump_json(OUTPUT_DIR / "gc_supporting_items.json", [item.__dict__ for item in supporting_items])
@@ -198,6 +204,7 @@ def run_remote_workflow_case() -> dict[str, object]:
     _dump_json(OUTPUT_DIR / "kernel_bundle_result.json", bundle_result.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "arbiter_request.json", arbiter_request)
     _dump_json(OUTPUT_DIR / "arbiter_response.json", arbiter_response)
+    _dump_json(OUTPUT_DIR / "arbiter_exchange.json", arbiter_exchange.model_dump(mode="python"))
     _dump_json(
         OUTPUT_DIR / "run_log.json",
         {
@@ -213,6 +220,7 @@ def run_remote_workflow_case() -> dict[str, object]:
             "kernel_input_id": kernel_input.input_id,
             "bundle_judgment": bundle_result.composed_summary.bundle_judgment,
             "bundle_confidence": bundle_result.metadata.confidence,
+            "arbiter_exchange_id": arbiter_exchange.exchange_id,
             "arbiter_judgement": arbiter_response["judgement"],
             "recommended_action": arbiter_response["recommended_action"],
             "status": "success",

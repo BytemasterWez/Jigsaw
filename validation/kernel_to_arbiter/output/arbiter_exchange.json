@@ -1,0 +1,47 @@
+{
+  "contract": "arbiter_exchange",
+  "version": "v1",
+  "exchange_id": "ax:kernel-to-arbiter-integration:case:jigsaw-kernel-1",
+  "case_id": "case:jigsaw-kernel-1",
+  "sent_packet": {
+    "candidate_id": "case:jigsaw-kernel-1",
+    "domain": "jigsaw_kernel_bundle",
+    "candidate_type": "candidate",
+    "summary": "The case is partially understood but internally unstable because the inputs conflict.",
+    "evidence": {
+      "source_count": 3,
+      "freshness_days": 0,
+      "fit_score": 0.54,
+      "estimated_value_band": "contradictory"
+    },
+    "context": {
+      "buyer_profile": "default",
+      "current_queue_pressure": "medium",
+      "action_cost": "medium",
+      "jigsaw_bundle_id": "kernel_bundle:kin_0001",
+      "jigsaw_bundle_judgment": "contradictory",
+      "kernel_sequence": [
+        "observed_state",
+        "expected_state",
+        "contradiction"
+      ]
+    }
+  },
+  "received_packet": {
+    "candidate_id": "case:jigsaw-kernel-1",
+    "judgement": "watchlist",
+    "confidence": 0.63,
+    "reason_summary": "Candidate shows some relevance but does not yet justify immediate action.",
+    "key_factors": [
+      "Moderate fit to target profile",
+      "Evidence is incomplete or weaker",
+      "Worth monitoring or enriching"
+    ],
+    "recommended_action": "hold_for_recheck"
+  },
+  "validation_passed": true,
+  "arbiter_metadata": {
+    "domain": "jigsaw_kernel_bundle"
+  },
+  "timestamp": "2026-03-14T12:00:00Z"
+}

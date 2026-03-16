@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/arbiter_exchange/v1.json",
+  "title": "JigsawArbiterExchangeV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "exchange_id",
+    "case_id",
+    "sent_packet",
+    "received_packet",
+    "validation_passed",
+    "arbiter_metadata",
+    "timestamp"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "arbiter_exchange"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "exchange_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sent_packet": {
+      "type": "object"
+    },
+    "received_packet": {
+      "type": "object"
+    },
+    "validation_passed": {
+      "type": "boolean"
+    },
+    "arbiter_metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -64,5 +64,7 @@ def test_execution_profile_batch_generates_summary(tmp_path: Path) -> None:
     assert (first_case_dir / "case_input.json").exists()
     assert (first_case_dir / "kernel_exchanges.json").exists()
     assert (first_case_dir / "kernel_watchdog_results.json").exists()
+    assert (first_case_dir / "arbiter_exchange.json").exists()
     assert saved["cases"][0]["controller_next_probe"] == "package_case"
     assert "kernel_runtime" in saved["cases"][0]
+    assert "arbiter_exchange_id" in saved["cases"][0]

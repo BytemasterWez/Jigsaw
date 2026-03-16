@@ -12,6 +12,7 @@
   "case_id": "case:hyp:gc:14",
   "bundle_judgment": "partially_aligned",
   "bundle_confidence": 0.6375,
+  "arbiter_exchange_id": "ax:remote_workflow_v1b-case-04:case:hyp:gc:14",
   "arbiter_fit_score": 0.5875,
   "arbiter_judgement": "watchlist",
   "recommended_action": "hold_for_recheck",
