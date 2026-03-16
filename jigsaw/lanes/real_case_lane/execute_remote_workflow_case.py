@@ -7,6 +7,7 @@ from pathlib import Path
 
 from jigsaw.controller.hypothesis_controller import build_case_input, build_gc_context_snapshot, hypothesis_state_from_gc_context
 from jigsaw.engines.watchdog import inspect_kernel_exchanges
+from jigsaw.engines.watchdog_policy import default_watchdog_policy, evaluate_watchdog_policy
 from jigsaw.lanes.artifact_lane.transforms import (
     artifact_to_extraction,
     chunks_to_judgment_request,
@@ -50,6 +51,32 @@ def _dump_json(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2)
+
+
+def _write_text(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+
+
+def _blocked_case_markdown(case_id: str, policy_decision: dict[str, object]) -> str:
+    reasons = policy_decision.get("reasons") or []
+    lines = [
+        "# Blocked Case",
+        "",
+        f"- case_id: `{case_id}`",
+        f"- action: `{policy_decision['action']}`",
+        f"- highest_verdict: `{policy_decision['highest_verdict']}`",
+        f"- policy_id: `{policy_decision['policy_id']}`",
+        "",
+        "## Reasons",
+        "",
+    ]
+    if reasons:
+        lines.extend(f"- `{reason}`" for reason in reasons)
+    else:
+        lines.append("- `none`")
+    lines.append("")
+    return "\n".join(lines)
 
 
 def _fetch_gc_item(connection: sqlite3.Connection, item_id: int) -> GCItem:
@@ -178,16 +205,15 @@ def run_remote_workflow_case() -> dict[str, object]:
             timestamp=generated_at,
         )
     ]
-    kernel_input = validate_kernel_input_v1(composition["kernel_input"])
-    bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
-    arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, bundle_result)
-    arbiter_response, arbiter_exchange = adjudicate_with_exchange(
-        arbiter_request,
+    watchdog_policy = default_watchdog_policy()
+    watchdog_policy_decision = evaluate_watchdog_policy(
+        kernel_watchdog_results,
         case_id=case_input.case_id,
         timestamp=generated_at,
-        exchange_scope=pipeline_run_id,
-        arbiter_metadata={"profile_name": PROFILE_NAME},
+        policy=watchdog_policy,
     )
+    kernel_input = validate_kernel_input_v1(composition["kernel_input"])
+    bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
 
     _dump_json(OUTPUT_DIR / "gc_primary_item.json", primary_item.__dict__)
     _dump_json(OUTPUT_DIR / "gc_supporting_items.json", [item.__dict__ for item in supporting_items])
@@ -201,7 +227,59 @@ def run_remote_workflow_case() -> dict[str, object]:
     _dump_json(OUTPUT_DIR / "kernel_input.json", kernel_input.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "kernel_exchanges.json", composition["kernel_exchanges"])
     _dump_json(OUTPUT_DIR / "kernel_watchdog_results.json", kernel_watchdog_results)
+    _dump_json(OUTPUT_DIR / "watchdog_policy.json", watchdog_policy.model_dump(mode="python"))
+    _dump_json(OUTPUT_DIR / "watchdog_policy_decision.json", watchdog_policy_decision.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "kernel_bundle_result.json", bundle_result.model_dump(mode="python"))
+
+    if watchdog_policy_decision.blocked:
+        _write_text(
+            OUTPUT_DIR / "BLOCKED_CASE.md",
+            _blocked_case_markdown(case_input.case_id, watchdog_policy_decision.model_dump(mode="python")),
+        )
+        _dump_json(
+            OUTPUT_DIR / "run_log.json",
+            {
+                "pipeline_run_id": pipeline_run_id,
+                "generated_at": generated_at,
+                "gc_primary_item_id": primary_item.item_id,
+                "gc_supporting_item_ids": [item.item_id for item in supporting_items],
+                "hypothesis_id": hypothesis_state.hypothesis_id,
+                "controller_state": hypothesis_state.state,
+                "controller_next_probe": hypothesis_state.next_probe,
+                "case_id": case_input.case_id,
+                "artifact_id": artifact.artifact_id,
+                "kernel_input_id": kernel_input.input_id,
+                "bundle_judgment": bundle_result.composed_summary.bundle_judgment,
+                "bundle_confidence": bundle_result.metadata.confidence,
+                "watchdog_policy_action": watchdog_policy_decision.action,
+                "watchdog_highest_verdict": watchdog_policy_decision.highest_verdict,
+                "blocked_reason": watchdog_policy_decision.reasons,
+                "status": "blocked",
+            },
+        )
+        return {
+            "gc_primary_item_id": primary_item.item_id,
+            "gc_supporting_item_ids": [item.item_id for item in supporting_items],
+            "hypothesis_id": hypothesis_state.hypothesis_id,
+            "controller_state": hypothesis_state.state,
+            "case_id": case_input.case_id,
+            "bundle_judgment": bundle_result.composed_summary.bundle_judgment,
+            "bundle_confidence": bundle_result.metadata.confidence or 0.0,
+            "arbiter_judgement": "blocked",
+            "recommended_action": "watchdog_review",
+            "watchdog_policy_action": watchdog_policy_decision.action,
+            "watchdog_highest_verdict": watchdog_policy_decision.highest_verdict,
+            "status": "blocked",
+        }
+
+    arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, bundle_result)
+    arbiter_response, arbiter_exchange = adjudicate_with_exchange(
+        arbiter_request,
+        case_id=case_input.case_id,
+        timestamp=generated_at,
+        exchange_scope=pipeline_run_id,
+        arbiter_metadata={"profile_name": PROFILE_NAME},
+    )
     _dump_json(OUTPUT_DIR / "arbiter_request.json", arbiter_request)
     _dump_json(OUTPUT_DIR / "arbiter_response.json", arbiter_response)
     _dump_json(OUTPUT_DIR / "arbiter_exchange.json", arbiter_exchange.model_dump(mode="python"))
@@ -220,6 +298,8 @@ def run_remote_workflow_case() -> dict[str, object]:
             "kernel_input_id": kernel_input.input_id,
             "bundle_judgment": bundle_result.composed_summary.bundle_judgment,
             "bundle_confidence": bundle_result.metadata.confidence,
+            "watchdog_policy_action": watchdog_policy_decision.action,
+            "watchdog_highest_verdict": watchdog_policy_decision.highest_verdict,
             "arbiter_exchange_id": arbiter_exchange.exchange_id,
             "arbiter_judgement": arbiter_response["judgement"],
             "recommended_action": arbiter_response["recommended_action"],
@@ -237,6 +317,8 @@ def run_remote_workflow_case() -> dict[str, object]:
         "bundle_confidence": bundle_result.metadata.confidence or 0.0,
         "arbiter_judgement": arbiter_response["judgement"],
         "recommended_action": arbiter_response["recommended_action"],
+        "watchdog_policy_action": watchdog_policy_decision.action,
+        "watchdog_highest_verdict": watchdog_policy_decision.highest_verdict,
         "status": "success",
     }
 

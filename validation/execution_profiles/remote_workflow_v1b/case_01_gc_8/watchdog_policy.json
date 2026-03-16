@@ -1,0 +1,9 @@
+{
+  "contract": "watchdog_policy",
+  "version": "v1",
+  "policy_id": "watchdog-policy:kernel:v1",
+  "scope": "kernel_exchange",
+  "pass_action": "allow",
+  "warn_action": "allow_with_review",
+  "fail_action": "block_case"
+}

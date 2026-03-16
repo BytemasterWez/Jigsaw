@@ -15,6 +15,8 @@
   "kernel_input_id": "kin_gc_45_remote_workflow_v1b",
   "bundle_judgment": "aligned",
   "bundle_confidence": 0.72,
+  "watchdog_policy_action": "allow",
+  "watchdog_highest_verdict": "pass",
   "arbiter_exchange_id": "ax:real-case-remote-workflow:case:hyp:gc:45",
   "arbiter_judgement": "promoted",
   "recommended_action": "prioritise_for_review",

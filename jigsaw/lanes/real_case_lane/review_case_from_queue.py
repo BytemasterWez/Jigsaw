@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 from jigsaw.controller import (
+    apply_watchdog_result,
     build_manual_review_action_record,
     mark_case_reviewed,
     prepare_reopened_case_input,
@@ -16,6 +17,7 @@ from jigsaw.controller import (
     validate_gc_context_snapshot_v1,
 )
 from jigsaw.engines.watchdog import inspect_kernel_exchanges
+from jigsaw.engines.watchdog_policy import default_watchdog_policy, evaluate_watchdog_policy
 from jigsaw.lanes.kernel_lane.arbiter_integration import adjudicate_with_exchange, kernel_bundle_result_to_arbiter_request
 from jigsaw.lanes.kernel_lane.validators import validate_kernel_bundle_result_v1, validate_kernel_input_v1
 from jigsaw.lanes.real_case_lane.case_input_composition import compose_case_from_case_input
@@ -209,27 +211,15 @@ def review_case_from_queue(
                 timestamp=reviewed_at,
             )
         ]
-        kernel_input = validate_kernel_input_v1(composition["kernel_input"])
-        kernel_bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
-        arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, kernel_bundle_result)
-        arbiter_response, arbiter_exchange = adjudicate_with_exchange(
-            arbiter_request,
+        watchdog_policy = default_watchdog_policy()
+        watchdog_policy_decision = evaluate_watchdog_policy(
+            kernel_watchdog_results,
             case_id=case_id,
             timestamp=reviewed_at,
-            exchange_scope=f"review-rerun-{case_id.replace(':', '_')}",
-            arbiter_metadata={"profile_name": profile_name},
+            policy=watchdog_policy,
         )
-        updated_case_state = update_case_state(
-            case_state,
-            arbiter_response=arbiter_response,
-            snapshot_id=gc_context.snapshot_id,
-            reviewed_at=reviewed_at,
-        )
-        payload = updated_case_state.model_dump(mode="python")
-        payload["reopen_required"] = False
-        payload["latest_reopen_reason"] = None
-        payload["reopen_conditions"] = []
-        updated_case_state = validate_case_state_v1(payload)
+        kernel_input = validate_kernel_input_v1(composition["kernel_input"])
+        kernel_bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
 
         rerun_dir = case_review_dir / "rerun_forward_pass"
         _dump_json(rerun_dir / "hypothesis_state.json", hypothesis_state.model_dump(mode="python"))
@@ -237,9 +227,41 @@ def review_case_from_queue(
         _dump_json(rerun_dir / "kernel_bundle_result.json", kernel_bundle_result.model_dump(mode="python"))
         _dump_json(rerun_dir / "kernel_exchanges.json", composition["kernel_exchanges"])
         _dump_json(rerun_dir / "kernel_watchdog_results.json", kernel_watchdog_results)
-        _dump_json(rerun_dir / "arbiter_request.json", arbiter_request)
-        _dump_json(rerun_dir / "arbiter_response.json", arbiter_response)
-        _dump_json(rerun_dir / "arbiter_exchange.json", arbiter_exchange.model_dump(mode="python"))
+        _dump_json(rerun_dir / "watchdog_policy.json", watchdog_policy.model_dump(mode="python"))
+        _dump_json(rerun_dir / "watchdog_policy_decision.json", watchdog_policy_decision.model_dump(mode="python"))
+        if watchdog_policy_decision.blocked:
+            blocked_result = next(
+                (
+                    result
+                    for result in kernel_watchdog_results
+                    if result["verdict"] == "fail"
+                ),
+                kernel_watchdog_results[0],
+            )
+            updated_case_state = apply_watchdog_result(case_state, blocked_result)
+        else:
+            arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, kernel_bundle_result)
+            arbiter_response, arbiter_exchange = adjudicate_with_exchange(
+                arbiter_request,
+                case_id=case_id,
+                timestamp=reviewed_at,
+                exchange_scope=f"review-rerun-{case_id.replace(':', '_')}",
+                arbiter_metadata={"profile_name": profile_name},
+            )
+            updated_case_state = update_case_state(
+                case_state,
+                arbiter_response=arbiter_response,
+                snapshot_id=gc_context.snapshot_id,
+                reviewed_at=reviewed_at,
+            )
+            payload = updated_case_state.model_dump(mode="python")
+            payload["reopen_required"] = False
+            payload["latest_reopen_reason"] = None
+            payload["reopen_conditions"] = []
+            updated_case_state = validate_case_state_v1(payload)
+            _dump_json(rerun_dir / "arbiter_request.json", arbiter_request)
+            _dump_json(rerun_dir / "arbiter_response.json", arbiter_response)
+            _dump_json(rerun_dir / "arbiter_exchange.json", arbiter_exchange.model_dump(mode="python"))
         rerun_outputs_path = str(rerun_dir)
     else:
         updated_case_state = _updated_case_state_for_decision(case_state, decision=decision, timestamp=reviewed_at)

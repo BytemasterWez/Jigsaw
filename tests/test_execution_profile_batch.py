@@ -58,12 +58,15 @@ def test_execution_profile_batch_generates_summary(tmp_path: Path) -> None:
 
     assert saved["profile_name"] == "remote_workflow_v1b"
     assert len(saved["cases"]) == 2
+    assert "blocked" in saved
     first_case_dir = output_root / f"case_01_gc_{saved['cases'][0]['primary_item_id']}"
     assert (first_case_dir / "gc_context.json").exists()
     assert (first_case_dir / "hypothesis_state.json").exists()
     assert (first_case_dir / "case_input.json").exists()
     assert (first_case_dir / "kernel_exchanges.json").exists()
     assert (first_case_dir / "kernel_watchdog_results.json").exists()
+    assert (first_case_dir / "watchdog_policy.json").exists()
+    assert (first_case_dir / "watchdog_policy_decision.json").exists()
     assert (first_case_dir / "arbiter_exchange.json").exists()
     assert saved["cases"][0]["controller_next_probe"] == "package_case"
     assert "kernel_runtime" in saved["cases"][0]

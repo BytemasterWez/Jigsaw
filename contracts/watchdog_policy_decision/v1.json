@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw/contracts/watchdog_policy_decision/v1.json",
+  "title": "watchdog_policy_decision v1",
+  "type": "object",
+  "required": [
+    "contract",
+    "version",
+    "decision_id",
+    "policy_id",
+    "case_id",
+    "scope",
+    "action",
+    "highest_verdict",
+    "blocked",
+    "reasons",
+    "exchange_ids",
+    "timestamp"
+  ],
+  "properties": {
+    "contract": {
+      "const": "watchdog_policy_decision"
+    },
+    "version": {
+      "const": "v1"
+    },
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["kernel_exchange"]
+    },
+    "action": {
+      "type": "string",
+      "enum": ["allow", "allow_with_review", "block_case"]
+    },
+    "highest_verdict": {
+      "type": "string",
+      "enum": ["pass", "warn", "fail"]
+    },
+    "blocked": {
+      "type": "boolean"
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exchange_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false
+}

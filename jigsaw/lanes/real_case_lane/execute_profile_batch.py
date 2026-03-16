@@ -12,6 +12,7 @@ from typing import Any
 
 from jigsaw.controller.hypothesis_controller import build_case_input, build_gc_context_snapshot, hypothesis_state_from_gc_context
 from jigsaw.engines.watchdog import inspect_kernel_exchanges
+from jigsaw.engines.watchdog_policy import default_watchdog_policy, evaluate_watchdog_policy
 from jigsaw.lanes.artifact_lane.transforms import artifact_to_extraction, chunks_to_judgment_request, extraction_to_chunks
 from jigsaw.lanes.artifact_lane.validators import (
     validate_artifact_v1,
@@ -65,6 +66,26 @@ def _dump_json(path: Path, payload: object) -> None:
 def _write_text(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+def _blocked_case_markdown(case_id: str, policy_decision: dict[str, Any]) -> str:
+    reasons = policy_decision.get("reasons") or []
+    lines = [
+        "# Blocked Case",
+        "",
+        f"- case_id: `{case_id}`",
+        f"- action: `{policy_decision['action']}`",
+        f"- highest_verdict: `{policy_decision['highest_verdict']}`",
+        "",
+        "## Reasons",
+        "",
+    ]
+    if reasons:
+        lines.extend(f"- `{reason}`" for reason in reasons)
+    else:
+        lines.append("- `none`")
+    lines.append("")
+    return "\n".join(lines)
 
 
 def load_execution_profile(profile_name: str = DEFAULT_PROFILE) -> dict[str, Any]:
@@ -410,16 +431,15 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
             timestamp=generated_at,
         )
     ]
-    kernel_input = validate_kernel_input_v1(composition["kernel_input"])
-    bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
-    arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, bundle_result)
-    arbiter_response, arbiter_exchange = adjudicate_with_exchange(
-        arbiter_request,
+    watchdog_policy = default_watchdog_policy()
+    watchdog_policy_decision = evaluate_watchdog_policy(
+        kernel_watchdog_results,
         case_id=case_input.case_id,
         timestamp=generated_at,
-        exchange_scope=pipeline_run_id,
-        arbiter_metadata={"profile_name": profile["profile_name"]},
+        policy=watchdog_policy,
     )
+    kernel_input = validate_kernel_input_v1(composition["kernel_input"])
+    bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
 
     _dump_json(output_dir / "primary_item.json", primary_item.__dict__)
     _dump_json(output_dir / "supporting_items.json", [item.__dict__ for item in supporting_items])
@@ -433,7 +453,48 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
     _dump_json(output_dir / "kernel_input.json", kernel_input.model_dump(mode="python"))
     _dump_json(output_dir / "kernel_exchanges.json", composition["kernel_exchanges"])
     _dump_json(output_dir / "kernel_watchdog_results.json", kernel_watchdog_results)
+    _dump_json(output_dir / "watchdog_policy.json", watchdog_policy.model_dump(mode="python"))
+    _dump_json(output_dir / "watchdog_policy_decision.json", watchdog_policy_decision.model_dump(mode="python"))
     _dump_json(output_dir / "kernel_bundle_result.json", bundle_result.model_dump(mode="python"))
+
+    if watchdog_policy_decision.blocked:
+        _write_text(
+            output_dir / "BLOCKED_CASE.md",
+            _blocked_case_markdown(case_input.case_id, watchdog_policy_decision.model_dump(mode="python")),
+        )
+        case_summary = {
+            "profile_name": profile["profile_name"],
+            "primary_item_id": primary_item.item_id,
+            "supporting_item_ids": [item.item_id for item in supporting_items],
+            "hypothesis_id": hypothesis_state.hypothesis_id,
+            "controller_state": hypothesis_state.state,
+            "controller_next_probe": hypothesis_state.next_probe,
+            "case_id": case_input.case_id,
+            "bundle_judgment": bundle_result.composed_summary.bundle_judgment,
+            "bundle_confidence": bundle_result.metadata.confidence,
+            "arbiter_exchange_id": None,
+            "arbiter_fit_score": None,
+            "arbiter_judgement": "blocked",
+            "recommended_action": "watchdog_review",
+            "watchdog_policy_action": watchdog_policy_decision.action,
+            "watchdog_highest_verdict": watchdog_policy_decision.highest_verdict,
+            "blocked_reason": watchdog_policy_decision.reasons,
+            "kernel_engines": composition["case_summary"]["kernel_engines"],
+            "kernel_runtime": composition["case_summary"]["kernel_runtime"],
+            "shaping_issues": [] if supporting_items else ["no_supporting_items"],
+            "status": "blocked",
+        }
+        _dump_json(output_dir / "case_summary.json", case_summary)
+        return case_summary
+
+    arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, bundle_result)
+    arbiter_response, arbiter_exchange = adjudicate_with_exchange(
+        arbiter_request,
+        case_id=case_input.case_id,
+        timestamp=generated_at,
+        exchange_scope=pipeline_run_id,
+        arbiter_metadata={"profile_name": profile["profile_name"]},
+    )
     _dump_json(output_dir / "arbiter_request.json", arbiter_request)
     _dump_json(output_dir / "arbiter_response.json", arbiter_response)
     _dump_json(output_dir / "arbiter_exchange.json", arbiter_exchange.model_dump(mode="python"))
@@ -452,9 +513,12 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
         "arbiter_fit_score": arbiter_request["evidence"]["fit_score"],
         "arbiter_judgement": arbiter_response["judgement"],
         "recommended_action": arbiter_response["recommended_action"],
+        "watchdog_policy_action": watchdog_policy_decision.action,
+        "watchdog_highest_verdict": watchdog_policy_decision.highest_verdict,
         "kernel_engines": composition["case_summary"]["kernel_engines"],
         "kernel_runtime": composition["case_summary"]["kernel_runtime"],
         "shaping_issues": [] if supporting_items else ["no_supporting_items"],
+        "status": "success",
     }
     _dump_json(output_dir / "case_summary.json", case_summary)
     return case_summary
@@ -464,6 +528,7 @@ def _summary_markdown(profile: dict[str, Any], cases: list[dict[str, Any]]) -> s
     promoted = sum(1 for case in cases if case["arbiter_judgement"] == "promoted")
     watchlist = sum(1 for case in cases if case["arbiter_judgement"] == "watchlist")
     rejected = sum(1 for case in cases if case["arbiter_judgement"] == "rejected")
+    blocked = sum(1 for case in cases if case["arbiter_judgement"] == "blocked")
     lines = [
         f"# Execution Profile Summary: {profile['profile_name']}",
         "",
@@ -471,17 +536,19 @@ def _summary_markdown(profile: dict[str, Any], cases: list[dict[str, Any]]) -> s
         f"- promoted: `{promoted}`",
         f"- watchlist: `{watchlist}`",
         f"- rejected: `{rejected}`",
+        f"- blocked: `{blocked}`",
         "",
         "## Case outcomes",
         "",
-        "| case | primary | supporting | bundle | confidence | fit_score | arbiter |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
+        "| case | primary | supporting | bundle | confidence | fit_score | arbiter | watchdog |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for index, case in enumerate(cases, start=1):
         lines.append(
             f"| {index} | `{case['primary_item_id']}` | `{case['supporting_item_ids']}` | "
             f"`{case['bundle_judgment']}` | `{case['bundle_confidence']}` | "
-            f"`{case['arbiter_fit_score']}` | `{case['arbiter_judgement']}` |"
+            f"`{case['arbiter_fit_score']}` | `{case['arbiter_judgement']}` | "
+            f"`{case.get('watchdog_policy_action', 'allow')}` |"
         )
     lines.extend(
         [
@@ -521,6 +588,7 @@ def run_profile_batch(
         "promoted": sum(1 for case in cases if case["arbiter_judgement"] == "promoted"),
         "watchlist": sum(1 for case in cases if case["arbiter_judgement"] == "watchlist"),
         "rejected": sum(1 for case in cases if case["arbiter_judgement"] == "rejected"),
+        "blocked": sum(1 for case in cases if case["arbiter_judgement"] == "blocked"),
         "cases": cases,
     }
     _dump_json(output_root / "summary.json", summary)

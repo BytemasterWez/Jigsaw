@@ -1,0 +1,18 @@
+{
+  "contract": "watchdog_policy_decision",
+  "version": "v1",
+  "decision_id": "wpd:case:hyp:gc:9:2026-03-15T12:15:00Z",
+  "policy_id": "watchdog-policy:kernel:v1",
+  "case_id": "case:hyp:gc:9",
+  "scope": "kernel_exchange",
+  "action": "allow",
+  "highest_verdict": "pass",
+  "blocked": false,
+  "reasons": [],
+  "exchange_ids": [
+    "kx:remote_workflow_v1b-case-03:observed_state",
+    "kx:remote_workflow_v1b-case-03:expected_state",
+    "kx:remote_workflow_v1b-case-03:contradiction"
+  ],
+  "timestamp": "2026-03-15T12:15:00Z"
+}

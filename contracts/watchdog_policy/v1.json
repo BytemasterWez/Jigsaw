@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw/contracts/watchdog_policy/v1.json",
+  "title": "watchdog_policy v1",
+  "type": "object",
+  "required": [
+    "contract",
+    "version",
+    "policy_id",
+    "scope",
+    "pass_action",
+    "warn_action",
+    "fail_action"
+  ],
+  "properties": {
+    "contract": {
+      "const": "watchdog_policy"
+    },
+    "version": {
+      "const": "v1"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["kernel_exchange"]
+    },
+    "pass_action": {
+      "type": "string",
+      "enum": ["allow"]
+    },
+    "warn_action": {
+      "type": "string",
+      "enum": ["allow_with_review"]
+    },
+    "fail_action": {
+      "type": "string",
+      "enum": ["block_case"]
+    }
+  },
+  "additionalProperties": false
+}

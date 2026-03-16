@@ -16,6 +16,8 @@
   "arbiter_fit_score": 0.67,
   "arbiter_judgement": "watchlist",
   "recommended_action": "hold_for_recheck",
+  "watchdog_policy_action": "allow",
+  "watchdog_highest_verdict": "pass",
   "kernel_engines": {
     "observed_state": "deterministic",
     "expected_state": "deterministic",
@@ -44,5 +46,6 @@
       "judgment": "contradiction_not_detected"
     }
   },
-  "shaping_issues": []
+  "shaping_issues": [],
+  "status": "success"
 }

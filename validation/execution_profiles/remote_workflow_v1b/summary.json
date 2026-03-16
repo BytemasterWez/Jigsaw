@@ -5,6 +5,7 @@
   "promoted": 2,
   "watchlist": 3,
   "rejected": 0,
+  "blocked": 0,
   "cases": [
     {
       "profile_name": "remote_workflow_v1b",
@@ -24,6 +25,8 @@
       "arbiter_fit_score": 0.8,
       "arbiter_judgement": "promoted",
       "recommended_action": "prioritise_for_review",
+      "watchdog_policy_action": "allow",
+      "watchdog_highest_verdict": "pass",
       "kernel_engines": {
         "observed_state": "deterministic",
         "expected_state": "deterministic",
@@ -52,7 +55,8 @@
           "judgment": "contradiction_not_detected"
         }
       },
-      "shaping_issues": []
+      "shaping_issues": [],
+      "status": "success"
     },
     {
       "profile_name": "remote_workflow_v1b",
@@ -72,6 +76,8 @@
       "arbiter_fit_score": 0.8,
       "arbiter_judgement": "promoted",
       "recommended_action": "prioritise_for_review",
+      "watchdog_policy_action": "allow",
+      "watchdog_highest_verdict": "pass",
       "kernel_engines": {
         "observed_state": "deterministic",
         "expected_state": "deterministic",
@@ -100,7 +106,8 @@
           "judgment": "contradiction_not_detected"
         }
       },
-      "shaping_issues": []
+      "shaping_issues": [],
+      "status": "success"
     },
     {
       "profile_name": "remote_workflow_v1b",
@@ -120,6 +127,8 @@
       "arbiter_fit_score": 0.5875,
       "arbiter_judgement": "watchlist",
       "recommended_action": "hold_for_recheck",
+      "watchdog_policy_action": "allow",
+      "watchdog_highest_verdict": "pass",
       "kernel_engines": {
         "observed_state": "deterministic",
         "expected_state": "deterministic",
@@ -148,7 +157,8 @@
           "judgment": "contradiction_not_detected"
         }
       },
-      "shaping_issues": []
+      "shaping_issues": [],
+      "status": "success"
     },
     {
       "profile_name": "remote_workflow_v1b",
@@ -168,6 +178,8 @@
       "arbiter_fit_score": 0.5875,
       "arbiter_judgement": "watchlist",
       "recommended_action": "hold_for_recheck",
+      "watchdog_policy_action": "allow",
+      "watchdog_highest_verdict": "pass",
       "kernel_engines": {
         "observed_state": "deterministic",
         "expected_state": "deterministic",
@@ -196,7 +208,8 @@
           "judgment": "contradiction_not_detected"
         }
       },
-      "shaping_issues": []
+      "shaping_issues": [],
+      "status": "success"
     },
     {
       "profile_name": "remote_workflow_v1b",
@@ -216,6 +229,8 @@
       "arbiter_fit_score": 0.67,
       "arbiter_judgement": "watchlist",
       "recommended_action": "hold_for_recheck",
+      "watchdog_policy_action": "allow",
+      "watchdog_highest_verdict": "pass",
       "kernel_engines": {
         "observed_state": "deterministic",
         "expected_state": "deterministic",
@@ -244,7 +259,8 @@
           "judgment": "contradiction_not_detected"
         }
       },
-      "shaping_issues": []
+      "shaping_issues": [],
+      "status": "success"
     }
   ]
 }
