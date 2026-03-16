@@ -1,6 +1,9 @@
-# Governed Forward-Pass Demo
+# Jigsaw Demo Pack
 
-This demo shows the current strongest proven slice of the system: a governed forward pass from grounded context to bounded judgment and readable output.
+This demo pack shows the two strongest proven public slices of the system:
+
+- a governed forward pass from grounded context to bounded judgment and readable output
+- an early governed lifecycle with stored case state, operator review, and governed rerun
 
 ## What this demonstrates
 
@@ -9,14 +12,22 @@ This demo shows the current strongest proven slice of the system: a governed for
 - Jigsaw case composition
 - Arbiter decision membrane
 - user-facing opportunity briefs
+- lifecycle recording and reopen logic
+- operator-visible queue, timeline, and review packet
+- explicit operator decisions and governed rerun
 
 ## Current object chain
 
 `gc_context_snapshot -> hypothesis_state -> case_input -> kernel_bundle_result -> arbiter_request -> arbiter_response`
 
+## Lifecycle object chain
+
+`case_state -> action_record -> outcome_event -> case_relevance_signal -> kernel_watchdog_result -> operator review -> governed rerun`
+
 ## Included demo artifacts
 
 - [Forward pass walkthrough](FORWARD_PASS_DEMO.md)
+- [Lifecycle walkthrough](LIFECYCLE_DEMO.md)
 - [How it works](how_it_works.md)
 - [Batch summary](remote_workflow_v1b_summary.md)
 - [Promoted brief](promoted_brief.md)
@@ -33,11 +44,11 @@ python -m jigsaw.lanes.real_case_lane.generate_summary_report
 
 ## Scope note
 
-This demo shows the governed forward pass only.
+This demo pack shows the governed forward pass and an early governed lifecycle.
 
 It does not yet claim:
 
-- longitudinal case lifecycle management
-- outcome-event feedback loops
-- human-assisted revision over time
-- persistent case-state governance
+- autonomous outcome detection
+- background lifecycle orchestration
+- system-triggered shutdown or circuit breaking
+- full persistent case-manager governance

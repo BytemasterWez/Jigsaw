@@ -15,9 +15,10 @@ The current proof domain is remote-workflow or opportunity triage over live GC-b
 
 ## Start Here
 
-This repo currently has three best entry points:
+This repo currently has four best entry points:
 
 - [Governed forward-pass demo](docs/demo/README.md) — the fastest way to see the system working
+- [Lifecycle demo](docs/demo/LIFECYCLE_DEMO.md) — the fastest way to inspect the return path and operator review flow
 - [Case study](CASE_STUDY.md) — what was built, what changed, and why it matters
 - [Operational proof](OPERATIONAL_PROOF.md) — the bounded claims the repo can currently support
 
@@ -60,6 +61,22 @@ It shows the current strongest public slice:
 - batch summary
 - promoted and watchlist brief examples
 - exact reproduction commands
+
+## Lifecycle Demo
+
+A public lifecycle demo is available under [docs/demo/LIFECYCLE_DEMO.md](./docs/demo/LIFECYCLE_DEMO.md).
+
+It shows the current strongest lifecycle proof:
+
+- stored `case_state`
+- recorded `action_record`
+- recorded `outcome_event`
+- explicit reopen reasons
+- monitor queue
+- case timeline
+- review packet
+- operator review decision
+- governed rerun proof
 
 ## What Has Been Proven
 
@@ -183,7 +200,6 @@ The localmix kernel work is a concrete proof of that property:
 ## What Is Not First-Class Yet
 
 - automated outcome detection
-- exchange-record objects such as `kernel_exchange/v1` or `arbiter_exchange/v1`
 - external watchdog / circuit-breaker enforcement
 - Autoresearcher worker
 - companion UI
