@@ -161,10 +161,16 @@ def compose_case_from_case_input(
             },
         },
     }
+    kernel_exchanges = [
+        observed_result.kernel_exchange.model_dump(mode="python") if observed_result.kernel_exchange else None,
+        expected_result.kernel_exchange.model_dump(mode="python") if expected_result.kernel_exchange else None,
+        contradiction_result.kernel_exchange.model_dump(mode="python") if contradiction_result.kernel_exchange else None,
+    ]
     return {
         "case_input": validated_case_input.model_dump(mode="python"),
         "kernel_input": kernel_input.model_dump(mode="python"),
         "kernel_bundle_result": bundle_result.model_dump(mode="python"),
+        "kernel_exchanges": [exchange for exchange in kernel_exchanges if exchange is not None],
         "case_summary": case_summary,
         "status": "success",
     }

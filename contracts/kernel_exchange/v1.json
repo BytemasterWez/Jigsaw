@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/kernel_exchange/v1.json",
+  "title": "JigsawKernelExchangeV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "exchange_id",
+    "kernel_name",
+    "engine_mode",
+    "case_id",
+    "input_packet",
+    "output_packet",
+    "validation_passed",
+    "engine_metadata",
+    "timestamp"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "kernel_exchange"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "exchange_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kernel_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "engine_mode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_packet": {
+      "type": "object"
+    },
+    "output_packet": {
+      "type": "object"
+    },
+    "validation_passed": {
+      "type": "boolean"
+    },
+    "engine_metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

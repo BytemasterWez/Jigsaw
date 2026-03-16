@@ -180,6 +180,7 @@ def run_remote_workflow_case() -> dict[str, object]:
     _dump_json(OUTPUT_DIR / "chunks.json", [chunk.model_dump(mode="python") for chunk in chunks])
     _dump_json(OUTPUT_DIR / "judgment_request.json", judgment_request.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "kernel_input.json", kernel_input.model_dump(mode="python"))
+    _dump_json(OUTPUT_DIR / "kernel_exchanges.json", composition["kernel_exchanges"])
     _dump_json(OUTPUT_DIR / "kernel_bundle_result.json", bundle_result.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "arbiter_request.json", arbiter_request)
     _dump_json(OUTPUT_DIR / "arbiter_response.json", arbiter_response)

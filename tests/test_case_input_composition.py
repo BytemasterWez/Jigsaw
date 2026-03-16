@@ -34,4 +34,6 @@ def test_sufficient_hypothesis_can_compose_case_from_case_input() -> None:
     assert result["case_input"]["case_id"] == case_input.case_id
     assert result["kernel_input"]["context"]["case_id"] == case_input.case_id
     assert result["kernel_bundle_result"]["contract"] == "kernel_bundle_result"
+    assert len(result["kernel_exchanges"]) == 3
+    assert result["kernel_exchanges"][0]["contract"] == "kernel_exchange"
     assert result["case_summary"]["bundle_judgment"] in {"aligned", "partially_aligned", "contradictory"}

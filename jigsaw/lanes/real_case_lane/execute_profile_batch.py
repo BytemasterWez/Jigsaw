@@ -416,6 +416,7 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
     _dump_json(output_dir / "chunks.json", [chunk.model_dump(mode="python") for chunk in chunks])
     _dump_json(output_dir / "judgment_request.json", judgment_request.model_dump(mode="python"))
     _dump_json(output_dir / "kernel_input.json", kernel_input.model_dump(mode="python"))
+    _dump_json(output_dir / "kernel_exchanges.json", composition["kernel_exchanges"])
     _dump_json(output_dir / "kernel_bundle_result.json", bundle_result.model_dump(mode="python"))
     _dump_json(output_dir / "arbiter_request.json", arbiter_request)
     _dump_json(output_dir / "arbiter_response.json", arbiter_response)
