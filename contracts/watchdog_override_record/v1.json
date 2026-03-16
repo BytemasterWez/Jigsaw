@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw/contracts/watchdog_override_record/v1.json",
+  "title": "watchdog_override_record v1",
+  "type": "object",
+  "required": [
+    "contract",
+    "version",
+    "override_id",
+    "case_id",
+    "exchange_id",
+    "watchdog_verdict",
+    "operator_decision",
+    "override_reason",
+    "overridden_by",
+    "timestamp"
+  ],
+  "properties": {
+    "contract": {
+      "const": "watchdog_override_record"
+    },
+    "version": {
+      "const": "v1"
+    },
+    "override_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exchange_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "watchdog_verdict": {
+      "type": "string",
+      "enum": ["warn", "fail"]
+    },
+    "operator_decision": {
+      "type": "string",
+      "enum": [
+        "override_and_continue",
+        "close_as_invalid",
+        "defer_for_manual_review"
+      ]
+    },
+    "override_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "overridden_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false
+}

@@ -26,6 +26,12 @@ from .relevance_manager import (
     build_case_relevance_signal,
     validate_case_relevance_signal_v1,
 )
+from .watchdog_override_manager import (
+    WatchdogOverrideRecordV1,
+    apply_watchdog_override,
+    build_watchdog_override_record,
+    validate_watchdog_override_record_v1,
+)
 from .hypothesis_controller import (
     CaseInputV1,
     GCContextSnapshotV1,
@@ -49,9 +55,11 @@ __all__ = [
     "GCContextSnapshotV1",
     "HypothesisStateV1",
     "OutcomeEventV1",
+    "WatchdogOverrideRecordV1",
     "apply_outcome_event",
     "apply_relevance_signal",
     "apply_watchdog_result",
+    "apply_watchdog_override",
     "build_action_record",
     "build_manual_review_action_record",
     "build_case_state",
@@ -59,6 +67,7 @@ __all__ = [
     "build_gc_context_snapshot",
     "build_case_input",
     "build_outcome_event",
+    "build_watchdog_override_record",
     "hypothesis_state_from_gc_context",
     "list_reopen_cases",
     "mark_case_reviewed",
@@ -73,5 +82,6 @@ __all__ = [
     "validate_gc_context_snapshot_v1",
     "validate_hypothesis_state_v1",
     "validate_outcome_event_v1",
+    "validate_watchdog_override_record_v1",
     "update_case_state",
 ]
