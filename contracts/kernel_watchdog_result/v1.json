@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/kernel_watchdog_result/v1.json",
+  "title": "JigsawKernelWatchdogResultV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "watchdog_id",
+    "exchange_id",
+    "kernel_name",
+    "verdict",
+    "reasons",
+    "timestamp"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "kernel_watchdog_result"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "watchdog_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exchange_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kernel_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["pass", "warn", "fail"]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "contract": "kernel_watchdog_result",
+    "version": "v1",
+    "watchdog_id": "kw:kx:remote_workflow_v1b-case-01:observed_state",
+    "exchange_id": "kx:remote_workflow_v1b-case-01:observed_state",
+    "kernel_name": "observed_state",
+    "verdict": "pass",
+    "reasons": [],
+    "timestamp": "2026-03-15T12:15:00Z"
+  },
+  {
+    "contract": "kernel_watchdog_result",
+    "version": "v1",
+    "watchdog_id": "kw:kx:remote_workflow_v1b-case-01:expected_state",
+    "exchange_id": "kx:remote_workflow_v1b-case-01:expected_state",
+    "kernel_name": "expected_state",
+    "verdict": "pass",
+    "reasons": [],
+    "timestamp": "2026-03-15T12:15:00Z"
+  },
+  {
+    "contract": "kernel_watchdog_result",
+    "version": "v1",
+    "watchdog_id": "kw:kx:remote_workflow_v1b-case-01:contradiction",
+    "exchange_id": "kx:remote_workflow_v1b-case-01:contradiction",
+    "kernel_name": "contradiction",
+    "verdict": "pass",
+    "reasons": [],
+    "timestamp": "2026-03-15T12:15:00Z"
+  }
+]

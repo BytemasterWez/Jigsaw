@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from jigsaw.controller.hypothesis_controller import build_case_input, build_gc_context_snapshot, hypothesis_state_from_gc_context
+from jigsaw.engines.watchdog import inspect_kernel_exchanges
 from jigsaw.lanes.artifact_lane.transforms import artifact_to_extraction, chunks_to_judgment_request, extraction_to_chunks
 from jigsaw.lanes.artifact_lane.validators import (
     validate_artifact_v1,
@@ -401,6 +402,14 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
         pipeline_run_id=pipeline_run_id,
         generated_at=generated_at,
     )
+    kernel_watchdog_results = [
+        result.model_dump(mode="python")
+        for result in inspect_kernel_exchanges(
+            composition["kernel_exchanges"],
+            expected_engine_modes=profile.get("kernel_engines") or profile.get("kernels") or {},
+            timestamp=generated_at,
+        )
+    ]
     kernel_input = validate_kernel_input_v1(composition["kernel_input"])
     bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
     arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, bundle_result)
@@ -417,6 +426,7 @@ def _run_one_case(profile: dict[str, Any], primary_item: GCItem, supporting_item
     _dump_json(output_dir / "judgment_request.json", judgment_request.model_dump(mode="python"))
     _dump_json(output_dir / "kernel_input.json", kernel_input.model_dump(mode="python"))
     _dump_json(output_dir / "kernel_exchanges.json", composition["kernel_exchanges"])
+    _dump_json(output_dir / "kernel_watchdog_results.json", kernel_watchdog_results)
     _dump_json(output_dir / "kernel_bundle_result.json", bundle_result.model_dump(mode="python"))
     _dump_json(output_dir / "arbiter_request.json", arbiter_request)
     _dump_json(output_dir / "arbiter_response.json", arbiter_response)

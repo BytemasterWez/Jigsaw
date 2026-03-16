@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from jigsaw.controller.hypothesis_controller import build_case_input, build_gc_context_snapshot, hypothesis_state_from_gc_context
+from jigsaw.engines.watchdog import inspect_kernel_exchanges
 from jigsaw.lanes.artifact_lane.transforms import (
     artifact_to_extraction,
     chunks_to_judgment_request,
@@ -32,6 +33,7 @@ OUTPUT_DIR = REPO_ROOT / "validation" / "real_case_remote_workflow" / "output"
 
 PRIMARY_ITEM_ID = 45
 SUPPORTING_ITEM_IDS = [8, 22, 14]
+PROFILE_NAME = "remote_workflow_v1b"
 
 
 @dataclass(frozen=True)
@@ -106,6 +108,7 @@ def _artifact_from_gc_item(item: GCItem, *, pipeline_run_id: str) -> dict[str, o
 
 def run_remote_workflow_case() -> dict[str, object]:
     from jigsaw.lanes.real_case_lane.case_input_composition import compose_case_from_case_input
+    from jigsaw.lanes.real_case_lane.execute_profile_batch import load_execution_profile
 
     pipeline_run_id = "real-case-remote-workflow"
     generated_at = "2026-03-15T11:45:00Z"
@@ -162,9 +165,19 @@ def run_remote_workflow_case() -> dict[str, object]:
             "primary_item": primary_item.__dict__,
             "supporting_items": [item.__dict__ for item in supporting_items],
         },
+        profile_name=PROFILE_NAME,
         pipeline_run_id=pipeline_run_id,
         generated_at=generated_at,
     )
+    profile = load_execution_profile(PROFILE_NAME)
+    kernel_watchdog_results = [
+        result.model_dump(mode="python")
+        for result in inspect_kernel_exchanges(
+            composition["kernel_exchanges"],
+            expected_engine_modes=profile.get("kernel_engines") or profile.get("kernels") or {},
+            timestamp=generated_at,
+        )
+    ]
     kernel_input = validate_kernel_input_v1(composition["kernel_input"])
     bundle_result = validate_kernel_bundle_result_v1(composition["kernel_bundle_result"])
     arbiter_request = kernel_bundle_result_to_arbiter_request(kernel_input, bundle_result)
@@ -181,6 +194,7 @@ def run_remote_workflow_case() -> dict[str, object]:
     _dump_json(OUTPUT_DIR / "judgment_request.json", judgment_request.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "kernel_input.json", kernel_input.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "kernel_exchanges.json", composition["kernel_exchanges"])
+    _dump_json(OUTPUT_DIR / "kernel_watchdog_results.json", kernel_watchdog_results)
     _dump_json(OUTPUT_DIR / "kernel_bundle_result.json", bundle_result.model_dump(mode="python"))
     _dump_json(OUTPUT_DIR / "arbiter_request.json", arbiter_request)
     _dump_json(OUTPUT_DIR / "arbiter_response.json", arbiter_response)
