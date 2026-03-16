@@ -1,0 +1,12 @@
+{
+  "contract": "outcome_event",
+  "version": "v1",
+  "event_id": "outcome:action:case:hyp:gc:45:1",
+  "case_id": "case:hyp:gc:45",
+  "action_id": "action:case:hyp:gc:45:1",
+  "observed_outcome": "weakened",
+  "recorded_by": "human",
+  "timestamp": "2026-03-16T09:00:00Z",
+  "effect_on_confidence": -0.12,
+  "notes": "Customer follow-up weakened the case."
+}

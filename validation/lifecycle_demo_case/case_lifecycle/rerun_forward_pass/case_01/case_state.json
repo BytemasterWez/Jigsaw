@@ -1,0 +1,19 @@
+{
+  "contract": "case_state",
+  "version": "v1",
+  "case_id": "case:hyp:gc:45",
+  "hypothesis_id": "hyp:gc:45",
+  "current_status": "promoted",
+  "latest_decision": "promoted",
+  "latest_snapshot_id": "gcs:gc:45",
+  "confidence_current": 0.81,
+  "confidence_trajectory": "up",
+  "last_reviewed_at": "2026-03-16T12:30:00Z",
+  "last_outcome_at": "2026-03-16T09:00:00Z",
+  "latest_outcome": "weakened",
+  "latest_relevance_signal_id": "crs:case:hyp:gc:45:gc:item:18",
+  "latest_reopen_reason": null,
+  "reopen_required": false,
+  "reopen_conditions": [],
+  "revision_count": 5
+}

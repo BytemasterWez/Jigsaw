@@ -1,0 +1,12 @@
+{
+  "contract": "kernel_watchdog_result",
+  "version": "v1",
+  "watchdog_id": "kw:kx:lifecycle-demo:expected_state",
+  "exchange_id": "kx:lifecycle-demo:expected_state",
+  "kernel_name": "expected_state",
+  "verdict": "warn",
+  "reasons": [
+    "engine_mode_mismatch"
+  ],
+  "timestamp": "2026-03-16T11:00:00Z"
+}

@@ -1,0 +1,521 @@
+[
+  {
+    "contract": "kernel_exchange",
+    "version": "v1",
+    "exchange_id": "kx:review-rerun-case_hyp_gc_45:observed_state",
+    "kernel_name": "observed_state",
+    "engine_mode": "deterministic",
+    "case_id": "case:hyp:gc:45",
+    "input_packet": {
+      "contract": "kernel_input",
+      "version": "v1",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
+      "subject_id": "gc_case:remote_workflow_v1b:45",
+      "subject_type": "opportunity_case",
+      "content": {
+        "title": "Remote workflow systems Automation ideas for consulting projects.",
+        "summary": "A remote-workflow opportunity case assembled from GC material for primary item 45, with 3 supporting items under profile remote_workflow_v1b.",
+        "observed_items": [
+          {
+            "name": "workflow_automation_focus",
+            "value": true
+          },
+          {
+            "name": "consulting_use_case_defined",
+            "value": true
+          },
+          {
+            "name": "offer_pricing_defined",
+            "value": false
+          },
+          {
+            "name": "operations_scaffold_present",
+            "value": true
+          }
+        ],
+        "expected_items": [
+          {
+            "name": "workflow_automation_focus",
+            "target_value": true
+          },
+          {
+            "name": "consulting_use_case_defined",
+            "target_value": true
+          },
+          {
+            "name": "offer_pricing_defined",
+            "target_value": true
+          },
+          {
+            "name": "operations_scaffold_present",
+            "target_value": true
+          }
+        ],
+        "claims": []
+      },
+      "context": {
+        "minimum_expected_observations": 4,
+        "analysis_profile": "remote_workflow_v1b",
+        "gc_primary_item_id": 45,
+        "gc_supporting_item_ids": [
+          8,
+          22,
+          14
+        ],
+        "case_id": "case:hyp:gc:45",
+        "hypothesis_id": "hyp:gc:45",
+        "reason_for_packaging": "sufficient_support_low_conflict",
+        "current_confidence": 0.78
+      },
+      "evidence": [
+        {
+          "evidence_id": "gc_ev_45",
+          "kind": "observation",
+          "text": "Remote workflow systems\n\nAutomation ideas for consulting projects.",
+          "confidence": 0.78,
+          "observed_at": "2026-03-13T10:03:09.435628Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 45
+          }
+        },
+        {
+          "evidence_id": "gc_ev_8",
+          "kind": "observation",
+          "text": "Remote income\n\nConsulting idea around AI workflows.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.491666Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 8
+          }
+        },
+        {
+          "evidence_id": "gc_ev_22",
+          "kind": "observation",
+          "text": "Remote income\n\nClient offer pricing notes.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.548607Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 22
+          }
+        },
+        {
+          "evidence_id": "gc_ev_14",
+          "kind": "observation",
+          "text": "Business ops\n\nInvoice template fixes.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.517685Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 14
+          }
+        }
+      ],
+      "metadata": {
+        "object_id": "kin_gc_45_remote_workflow_v1b",
+        "schema_version": "v1",
+        "created_at": "2026-03-16T12:30:00Z",
+        "updated_at": "2026-03-16T12:30:00Z",
+        "source_system": "garbage_collector",
+        "pipeline_run_id": "review-rerun-case_hyp_gc_45",
+        "confidence": 0.78,
+        "tags": [
+          "execution-profile",
+          "remote_workflow_v1b"
+        ],
+        "lineage": [
+          "gc:item:45",
+          "gc:item:8",
+          "gc:item:22",
+          "gc:item:14"
+        ]
+      }
+    },
+    "output_packet": {
+      "contract": "kernel_output",
+      "version": "v1",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_v1b-observed_state",
+      "kernel_type": "observed_state",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
+      "status": "success",
+      "judgment": "observed_state_clear",
+      "confidence": 0.85,
+      "reasons": [
+        "Observed coverage meets the minimum expected threshold."
+      ],
+      "evidence_used": [
+        "gc_ev_45",
+        "gc_ev_8",
+        "gc_ev_22",
+        "gc_ev_14"
+      ],
+      "metadata": {
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_v1b-observed_state",
+        "schema_version": "v1",
+        "created_at": "2026-03-16T12:30:00Z",
+        "updated_at": "2026-03-16T12:30:00Z",
+        "source_system": "jigsaw",
+        "pipeline_run_id": "review-rerun-case_hyp_gc_45",
+        "confidence": 0.85,
+        "tags": [
+          "kernel-lane",
+          "observed-state"
+        ],
+        "lineage": [
+          "kin_gc_45_remote_workflow_v1b"
+        ]
+      }
+    },
+    "validation_passed": true,
+    "engine_metadata": {},
+    "timestamp": "2026-03-16T12:30:00Z"
+  },
+  {
+    "contract": "kernel_exchange",
+    "version": "v1",
+    "exchange_id": "kx:review-rerun-case_hyp_gc_45:expected_state",
+    "kernel_name": "expected_state",
+    "engine_mode": "deterministic",
+    "case_id": "case:hyp:gc:45",
+    "input_packet": {
+      "contract": "kernel_input",
+      "version": "v1",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
+      "subject_id": "gc_case:remote_workflow_v1b:45",
+      "subject_type": "opportunity_case",
+      "content": {
+        "title": "Remote workflow systems Automation ideas for consulting projects.",
+        "summary": "A remote-workflow opportunity case assembled from GC material for primary item 45, with 3 supporting items under profile remote_workflow_v1b.",
+        "observed_items": [
+          {
+            "name": "workflow_automation_focus",
+            "value": true
+          },
+          {
+            "name": "consulting_use_case_defined",
+            "value": true
+          },
+          {
+            "name": "offer_pricing_defined",
+            "value": false
+          },
+          {
+            "name": "operations_scaffold_present",
+            "value": true
+          }
+        ],
+        "expected_items": [
+          {
+            "name": "workflow_automation_focus",
+            "target_value": true
+          },
+          {
+            "name": "consulting_use_case_defined",
+            "target_value": true
+          },
+          {
+            "name": "offer_pricing_defined",
+            "target_value": true
+          },
+          {
+            "name": "operations_scaffold_present",
+            "target_value": true
+          }
+        ],
+        "claims": []
+      },
+      "context": {
+        "minimum_expected_observations": 4,
+        "analysis_profile": "remote_workflow_v1b",
+        "gc_primary_item_id": 45,
+        "gc_supporting_item_ids": [
+          8,
+          22,
+          14
+        ],
+        "case_id": "case:hyp:gc:45",
+        "hypothesis_id": "hyp:gc:45",
+        "reason_for_packaging": "sufficient_support_low_conflict",
+        "current_confidence": 0.78
+      },
+      "evidence": [
+        {
+          "evidence_id": "gc_ev_45",
+          "kind": "observation",
+          "text": "Remote workflow systems\n\nAutomation ideas for consulting projects.",
+          "confidence": 0.78,
+          "observed_at": "2026-03-13T10:03:09.435628Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 45
+          }
+        },
+        {
+          "evidence_id": "gc_ev_8",
+          "kind": "observation",
+          "text": "Remote income\n\nConsulting idea around AI workflows.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.491666Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 8
+          }
+        },
+        {
+          "evidence_id": "gc_ev_22",
+          "kind": "observation",
+          "text": "Remote income\n\nClient offer pricing notes.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.548607Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 22
+          }
+        },
+        {
+          "evidence_id": "gc_ev_14",
+          "kind": "observation",
+          "text": "Business ops\n\nInvoice template fixes.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.517685Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 14
+          }
+        }
+      ],
+      "metadata": {
+        "object_id": "kin_gc_45_remote_workflow_v1b",
+        "schema_version": "v1",
+        "created_at": "2026-03-16T12:30:00Z",
+        "updated_at": "2026-03-16T12:30:00Z",
+        "source_system": "garbage_collector",
+        "pipeline_run_id": "review-rerun-case_hyp_gc_45",
+        "confidence": 0.78,
+        "tags": [
+          "execution-profile",
+          "remote_workflow_v1b"
+        ],
+        "lineage": [
+          "gc:item:45",
+          "gc:item:8",
+          "gc:item:22",
+          "gc:item:14"
+        ]
+      }
+    },
+    "output_packet": {
+      "contract": "kernel_output",
+      "version": "v1",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_v1b-expected_state",
+      "kernel_type": "expected_state",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
+      "status": "success",
+      "judgment": "expected_state_aligned",
+      "confidence": 0.8125,
+      "reasons": [
+        "offer_pricing_defined is not aligned with the expected target."
+      ],
+      "evidence_used": [
+        "gc_ev_45",
+        "gc_ev_8",
+        "gc_ev_22",
+        "gc_ev_14"
+      ],
+      "metadata": {
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_v1b-expected_state",
+        "schema_version": "v1",
+        "created_at": "2026-03-16T12:30:00Z",
+        "updated_at": "2026-03-16T12:30:00Z",
+        "source_system": "jigsaw",
+        "pipeline_run_id": "review-rerun-case_hyp_gc_45",
+        "confidence": 0.8125,
+        "tags": [
+          "kernel-lane",
+          "expected-state"
+        ],
+        "lineage": [
+          "kin_gc_45_remote_workflow_v1b"
+        ]
+      }
+    },
+    "validation_passed": true,
+    "engine_metadata": {},
+    "timestamp": "2026-03-16T12:30:00Z"
+  },
+  {
+    "contract": "kernel_exchange",
+    "version": "v1",
+    "exchange_id": "kx:review-rerun-case_hyp_gc_45:contradiction",
+    "kernel_name": "contradiction",
+    "engine_mode": "deterministic",
+    "case_id": "case:hyp:gc:45",
+    "input_packet": {
+      "contract": "kernel_input",
+      "version": "v1",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
+      "subject_id": "gc_case:remote_workflow_v1b:45",
+      "subject_type": "opportunity_case",
+      "content": {
+        "title": "Remote workflow systems Automation ideas for consulting projects.",
+        "summary": "A remote-workflow opportunity case assembled from GC material for primary item 45, with 3 supporting items under profile remote_workflow_v1b.",
+        "observed_items": [
+          {
+            "name": "workflow_automation_focus",
+            "value": true
+          },
+          {
+            "name": "consulting_use_case_defined",
+            "value": true
+          },
+          {
+            "name": "offer_pricing_defined",
+            "value": false
+          },
+          {
+            "name": "operations_scaffold_present",
+            "value": true
+          }
+        ],
+        "expected_items": [
+          {
+            "name": "workflow_automation_focus",
+            "target_value": true
+          },
+          {
+            "name": "consulting_use_case_defined",
+            "target_value": true
+          },
+          {
+            "name": "offer_pricing_defined",
+            "target_value": true
+          },
+          {
+            "name": "operations_scaffold_present",
+            "target_value": true
+          }
+        ],
+        "claims": []
+      },
+      "context": {
+        "minimum_expected_observations": 4,
+        "analysis_profile": "remote_workflow_v1b",
+        "gc_primary_item_id": 45,
+        "gc_supporting_item_ids": [
+          8,
+          22,
+          14
+        ],
+        "case_id": "case:hyp:gc:45",
+        "hypothesis_id": "hyp:gc:45",
+        "reason_for_packaging": "sufficient_support_low_conflict",
+        "current_confidence": 0.78
+      },
+      "evidence": [
+        {
+          "evidence_id": "gc_ev_45",
+          "kind": "observation",
+          "text": "Remote workflow systems\n\nAutomation ideas for consulting projects.",
+          "confidence": 0.78,
+          "observed_at": "2026-03-13T10:03:09.435628Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 45
+          }
+        },
+        {
+          "evidence_id": "gc_ev_8",
+          "kind": "observation",
+          "text": "Remote income\n\nConsulting idea around AI workflows.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.491666Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 8
+          }
+        },
+        {
+          "evidence_id": "gc_ev_22",
+          "kind": "observation",
+          "text": "Remote income\n\nClient offer pricing notes.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.548607Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 22
+          }
+        },
+        {
+          "evidence_id": "gc_ev_14",
+          "kind": "observation",
+          "text": "Business ops\n\nInvoice template fixes.",
+          "confidence": 0.72,
+          "observed_at": "2026-03-13T00:28:53.517685Z",
+          "provenance": {
+            "source_system": "garbage_collector",
+            "item_id": 14
+          }
+        }
+      ],
+      "metadata": {
+        "object_id": "kin_gc_45_remote_workflow_v1b",
+        "schema_version": "v1",
+        "created_at": "2026-03-16T12:30:00Z",
+        "updated_at": "2026-03-16T12:30:00Z",
+        "source_system": "garbage_collector",
+        "pipeline_run_id": "review-rerun-case_hyp_gc_45",
+        "confidence": 0.78,
+        "tags": [
+          "execution-profile",
+          "remote_workflow_v1b"
+        ],
+        "lineage": [
+          "gc:item:45",
+          "gc:item:8",
+          "gc:item:22",
+          "gc:item:14"
+        ]
+      }
+    },
+    "output_packet": {
+      "contract": "kernel_output",
+      "version": "v1",
+      "output_id": "kernel_output:kin_gc_45_remote_workflow_v1b-contradiction",
+      "kernel_type": "contradiction",
+      "input_id": "kin_gc_45_remote_workflow_v1b",
+      "status": "success",
+      "judgment": "contradiction_not_detected",
+      "confidence": 0.72,
+      "reasons": [
+        "No material contradiction detected across the provided input set."
+      ],
+      "evidence_used": [
+        "gc_ev_45",
+        "gc_ev_8",
+        "gc_ev_22",
+        "gc_ev_14"
+      ],
+      "metadata": {
+        "object_id": "kernel_output:kin_gc_45_remote_workflow_v1b-contradiction",
+        "schema_version": "v1",
+        "created_at": "2026-03-16T12:30:00Z",
+        "updated_at": "2026-03-16T12:30:00Z",
+        "source_system": "jigsaw",
+        "pipeline_run_id": "review-rerun-case_hyp_gc_45",
+        "confidence": 0.72,
+        "tags": [
+          "kernel-lane",
+          "contradiction"
+        ],
+        "lineage": [
+          "kin_gc_45_remote_workflow_v1b"
+        ]
+      }
+    },
+    "validation_passed": true,
+    "engine_metadata": {},
+    "timestamp": "2026-03-16T12:30:00Z"
+  }
+]

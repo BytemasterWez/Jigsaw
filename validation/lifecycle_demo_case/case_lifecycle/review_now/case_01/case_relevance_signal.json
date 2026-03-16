@@ -1,0 +1,11 @@
+{
+  "contract": "case_relevance_signal",
+  "version": "v1",
+  "signal_id": "crs:case:hyp:gc:45:gc:item:18",
+  "case_id": "case:hyp:gc:45",
+  "candidate_item_id": "gc:item:18",
+  "match_score": 0.2528,
+  "match_reason": "title overlap 0.22, keyword overlap 0.25, related evidence overlap 0.5.",
+  "recommended_effect": "reopen_case",
+  "timestamp": "2026-03-16T10:00:00Z"
+}

@@ -1,0 +1,84 @@
+{
+  "case_id": "case:hyp:gc:45",
+  "events": [
+    {
+      "timestamp": "2026-03-15T11:45:00Z",
+      "event_type": "case_created",
+      "summary": "Case state opened for `case:hyp:gc:45`.",
+      "confidence_before": null,
+      "confidence_after": null,
+      "source_object": "case_state"
+    },
+    {
+      "timestamp": "2026-03-15T11:45:00Z",
+      "event_type": "forward_pass_decision",
+      "summary": "Forward pass returned `promoted` for the case.",
+      "confidence_before": null,
+      "confidence_after": null,
+      "source_object": "arbiter_exchange"
+    },
+    {
+      "timestamp": "2026-03-15T12:30:00Z",
+      "event_type": "action_recorded",
+      "summary": "Recorded `reviewed` after recommended action `prioritise_for_review`.",
+      "confidence_before": null,
+      "confidence_after": null,
+      "source_object": "action_record"
+    },
+    {
+      "timestamp": "2026-03-16T09:00:00Z",
+      "event_type": "confidence_revised",
+      "summary": "Confidence revised after `weakened`.",
+      "confidence_before": 0.81,
+      "confidence_after": 0.69,
+      "source_object": "case_state"
+    },
+    {
+      "timestamp": "2026-03-16T09:00:00Z",
+      "event_type": "outcome_recorded",
+      "summary": "Outcome `weakened` was recorded.",
+      "confidence_before": null,
+      "confidence_after": null,
+      "source_object": "outcome_event"
+    },
+    {
+      "timestamp": "2026-03-16T10:00:00Z",
+      "event_type": "relevance_signal",
+      "summary": "New material produced `reopen_case`.",
+      "confidence_before": null,
+      "confidence_after": null,
+      "source_object": "case_relevance_signal"
+    },
+    {
+      "timestamp": "2026-03-16T11:00:00Z",
+      "event_type": "latest_status",
+      "summary": "Latest status is `watching` with decision `promoted`.",
+      "confidence_before": null,
+      "confidence_after": 0.69,
+      "source_object": "case_state"
+    },
+    {
+      "timestamp": "2026-03-16T11:00:00Z",
+      "event_type": "reopen_flagged",
+      "summary": "Case marked for review due to `watchdog_warn`.",
+      "confidence_before": null,
+      "confidence_after": null,
+      "source_object": "case_state"
+    },
+    {
+      "timestamp": "2026-03-16T11:00:00Z",
+      "event_type": "watchdog_warn",
+      "summary": "Kernel watchdog returned `warn` for `expected_state`.",
+      "confidence_before": null,
+      "confidence_after": null,
+      "source_object": "kernel_watchdog_result"
+    }
+  ],
+  "latest_status": {
+    "current_status": "watching",
+    "latest_decision": "promoted",
+    "confidence_current": 0.69,
+    "confidence_trajectory": "down",
+    "latest_reopen_reason": "watchdog_warn"
+  }
+}

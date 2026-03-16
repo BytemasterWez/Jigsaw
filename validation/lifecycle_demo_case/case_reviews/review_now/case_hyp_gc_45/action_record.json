@@ -1,0 +1,11 @@
+{
+  "contract": "action_record",
+  "version": "v1",
+  "action_id": "action:case:hyp:gc:45:manual-review:5",
+  "case_id": "case:hyp:gc:45",
+  "recommended_action": "hold_for_recheck",
+  "action_taken": "reviewed",
+  "taken_by": "human",
+  "timestamp": "2026-03-16T12:00:00Z",
+  "notes": "Seeded lifecycle demo review_now proof."
+}
