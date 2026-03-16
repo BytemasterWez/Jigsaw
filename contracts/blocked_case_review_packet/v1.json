@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw/contracts/blocked_case_review_packet/v1.json",
+  "title": "blocked_case_review_packet v1",
+  "type": "object",
+  "required": [
+    "contract",
+    "version",
+    "case_id",
+    "generated_at",
+    "case_state",
+    "blocked_status",
+    "blocked_reason",
+    "watchdog_status",
+    "reopen_flag",
+    "latest_case_summary_ref",
+    "latest_evidence_refs",
+    "latest_watchdog_event_refs",
+    "override_history_refs",
+    "recommended_operator_actions"
+  ],
+  "properties": {
+    "contract": {
+      "const": "blocked_case_review_packet"
+    },
+    "version": {
+      "const": "v1"
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_state": {
+      "type": "object"
+    },
+    "blocked_status": {
+      "type": "string",
+      "enum": ["blocked", "watchdog_manual_review", "watchdog_deferred"]
+    },
+    "blocked_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "watchdog_status": {
+      "type": "object"
+    },
+    "reopen_flag": {
+      "type": "boolean"
+    },
+    "latest_case_summary_ref": {
+      "type": ["string", "null"]
+    },
+    "latest_evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "latest_watchdog_event_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "override_history_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommended_operator_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "override_and_continue",
+          "close_as_invalid",
+          "defer_for_manual_review"
+        ]
+      }
+    },
+    "days_blocked": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_meaningful_update_at": {
+      "type": ["string", "null"]
+    },
+    "priority_hint": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
