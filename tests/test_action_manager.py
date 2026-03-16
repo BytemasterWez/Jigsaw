@@ -5,6 +5,7 @@ from jigsaw.controller import (
     build_case_input,
     build_case_state,
     build_gc_context_snapshot,
+    build_manual_review_action_record,
     hypothesis_state_from_gc_context,
     validate_action_record_v1,
 )
@@ -81,3 +82,17 @@ def test_validate_action_record_v1_accepts_explicit_payload() -> None:
 
     assert action_record.recommended_action == "hold_for_recheck"
     assert action_record.action_taken == "deferred"
+
+
+def test_build_manual_review_action_record_uses_reopen_state() -> None:
+    case_state = _sample_case_state().model_copy(update={"reopen_required": True})
+
+    action_record = build_manual_review_action_record(
+        case_state,
+        timestamp="2026-03-16T13:00:00Z",
+        notes="Manual reopen review performed.",
+    )
+
+    assert action_record.case_id == case_state.case_id
+    assert action_record.recommended_action == "hold_for_recheck"
+    assert action_record.action_taken == "reviewed"

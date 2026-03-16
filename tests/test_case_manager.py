@@ -8,6 +8,9 @@ from jigsaw.controller import (
     build_gc_context_snapshot,
     build_outcome_event,
     hypothesis_state_from_gc_context,
+    list_reopen_cases,
+    mark_case_reviewed,
+    prepare_reopened_case_input,
     update_case_state,
 )
 
@@ -270,3 +273,39 @@ def test_apply_outcome_event_increments_revision_count() -> None:
     updated = apply_outcome_event(case_state, outcome_event)
 
     assert updated.revision_count == case_state.revision_count + 1
+
+
+def test_list_reopen_cases_filters_only_reopen_required_cases() -> None:
+    case_state = _sample_case_state()
+    reopened = case_state.model_copy(update={"reopen_required": True})
+
+    cases = list_reopen_cases([case_state, reopened])
+
+    assert [case.case_id for case in cases] == [reopened.case_id]
+
+
+def test_mark_case_reviewed_clears_reopen_flag_and_increments_revision() -> None:
+    case_state = _sample_case_state().model_copy(
+        update={
+            "reopen_required": True,
+            "reopen_conditions": ["outcome_requires_review"],
+        }
+    )
+
+    reviewed = mark_case_reviewed(case_state, reviewed_at="2026-03-17T09:00:00Z")
+
+    assert reviewed.reopen_required is False
+    assert reviewed.reopen_conditions == []
+    assert reviewed.revision_count == case_state.revision_count + 1
+
+
+def test_prepare_reopened_case_input_builds_new_case_input_from_reviewed_state() -> None:
+    case_state = _sample_case_state().model_copy(update={"reopen_required": True})
+    gc_context = _sample_gc_context()
+
+    reviewed = mark_case_reviewed(case_state, reviewed_at="2026-03-17T09:00:00Z")
+    hypothesis_state, case_input = prepare_reopened_case_input(reviewed, gc_context)
+
+    assert hypothesis_state.hypothesis_id == reviewed.hypothesis_id
+    assert case_input.case_id == reviewed.case_id
+    assert case_input.hypothesis_id == reviewed.hypothesis_id

@@ -7,7 +7,14 @@ from typing import TYPE_CHECKING, Any, Literal
 from jsonschema import Draft202012Validator
 from pydantic import BaseModel, Field
 
-from .hypothesis_controller import CaseInputV1, GCContextSnapshotV1, validate_case_input_v1, validate_gc_context_snapshot_v1
+from .hypothesis_controller import (
+    CaseInputV1,
+    GCContextSnapshotV1,
+    build_case_input,
+    hypothesis_state_from_gc_context,
+    validate_case_input_v1,
+    validate_gc_context_snapshot_v1,
+)
 
 if TYPE_CHECKING:
     from .outcome_manager import OutcomeEventV1
@@ -186,3 +193,44 @@ def apply_outcome_event(
         payload["reopen_conditions"] = ["outcome_requires_review"]
     payload["revision_count"] = state.revision_count + 1
     return validate_case_state_v1(payload)
+
+
+def list_reopen_cases(case_states: list[CaseStateV1 | dict[str, Any]]) -> list[CaseStateV1]:
+    reopened: list[CaseStateV1] = []
+    for case_state in case_states:
+        state = case_state if isinstance(case_state, CaseStateV1) else validate_case_state_v1(case_state)
+        if state.reopen_required:
+            reopened.append(state)
+    return reopened
+
+
+def mark_case_reviewed(
+    case_state: CaseStateV1 | dict[str, Any],
+    *,
+    reviewed_at: str,
+) -> CaseStateV1:
+    state = case_state if isinstance(case_state, CaseStateV1) else validate_case_state_v1(case_state)
+    payload = state.model_dump(mode="python")
+    payload["reopen_required"] = False
+    payload["current_status"] = "watching"
+    payload["last_reviewed_at"] = reviewed_at
+    payload["reopen_conditions"] = []
+    payload["revision_count"] = state.revision_count + 1
+    return validate_case_state_v1(payload)
+
+
+def prepare_reopened_case_input(
+    case_state: CaseStateV1 | dict[str, Any],
+    gc_context: GCContextSnapshotV1 | dict[str, Any],
+    *,
+    controller_config: dict[str, Any] | None = None,
+) -> tuple[Any, CaseInputV1]:
+    state = case_state if isinstance(case_state, CaseStateV1) else validate_case_state_v1(case_state)
+    snapshot = gc_context if isinstance(gc_context, GCContextSnapshotV1) else validate_gc_context_snapshot_v1(gc_context)
+    hypothesis_state = hypothesis_state_from_gc_context(
+        snapshot,
+        hypothesis_id=state.hypothesis_id,
+        controller_config=controller_config,
+    )
+    case_input = build_case_input(hypothesis_state, snapshot)
+    return hypothesis_state, case_input

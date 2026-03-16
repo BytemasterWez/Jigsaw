@@ -1,12 +1,16 @@
 from .action_manager import (
     ActionRecordV1,
     build_action_record,
+    build_manual_review_action_record,
     validate_action_record_v1,
 )
 from .case_manager import (
     CaseStateV1,
     apply_outcome_event,
     build_case_state,
+    list_reopen_cases,
+    mark_case_reviewed,
+    prepare_reopened_case_input,
     update_case_state,
     validate_case_state_v1,
 )
@@ -39,11 +43,15 @@ __all__ = [
     "OutcomeEventV1",
     "apply_outcome_event",
     "build_action_record",
+    "build_manual_review_action_record",
     "build_case_state",
     "build_gc_context_snapshot",
     "build_case_input",
     "build_outcome_event",
     "hypothesis_state_from_gc_context",
+    "list_reopen_cases",
+    "mark_case_reviewed",
+    "prepare_reopened_case_input",
     "refresh_hypothesis_state",
     "select_next_probe",
     "transition_state",
