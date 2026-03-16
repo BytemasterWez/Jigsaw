@@ -2,166 +2,132 @@
 
 ## Purpose
 
-This document describes the minimum real integration points between Jigsaw and the existing Garbage Collector and Arbiter systems.
+This document records the current minimum real integration points between Jigsaw, Garbage Collector, and Arbiter.
 
-It also records how the shared `kernel.v1` contract maps into Jigsaw's native `MessageEnvelope`.
+It reflects the **current governed forward pass**, not the older shared-envelope architecture.
 
-## Shared Kernel Contract Mapping
+## Current Runtime Spine
 
-Jigsaw now accepts `kernel.v1` as a first-class ingest surface for shared engine results.
+The current runtime chain is:
 
-Native Jigsaw runtime remains:
+`gc_context_snapshot -> hypothesis_state -> case_input -> kernel_bundle_result -> arbiter_request -> arbiter_response`
 
-- `MessageEnvelope`
+This is the current integration spine because it keeps:
 
-Shared `kernel.v1` ingest path:
+- substrate context
+- exploration state
+- packaging intent
+- bounded analysis
+- final judgment
 
-- validate payload against `schemas/kernel_v1.schema.json`
-- parse typed result fields
-- map the result into `MessageEnvelope`
-- preserve the original payload in `metadata["kernel_v1"]`
+as separate inspectable boundaries.
 
-### `kernel.v1` -> `MessageEnvelope`
+## Garbage Collector -> Controller
 
-| `kernel.v1` field | Jigsaw target | Notes |
-| --- | --- | --- |
-| `subject.subject_id` | `candidate.candidate_id` | preserved directly |
-| `subject.subject_type` | `candidate.kind` | preserved directly |
-| `summary` | `candidate.summary`, `explanation.summary` | used for top-line explanation |
-| `classification` | `candidate.attributes.classification` | preserved as metadata |
-| `outputs.recommended_action` | `candidate.attributes.recommended_action` | preserved as metadata |
-| `outputs.tags` | `candidate.attributes.tags` | preserved as metadata |
-| `score` | `scores["kernel_score"]` | explicit shared-contract score |
-| `confidence` | `scores["kernel_confidence"]`, `scores["confidence"]` | confidence remains separate from score |
-| `signals.relevance` | `scores["fit"]` | used as Jigsaw fit-compatible signal |
-| `evidence[*]` | `evidence[*]` | mapped into `EvidenceRecord` with provenance |
-| `rationale` | `explanation.why_now` | preserved as rationale |
-| `outputs.matched_targets` | `explanation.supporting_points` | labels become supporting points |
-| full payload | `metadata["kernel_v1"]` | original validated result retained for audit |
+### Real handoff object
 
-This mapping keeps Jigsaw compatible with the shared engine-result primitive without redesigning the internal kernel chain.
+- `gc_context_snapshot/v1`
 
-## Garbage Collector Mapping
+### Current contents
 
-### Real integration points used
+- `snapshot_id`
+- `primary_item_id`
+- `related_item_ids`
+- `surface_summary`
+- `source_types`
+- `freshness`
+- `known_gaps`
+- optional `conflicting_item_ids`
+- optional `question_or_claim`
 
-- Garbage Collector semantic retrieval API: `POST /api/retrieval/search`
-- Garbage Collector item-ingest API: `POST /api/items`
-- Garbage Collector SQLite `items` table as a fallback integration surface
+### Current role
 
-### Jigsaw `MemoryAdapter` expectations
+GC supplies grounded substrate context.
 
-Required for Jigsaw:
+The Controller then turns that context into `hypothesis_state/v1`.
 
-- retrieve similar prior cases
-- persist a completed decision trace
+## Controller -> Jigsaw
 
-Optional for Jigsaw:
+### Real handoff object
 
-- richer typed outcomes for prior cases
-- semantic similarity scores from the native retrieval engine
-- direct trace-specific storage endpoints
+- `case_input/v1`
 
-### Current field mapping for retrieval
+### Current contents
 
-Garbage Collector API result:
+- `case_id`
+- `hypothesis_id`
+- `question_or_claim`
+- `primary_evidence_ids`
+- `supporting_evidence_ids`
+- `conflicting_evidence_ids`
+- `missing_evidence`
+- `current_confidence`
+- `reason_for_packaging`
 
-- `item_id` -> `MemoryCase.case_id` as `gc-item-{item_id}`
-- `score` -> `MemoryCase.similarity`
-- `chunk_text` -> `MemoryCase.summary`
-- `source_url`, `source_filename`, `item_title`, `chunk_id` -> `MemoryCase.provenance`
+### Current role
 
-### Current field mapping for persistence
+The Controller emits `case_input` only when the branch is ready to package into bounded analysis.
 
-If using SQLite:
+## Jigsaw -> Arbiter
 
-- `items.item_type` = `jigsaw_trace`
-- `items.title` = `Jigsaw trace: <candidate title>`
-- `items.content` = serialized envelope and trace payload
-- `items.metadata_json` = Jigsaw trace metadata
-- `items.entities_json` = empty entity buckets
+### Real handoff sequence
 
-If using HTTP only:
+- Jigsaw composes `kernel_bundle_result`
+- a thin adapter maps that result into `arbiter_request`
+- Arbiter returns `arbiter_response`
 
-- trace is stored through `POST /api/items`
-- it lands as ordinary pasted text because Garbage Collector does not yet expose a typed trace-ingestion endpoint
+### Current kernel trio
 
-### Garbage Collector mismatches
+- `observed_state`
+- `expected_state`
+- `contradiction`
 
-- Garbage Collector does not currently expose a dedicated `persist_trace` API
-- Garbage Collector retrieval responses return chunks, not explicit prior decision cases
-- Garbage Collector does not natively store `outcome` for retrieved cases in the current public schema
+Supported runtime modes in the current proven lane:
 
-### Adapter assumptions
+- `deterministic`
+- `lmstudio`
 
-- Jigsaw can treat retrieved Garbage Collector items as memory context even when they are not prior adjudicated cases
-- `outcome` is therefore mapped to `unknown` unless a richer store is available
-- direct SQLite persistence is acceptable for local integration realism when the HTTP API is insufficient
+## Execution Profiles
 
-## Arbiter Mapping
+The current integration story is no longer just a one-off lane.
 
-### Real integration points used
+It now also includes standardized execution profiles that hold fixed:
 
-- Arbiter public demo function `demo/run.py:adjudicate`
-- Arbiter request schema in `schemas/arbiter_request.schema.json`
-- Arbiter response schema in `schemas/arbiter_response.schema.json`
+- case selection
+- case shaping
+- controller thresholds
+- kernel engine selection
+- output behavior
 
-### Jigsaw `ArbiterAdapter` expectations
+Current important profiles:
 
-Required for Jigsaw:
+- `remote_workflow_v1b`
+- `remote_workflow_localmix_v1`
 
-- accept a structured evidence packet
-- return a decision label, confidence, and reason
+## `kernel.v1` Position
 
-Optional for Jigsaw:
+`kernel.v1` still exists as a compatibility and shared-result surface.
 
-- richer policy explanations
-- explicit escalation output
-- more domain-specific context inputs
+It is **not** the center of the current public forward-pass story.
 
-### Current field mapping for request
+The current strongest public story is the controller-driven case spine described above.
 
-Jigsaw envelope -> Arbiter request:
+So the right current framing is:
 
-- `candidate.candidate_id` -> `candidate_id`
-- `candidate.kind` -> `candidate_type`
-- `explanation.summary` or `candidate.summary` -> `summary`
-- unique evidence source count -> `evidence.source_count`
-- `scores.fit` -> `evidence.fit_score`
-- `candidate.attributes.budget_band` -> `evidence.estimated_value_band`
-- `candidate.attributes.freshness_days` or default `30` -> `evidence.freshness_days`
-- Jigsaw metadata and candidate attributes -> `context.*`
+- `kernel.v1` remains useful as an interoperability surface
+- but the current repo is best understood through:
+  - `gc_context_snapshot`
+  - `hypothesis_state`
+  - `case_input`
+  - `kernel_bundle_result`
+  - `arbiter_request`
+  - `arbiter_response`
 
-### Current field mapping for response
+## Current References
 
-Arbiter response -> Jigsaw decision:
-
-- `promoted` -> `approve`
-- `watchlist` -> `watchlist`
-- `rejected` -> `reject`
-- `confidence` -> `confidence`
-- `reason_summary` -> `reason`
-- `recommended_action` and `key_factors` -> `required_follow_up`
-
-### Arbiter mismatches
-
-- Jigsaw supports `approve`, `reject`, `watchlist`, `escalate`
-- public Arbiter currently exposes `promoted`, `watchlist`, `rejected`
-- there is no public `escalate` output in the current Arbiter contract
-- Arbiter requires `freshness_days`, but Jigsaw does not model freshness as a first-class field yet
-
-### Adapter assumptions
-
-- public `promoted` is treated as Jigsaw `approve`
-- `escalate` is not available through the current public Arbiter contract
-- missing freshness is currently defaulted to `30` days unless supplied on the candidate
-
-## Stability Assessment
-
-Jigsaw remained stable as a middle layer because:
-
-- the kernel chain did not need redesign
-- the message envelope did not need invasive rewrite
-- the mismatches were concentrated in adapter mapping logic
-
-That is the main architectural result of this milestone.
+- [README.md](./README.md)
+- [ARCHITECTURE_OVERVIEW.md](./ARCHITECTURE_OVERVIEW.md)
+- [docs/RESEARCH_CONTROLLER_ROLE.md](./docs/RESEARCH_CONTROLLER_ROLE.md)
+- [contracts/gc_context_snapshot/v1.json](./contracts/gc_context_snapshot/v1.json)
+- [contracts/hypothesis_state/v1.json](./contracts/hypothesis_state/v1.json)
+- [contracts/case_input/v1.json](./contracts/case_input/v1.json)

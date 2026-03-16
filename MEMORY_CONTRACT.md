@@ -1,33 +1,58 @@
-# Memory Contract
+# Legacy Memory Contract
 
-## Purpose
+## Status
 
-Jigsaw does not implement persistent memory in this proof. It depends on a `MemoryAdapter` interface that can be backed by the existing Garbage Collector.
+This document describes a historical `MemoryAdapter` framing.
 
-## Adapter Interface
+It is preserved for lineage only.
 
-```python
-class MemoryAdapter(Protocol):
-    def retrieve_similar_cases(self, candidate: CandidateItem, limit: int = 3) -> list[MemoryCase]:
-        ...
+It does **not** describe the current primary GC -> Controller boundary.
 
-    def persist_trace(self, envelope: MessageEnvelope) -> None:
-        ...
-```
+## Current Boundary
 
-## Expectations
+The current upstream handoff into the governed forward pass is:
 
-- retrieval returns prior cases with outcome, summary, similarity, and provenance
-- persistence stores the final envelope or equivalent normalized trace
-- retrieval failure may degrade to empty context, but must be traced
-- persistence failure should not be silent
+- `gc_context_snapshot/v1`
 
-## Current Integration Reality
+That object now carries grounded GC context into the Controller and includes:
 
-The existing Garbage Collector implementation exposes retrieval and generic item ingestion, but not a dedicated trace-ingestion contract.
+- `snapshot_id`
+- `primary_item_id`
+- `related_item_ids`
+- `surface_summary`
+- `source_types`
+- `freshness`
+- `known_gaps`
+- optional `conflicting_item_ids`
+- optional `question_or_claim`
 
-Current adapter strategy:
+## Current Position
 
-- prefer Garbage Collector retrieval API when available
-- fallback to the existing SQLite schema when needed
-- persist Jigsaw traces as `jigsaw_trace` rows in SQLite or as generic pasted text through the existing HTTP API
+Garbage Collector still functions as the substrate intelligence layer, but the current public story is no longer:
+
+- "Jigsaw asks a MemoryAdapter for similar prior cases"
+
+It is now:
+
+- GC surfaces grounded context
+- the Controller builds `hypothesis_state`
+- the Controller emits `case_input`
+- Jigsaw composes the bounded case
+
+## What Is Not Yet First-Class
+
+Longitudinal memory and persistence over time are still incomplete.
+
+The system does **not** yet have a first-class public contract for:
+
+- `case_state/v1`
+- `action_record/v1`
+- `outcome_event/v1`
+
+So this repo is currently strongest on the governed forward pass, not the full return loop over time.
+
+## Current References
+
+- [contracts/gc_context_snapshot/v1.json](./contracts/gc_context_snapshot/v1.json)
+- [docs/RESEARCH_CONTROLLER_ROLE.md](./docs/RESEARCH_CONTROLLER_ROLE.md)
+- [README.md](./README.md)
