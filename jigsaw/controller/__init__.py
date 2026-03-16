@@ -7,6 +7,7 @@ from .action_manager import (
 from .case_manager import (
     CaseStateV1,
     apply_outcome_event,
+    apply_relevance_signal,
     build_case_state,
     list_reopen_cases,
     mark_case_reviewed,
@@ -48,6 +49,7 @@ __all__ = [
     "HypothesisStateV1",
     "OutcomeEventV1",
     "apply_outcome_event",
+    "apply_relevance_signal",
     "build_action_record",
     "build_manual_review_action_record",
     "build_case_state",

@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from jigsaw.controller import (
     apply_outcome_event,
+    apply_relevance_signal,
     build_action_record,
     build_case_input,
+    build_case_relevance_signal,
     build_case_state,
     build_gc_context_snapshot,
     build_outcome_event,
@@ -309,3 +311,98 @@ def test_prepare_reopened_case_input_builds_new_case_input_from_reviewed_state()
     assert hypothesis_state.hypothesis_id == reviewed.hypothesis_id
     assert case_input.case_id == reviewed.case_id
     assert case_input.hypothesis_id == reviewed.hypothesis_id
+
+
+def test_apply_relevance_signal_reopen_case_sets_reopen_required() -> None:
+    case_state = _sample_case_state()
+    gc_context = _sample_gc_context()
+    signal = build_case_relevance_signal(
+        case_state,
+        gc_context,
+        {
+            "item_id": 501,
+            "title": "Remote income opportunity review update",
+            "content": "Remote income review update with matching opportunity details and linked items.",
+            "related_item_ids": [8, 22],
+            "source_types": ["gc_item"],
+            "topic_hints": ["remote", "income"],
+        },
+        timestamp="2026-03-17T10:00:00Z",
+    ).model_copy(update={"recommended_effect": "reopen_case"})
+
+    updated = apply_relevance_signal(case_state, signal)
+
+    assert updated.reopen_required is True
+    assert updated.latest_relevance_signal_id == signal.signal_id
+    assert updated.latest_reopen_reason == "new_relevant_material_detected"
+
+
+def test_apply_relevance_signal_attach_context_does_not_reopen() -> None:
+    case_state = _sample_case_state()
+    gc_context = _sample_gc_context()
+    signal = build_case_relevance_signal(
+        case_state,
+        gc_context,
+        {
+            "item_id": 502,
+            "title": "Related note",
+            "content": "Some overlap with remote income context.",
+            "related_item_ids": [8],
+            "source_types": ["note"],
+            "topic_hints": ["income"],
+        },
+        timestamp="2026-03-17T10:00:00Z",
+    ).model_copy(update={"recommended_effect": "attach_context"})
+
+    updated = apply_relevance_signal(case_state, signal)
+
+    assert updated.reopen_required is False
+    assert updated.latest_relevance_signal_id == signal.signal_id
+    assert updated.latest_reopen_reason == "relevant_material_attached"
+
+
+def test_apply_relevance_signal_ignore_leaves_lifecycle_unchanged() -> None:
+    case_state = _sample_case_state()
+    gc_context = _sample_gc_context()
+    signal = build_case_relevance_signal(
+        case_state,
+        gc_context,
+        {
+            "item_id": 503,
+            "title": "Unrelated note",
+            "content": "Nothing relevant here.",
+            "related_item_ids": [],
+            "source_types": ["note"],
+            "topic_hints": [],
+        },
+        timestamp="2026-03-17T10:00:00Z",
+    ).model_copy(update={"recommended_effect": "ignore"})
+
+    updated = apply_relevance_signal(case_state, signal)
+
+    assert updated.reopen_required is False
+    assert updated.latest_relevance_signal_id == signal.signal_id
+    assert updated.latest_reopen_reason is None
+
+
+def test_apply_relevance_signal_does_not_reopen_closed_case() -> None:
+    case_state = _sample_case_state().model_copy(update={"current_status": "closed"})
+    gc_context = _sample_gc_context()
+    signal = build_case_relevance_signal(
+        case_state,
+        gc_context,
+        {
+            "item_id": 504,
+            "title": "Remote income opportunity update",
+            "content": "Potentially relevant material.",
+            "related_item_ids": [8],
+            "source_types": ["gc_item"],
+            "topic_hints": ["remote"],
+        },
+        timestamp="2026-03-17T10:00:00Z",
+    ).model_copy(update={"recommended_effect": "reopen_case"})
+
+    updated = apply_relevance_signal(case_state, signal)
+
+    assert updated.current_status == "closed"
+    assert updated.reopen_required is False

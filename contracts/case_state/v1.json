@@ -17,6 +17,8 @@
     "last_reviewed_at",
     "last_outcome_at",
     "latest_outcome",
+    "latest_relevance_signal_id",
+    "latest_reopen_reason",
     "reopen_required",
     "reopen_conditions",
     "revision_count"
@@ -96,6 +98,18 @@
         "weakened",
         "invalidated",
         null
+      ]
+    },
+    "latest_relevance_signal_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "latest_reopen_reason": {
+      "type": [
+        "string",
+        "null"
       ]
     },
     "reopen_required": {

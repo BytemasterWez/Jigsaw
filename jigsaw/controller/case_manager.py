@@ -18,6 +18,7 @@ from .hypothesis_controller import (
 
 if TYPE_CHECKING:
     from .outcome_manager import OutcomeEventV1
+    from .relevance_manager import CaseRelevanceSignalV1
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -41,6 +42,8 @@ class CaseStateV1(BaseModel):
     last_reviewed_at: str
     last_outcome_at: str | None = None
     latest_outcome: Literal["confirmed", "strengthened", "unchanged", "weakened", "invalidated"] | None = None
+    latest_relevance_signal_id: str | None = None
+    latest_reopen_reason: str | None = None
     reopen_required: bool = False
     reopen_conditions: list[str] = Field(default_factory=list)
     revision_count: int = Field(ge=0)
@@ -133,6 +136,8 @@ def build_case_state(
         "last_reviewed_at": reviewed_at,
         "last_outcome_at": None,
         "latest_outcome": None,
+        "latest_relevance_signal_id": None,
+        "latest_reopen_reason": None,
         "reopen_required": False,
         "reopen_conditions": _reopen_conditions_for_decision(latest_decision),
         "revision_count": 1,
@@ -160,6 +165,8 @@ def update_case_state(
     payload["last_reviewed_at"] = reviewed_at
     payload["last_outcome_at"] = state.last_outcome_at
     payload["latest_outcome"] = state.latest_outcome
+    payload["latest_relevance_signal_id"] = state.latest_relevance_signal_id
+    payload["latest_reopen_reason"] = state.latest_reopen_reason
     payload["reopen_required"] = state.reopen_required
     payload["reopen_conditions"] = _reopen_conditions_for_decision(latest_decision)
     payload["revision_count"] = state.revision_count + 1
@@ -188,6 +195,8 @@ def apply_outcome_event(
     payload["last_reviewed_at"] = outcome.timestamp
     payload["last_outcome_at"] = outcome.timestamp
     payload["latest_outcome"] = outcome.observed_outcome
+    payload["latest_relevance_signal_id"] = state.latest_relevance_signal_id
+    payload["latest_reopen_reason"] = state.latest_reopen_reason
     payload["reopen_required"] = reopen_required
     if reopen_required:
         payload["reopen_conditions"] = ["outcome_requires_review"]
@@ -215,6 +224,7 @@ def mark_case_reviewed(
     payload["current_status"] = "watching"
     payload["last_reviewed_at"] = reviewed_at
     payload["reopen_conditions"] = []
+    payload["latest_reopen_reason"] = None
     payload["revision_count"] = state.revision_count + 1
     return validate_case_state_v1(payload)
 
@@ -234,3 +244,33 @@ def prepare_reopened_case_input(
     )
     case_input = build_case_input(hypothesis_state, snapshot)
     return hypothesis_state, case_input
+
+
+def apply_relevance_signal(
+    case_state: CaseStateV1 | dict[str, Any],
+    relevance_signal: "CaseRelevanceSignalV1 | dict[str, Any]",
+) -> CaseStateV1:
+    from .relevance_manager import CaseRelevanceSignalV1, validate_case_relevance_signal_v1
+
+    state = case_state if isinstance(case_state, CaseStateV1) else validate_case_state_v1(case_state)
+    signal = (
+        relevance_signal
+        if isinstance(relevance_signal, CaseRelevanceSignalV1)
+        else validate_case_relevance_signal_v1(relevance_signal)
+    )
+    if signal.case_id != state.case_id:
+        raise ValueError("case_relevance_signal.case_id must match case_state.case_id")
+
+    payload = state.model_dump(mode="python")
+    payload["latest_relevance_signal_id"] = signal.signal_id
+    payload["last_reviewed_at"] = signal.timestamp
+    payload["revision_count"] = state.revision_count + 1
+
+    if signal.recommended_effect == "reopen_case" and state.current_status in {"open", "watching", "promoted"}:
+        payload["reopen_required"] = True
+        payload["current_status"] = "watching"
+        payload["latest_reopen_reason"] = "new_relevant_material_detected"
+        payload["reopen_conditions"] = ["new_relevant_material_detected"]
+    elif signal.recommended_effect == "attach_context":
+        payload["latest_reopen_reason"] = "relevant_material_attached"
+    return validate_case_state_v1(payload)
