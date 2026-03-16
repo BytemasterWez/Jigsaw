@@ -19,6 +19,7 @@ from .hypothesis_controller import (
 if TYPE_CHECKING:
     from .outcome_manager import OutcomeEventV1
     from .relevance_manager import CaseRelevanceSignalV1
+    from jigsaw.engines.watchdog import KernelWatchdogResultV1
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -273,4 +274,35 @@ def apply_relevance_signal(
         payload["reopen_conditions"] = ["new_relevant_material_detected"]
     elif signal.recommended_effect == "attach_context":
         payload["latest_reopen_reason"] = "relevant_material_attached"
+    return validate_case_state_v1(payload)
+
+
+def apply_watchdog_result(
+    case_state: CaseStateV1 | dict[str, Any],
+    watchdog_result: "KernelWatchdogResultV1 | dict[str, Any]",
+) -> CaseStateV1:
+    from jigsaw.engines.watchdog import KernelWatchdogResultV1, validate_kernel_watchdog_result_v1
+
+    state = case_state if isinstance(case_state, CaseStateV1) else validate_case_state_v1(case_state)
+    result = (
+        watchdog_result
+        if isinstance(watchdog_result, KernelWatchdogResultV1)
+        else validate_kernel_watchdog_result_v1(watchdog_result)
+    )
+
+    payload = state.model_dump(mode="python")
+    payload["last_reviewed_at"] = result.timestamp
+    payload["revision_count"] = state.revision_count + 1
+
+    if result.verdict == "pass":
+        return validate_case_state_v1(payload)
+
+    payload["reopen_required"] = True
+    payload["current_status"] = "watching"
+    if result.verdict == "fail":
+        payload["latest_reopen_reason"] = "watchdog_fail"
+        payload["reopen_conditions"] = ["watchdog_fail"]
+    else:
+        payload["latest_reopen_reason"] = "watchdog_warn"
+        payload["reopen_conditions"] = ["watchdog_warn"]
     return validate_case_state_v1(payload)

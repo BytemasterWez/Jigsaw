@@ -6,6 +6,7 @@ from pathlib import Path
 from jigsaw.controller import (
     apply_outcome_event,
     apply_relevance_signal,
+    apply_watchdog_result,
     build_action_record,
     build_case_input,
     build_case_relevance_signal,
@@ -122,3 +123,44 @@ def test_generate_case_monitor_queue_merges_attention_sources(tmp_path: Path) ->
     assert "case:hyp:gc:10" in queue_text
     assert "invalidated" in queue_text
     assert "new_relevant_material_detected" in queue_text
+
+
+def test_generate_case_monitor_queue_prioritises_watchdog_failures(tmp_path: Path) -> None:
+    lifecycle_root = tmp_path / "lifecycle"
+    output_root = tmp_path / "monitor"
+
+    _, case_state_1, _ = _base_case(11)
+    watchdog_case = apply_watchdog_result(
+        case_state_1,
+        {
+            "contract": "kernel_watchdog_result",
+            "version": "v1",
+            "watchdog_id": "kw:kx:test:observed_state",
+            "exchange_id": "kx:test:observed_state",
+            "kernel_name": "observed_state",
+            "verdict": "fail",
+            "reasons": ["kernel_output_validation_failed"],
+            "timestamp": "2026-03-16T12:00:00Z",
+        },
+    )
+    _write_json((lifecycle_root / "case_01" / "case_state.json"), watchdog_case.model_dump(mode="python"))
+
+    _, case_state_2, action_record_2 = _base_case(12)
+    outcome_event_2 = build_outcome_event(
+        case_state_2,
+        action_record_2,
+        "weakened",
+        -0.1,
+        timestamp="2026-03-16T12:30:00Z",
+    )
+    weakened_case = apply_outcome_event(case_state_2, outcome_event_2)
+    _write_json((lifecycle_root / "case_02" / "case_state.json"), weakened_case.model_dump(mode="python"))
+
+    result = generate_case_monitor_queue(lifecycle_root=lifecycle_root, output_root=output_root)
+
+    assert result["cases_needing_attention"] == 2
+    queue_text = Path(result["queue_path"]).read_text(encoding="utf-8")
+    lines = [line for line in queue_text.splitlines() if line.startswith("| `case:hyp:gc:")]
+    assert lines[0].startswith("| `case:hyp:gc:11`")
+    assert "watchdog_fail" in queue_text
+    assert "urgent watchdog review" in queue_text

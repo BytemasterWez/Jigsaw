@@ -3,6 +3,7 @@ from __future__ import annotations
 from jigsaw.controller import (
     apply_outcome_event,
     apply_relevance_signal,
+    apply_watchdog_result,
     build_action_record,
     build_case_input,
     build_case_relevance_signal,
@@ -406,3 +407,72 @@ def test_apply_relevance_signal_does_not_reopen_closed_case() -> None:
 
     assert updated.current_status == "closed"
     assert updated.reopen_required is False
+
+
+def test_apply_watchdog_result_warn_marks_case_for_review() -> None:
+    case_state = _sample_case_state()
+
+    updated = apply_watchdog_result(
+        case_state,
+        {
+            "contract": "kernel_watchdog_result",
+            "version": "v1",
+            "watchdog_id": "kw:kx:test:observed_state",
+            "exchange_id": "kx:test:observed_state",
+            "kernel_name": "observed_state",
+            "verdict": "warn",
+            "reasons": ["missing_engine_metadata_for_lm_mode"],
+            "timestamp": "2026-03-17T11:00:00Z",
+        },
+    )
+
+    assert updated.current_status == "watching"
+    assert updated.reopen_required is True
+    assert updated.latest_reopen_reason == "watchdog_warn"
+    assert updated.reopen_conditions == ["watchdog_warn"]
+    assert updated.revision_count == case_state.revision_count + 1
+
+
+def test_apply_watchdog_result_fail_marks_case_for_urgent_review() -> None:
+    case_state = _sample_case_state()
+
+    updated = apply_watchdog_result(
+        case_state,
+        {
+            "contract": "kernel_watchdog_result",
+            "version": "v1",
+            "watchdog_id": "kw:kx:test:expected_state",
+            "exchange_id": "kx:test:expected_state",
+            "kernel_name": "expected_state",
+            "verdict": "fail",
+            "reasons": ["kernel_output_validation_failed"],
+            "timestamp": "2026-03-17T11:00:00Z",
+        },
+    )
+
+    assert updated.current_status == "watching"
+    assert updated.reopen_required is True
+    assert updated.latest_reopen_reason == "watchdog_fail"
+    assert updated.reopen_conditions == ["watchdog_fail"]
+
+
+def test_apply_watchdog_result_pass_leaves_lifecycle_unchanged() -> None:
+    case_state = _sample_case_state()
+
+    updated = apply_watchdog_result(
+        case_state,
+        {
+            "contract": "kernel_watchdog_result",
+            "version": "v1",
+            "watchdog_id": "kw:kx:test:contradiction",
+            "exchange_id": "kx:test:contradiction",
+            "kernel_name": "contradiction",
+            "verdict": "pass",
+            "reasons": [],
+            "timestamp": "2026-03-17T11:00:00Z",
+        },
+    )
+
+    assert updated.reopen_required is False
+    assert updated.latest_reopen_reason is None
+    assert updated.current_status == case_state.current_status

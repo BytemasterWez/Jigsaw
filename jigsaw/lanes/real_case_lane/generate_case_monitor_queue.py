@@ -32,6 +32,10 @@ def _display_value(value: str | None) -> str:
 
 
 def _recommended_next_move(entry: dict[str, Any]) -> str:
+    if entry["latest_reopen_reason"] == "watchdog_fail":
+        return "urgent watchdog review"
+    if entry["latest_reopen_reason"] == "watchdog_warn":
+        return "review watchdog warning"
     if entry["latest_outcome"] in {"invalidated", "weakened"}:
         return "review weakened case"
     if entry["latest_reopen_reason"] == "new_relevant_material_detected":
@@ -42,15 +46,19 @@ def _recommended_next_move(entry: dict[str, Any]) -> str:
 
 
 def _urgency_rank(entry: dict[str, Any]) -> tuple[int, str]:
-    if entry["latest_outcome"] == "invalidated":
+    if entry["latest_reopen_reason"] == "watchdog_fail":
         return (0, entry["case_id"])
-    if entry["latest_outcome"] == "weakened":
+    if entry["latest_reopen_reason"] == "watchdog_warn":
         return (1, entry["case_id"])
-    if entry["latest_reopen_reason"] == "new_relevant_material_detected":
+    if entry["latest_outcome"] == "invalidated":
         return (2, entry["case_id"])
-    if entry["reopen_required"]:
+    if entry["latest_outcome"] == "weakened":
         return (3, entry["case_id"])
-    return (4, entry["case_id"])
+    if entry["latest_reopen_reason"] == "new_relevant_material_detected":
+        return (4, entry["case_id"])
+    if entry["reopen_required"]:
+        return (5, entry["case_id"])
+    return (6, entry["case_id"])
 
 
 def _should_include(entry: dict[str, Any]) -> bool:
