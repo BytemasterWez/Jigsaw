@@ -97,6 +97,13 @@ The localmix kernel work is a concrete proof of that property:
 
 That is a meaningful contribution to operational alignment and governable system design, even though it does not claim to solve deeper value alignment or long-horizon autonomous safety.
 
+## Governed Forward-Pass Demo
+
+A public demo pack is available under [docs/demo/README.md](./docs/demo/README.md).
+
+It shows the current strongest proven slice of the system:
+GC-backed context grounding, Controller state, Jigsaw case composition, Arbiter judgment, and readable output artifacts.
+
 ## What Has Been Proven
 
 Jigsaw currently has operational proof for three bounded surfaces:
