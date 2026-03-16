@@ -83,6 +83,52 @@ This repo is not yet:
 
 The forward pass is real. The return loop over time is not yet first-class.
 
+## Potential Safety Primitive
+
+One serious next safety pattern is an **independent exchange watchdog**.
+
+The idea is deliberately narrow:
+
+- one job
+- one question
+- one action
+
+The watchdog would not judge whether content is good, useful, or domain-correct.
+It would only check whether a returned packet is a legitimate response to what was sent.
+
+That makes it structurally auditable because it can ask a bounded contract question:
+
+- did the response conform to the declared output shape?
+- did it stay within the scope of the kernel or membrane that issued the request?
+- did it introduce fields, actions, or claims outside the authorized surface?
+
+If the answer is no, the watchdog should cut access at the permission layer rather than argue with the calling component.
+
+### Important boundary note
+
+At the current Jigsaw -> Arbiter membrane, the repo already persists:
+
+- `arbiter_request`
+- `arbiter_response`
+
+So an `arbiter_exchange/v1` object would be straightforward to add.
+
+But if the real safety question is **whether an LLM obeyed the bounded task it was given**, then the stronger long-term boundary is probably the **kernel runtime exchange**, not Arbiter alone.
+
+Why:
+
+- Arbiter sees a compressed bounded case request
+- the kernel runtime sees the model-facing prompt/input and the raw returned packet
+
+So a serious watchdog design likely has two possible exchange boundaries:
+
+- `arbiter_exchange/v1` for membrane obedience
+- kernel exchange records for model obedience
+
+The architectural point is the same in both cases:
+
+**safety comes from independent, external, contract-scope checking rather than trusting the same component that issued the request to judge its own compliance.**
+
 ## Success Criteria
 
 The current architecture is successful if:

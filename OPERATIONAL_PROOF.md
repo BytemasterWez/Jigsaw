@@ -145,6 +145,34 @@ In the current proofs, the stack was able to show that specific failures lived i
 
 That is a serious operational-alignment property. It means the system can localize faults, preserve action gating, and recover parity by fixing the right boundary rather than changing the whole architecture.
 
+## Potential Watchdog Extension
+
+One plausible safety extension now suggested by the architecture is an **independent exchange watchdog**.
+
+The key idea is not to build another smart judge. It is to build a narrow external checker that asks only:
+
+**Did the returned packet legitimately align with what this bounded layer asked for?**
+
+That can be evaluated structurally through:
+
+- contract conformance
+- scope conformance
+- unauthorized field or action introduction
+- kernel- or membrane-specific allowed output shape
+
+At the current Arbiter boundary, the repo already emits both sides separately:
+
+- `arbiter_request`
+- `arbiter_response`
+
+So an `arbiter_exchange/v1` object is an obvious future addition.
+
+The stronger long-term version may live one layer earlier, at the kernel runtime boundary, because that is where model-facing exchange is less compressed.
+
+This matters because it suggests a concrete systems-safety pattern:
+
+**independent contract-watchers can be attached to bounded exchange points without collapsing the architecture back into one opaque agent loop.**
+
 ## Most important current tension
 
 The main pressure signal discovered through execution is this:
