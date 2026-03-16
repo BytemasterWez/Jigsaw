@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 from jsonschema import Draft202012Validator
 from pydantic import BaseModel, Field
 
 from .hypothesis_controller import CaseInputV1, GCContextSnapshotV1, validate_case_input_v1, validate_gc_context_snapshot_v1
+
+if TYPE_CHECKING:
+    from .outcome_manager import OutcomeEventV1
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -29,6 +32,9 @@ class CaseStateV1(BaseModel):
     confidence_current: float = Field(ge=0, le=1)
     confidence_trajectory: ConfidenceTrajectoryValue
     last_reviewed_at: str
+    last_outcome_at: str | None = None
+    latest_outcome: Literal["confirmed", "strengthened", "unchanged", "weakened", "invalidated"] | None = None
+    reopen_required: bool = False
     reopen_conditions: list[str] = Field(default_factory=list)
     revision_count: int = Field(ge=0)
 
@@ -74,6 +80,27 @@ def _trajectory(previous_confidence: float | None, current_confidence: float) ->
     return "flat"
 
 
+def _trajectory_from_outcome(previous_confidence: float, current_confidence: float) -> ConfidenceTrajectoryValue:
+    delta = round(current_confidence - previous_confidence, 4)
+    if delta >= 0.05:
+        return "up"
+    if delta <= -0.05:
+        return "down"
+    return "flat"
+
+
+def _clamp_confidence(confidence: float) -> float:
+    return max(0.0, min(1.0, round(confidence, 4)))
+
+
+def _evaluate_reopen(outcome: OutcomeEventV1, next_confidence: float) -> tuple[bool, CaseStatusValue]:
+    if outcome.observed_outcome == "invalidated":
+        return (True, "watching")
+    if outcome.observed_outcome == "weakened" or outcome.effect_on_confidence <= -0.05:
+        return (True, "watching")
+    return (False, "watching" if next_confidence < 0.7 else "promoted")
+
+
 def build_case_state(
     case_input: CaseInputV1 | dict[str, Any],
     gc_context: GCContextSnapshotV1 | dict[str, Any],
@@ -97,6 +124,9 @@ def build_case_state(
         "confidence_current": confidence_current,
         "confidence_trajectory": _trajectory(None, confidence_current),
         "last_reviewed_at": reviewed_at,
+        "last_outcome_at": None,
+        "latest_outcome": None,
+        "reopen_required": False,
         "reopen_conditions": _reopen_conditions_for_decision(latest_decision),
         "revision_count": 1,
     }
@@ -121,6 +151,38 @@ def update_case_state(
     payload["confidence_current"] = confidence_current
     payload["confidence_trajectory"] = _trajectory(state.confidence_current, confidence_current)
     payload["last_reviewed_at"] = reviewed_at
+    payload["last_outcome_at"] = state.last_outcome_at
+    payload["latest_outcome"] = state.latest_outcome
+    payload["reopen_required"] = state.reopen_required
     payload["reopen_conditions"] = _reopen_conditions_for_decision(latest_decision)
+    payload["revision_count"] = state.revision_count + 1
+    return validate_case_state_v1(payload)
+
+
+def apply_outcome_event(
+    existing_state: CaseStateV1 | dict[str, Any],
+    outcome_event: "OutcomeEventV1 | dict[str, Any]",
+) -> CaseStateV1:
+    from .outcome_manager import OutcomeEventV1, validate_outcome_event_v1
+
+    state = existing_state if isinstance(existing_state, CaseStateV1) else validate_case_state_v1(existing_state)
+    outcome = outcome_event if isinstance(outcome_event, OutcomeEventV1) else validate_outcome_event_v1(outcome_event)
+    if outcome.case_id != state.case_id:
+        raise ValueError("outcome_event.case_id must match case_state.case_id")
+
+    previous_confidence = state.confidence_current
+    next_confidence = _clamp_confidence(previous_confidence + outcome.effect_on_confidence)
+    reopen_required, next_status = _evaluate_reopen(outcome, next_confidence)
+
+    payload = state.model_dump(mode="python")
+    payload["current_status"] = next_status
+    payload["confidence_current"] = next_confidence
+    payload["confidence_trajectory"] = _trajectory_from_outcome(previous_confidence, next_confidence)
+    payload["last_reviewed_at"] = outcome.timestamp
+    payload["last_outcome_at"] = outcome.timestamp
+    payload["latest_outcome"] = outcome.observed_outcome
+    payload["reopen_required"] = reopen_required
+    if reopen_required:
+        payload["reopen_conditions"] = ["outcome_requires_review"]
     payload["revision_count"] = state.revision_count + 1
     return validate_case_state_v1(payload)

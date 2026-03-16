@@ -15,6 +15,9 @@
     "confidence_current",
     "confidence_trajectory",
     "last_reviewed_at",
+    "last_outcome_at",
+    "latest_outcome",
+    "reopen_required",
     "reopen_conditions",
     "revision_count"
   ],
@@ -74,6 +77,29 @@
     "last_reviewed_at": {
       "type": "string",
       "minLength": 1
+    },
+    "last_outcome_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "latest_outcome": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "confirmed",
+        "strengthened",
+        "unchanged",
+        "weakened",
+        "invalidated",
+        null
+      ]
+    },
+    "reopen_required": {
+      "type": "boolean"
     },
     "reopen_conditions": {
       "type": "array",

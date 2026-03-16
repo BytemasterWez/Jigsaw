@@ -5,6 +5,7 @@ from .action_manager import (
 )
 from .case_manager import (
     CaseStateV1,
+    apply_outcome_event,
     build_case_state,
     update_case_state,
     validate_case_state_v1,
@@ -36,6 +37,7 @@ __all__ = [
     "GCContextSnapshotV1",
     "HypothesisStateV1",
     "OutcomeEventV1",
+    "apply_outcome_event",
     "build_action_record",
     "build_case_state",
     "build_gc_context_snapshot",
