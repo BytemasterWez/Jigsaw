@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jigsaw.local/contracts/action_record/v1.json",
+  "title": "JigsawActionRecordV1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "version",
+    "action_id",
+    "case_id",
+    "recommended_action",
+    "action_taken",
+    "taken_by",
+    "timestamp",
+    "notes"
+  ],
+  "properties": {
+    "contract": {
+      "type": "string",
+      "const": "action_record"
+    },
+    "version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "action_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recommended_action": {
+      "type": "string",
+      "enum": [
+        "prioritise_for_review",
+        "hold_for_recheck",
+        "defer",
+        "no_action"
+      ]
+    },
+    "action_taken": {
+      "type": "string",
+      "enum": [
+        "reviewed",
+        "deferred",
+        "ignored",
+        "followed_up",
+        "no_action_taken"
+      ]
+    },
+    "taken_by": {
+      "type": "string",
+      "enum": [
+        "human",
+        "system",
+        "unknown"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

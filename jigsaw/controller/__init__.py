@@ -1,3 +1,8 @@
+from .action_manager import (
+    ActionRecordV1,
+    build_action_record,
+    validate_action_record_v1,
+)
 from .case_manager import (
     CaseStateV1,
     build_case_state,
@@ -20,10 +25,12 @@ from .hypothesis_controller import (
 )
 
 __all__ = [
+    "ActionRecordV1",
     "CaseStateV1",
     "CaseInputV1",
     "GCContextSnapshotV1",
     "HypothesisStateV1",
+    "build_action_record",
     "build_case_state",
     "build_gc_context_snapshot",
     "build_case_input",
@@ -31,6 +38,7 @@ __all__ = [
     "refresh_hypothesis_state",
     "select_next_probe",
     "transition_state",
+    "validate_action_record_v1",
     "validate_case_input_v1",
     "validate_case_state_v1",
     "validate_gc_context_snapshot_v1",
