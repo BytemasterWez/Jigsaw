@@ -2,60 +2,59 @@
 
 ## Purpose
 
-Jigsaw is the middle layer in a three-repository architecture:
+Jigsaw is the middle capability repo in a governed intelligence architecture.
 
-- Garbage Collector remembers
-- Jigsaw gathers and transforms evidence
-- Arbiter judges whether action is permitted
+Its current public role is to sit between:
+
+- Garbage Collector as substrate intelligence
+- Arbiter as final judgment membrane
+
+and provide the explicit forward-pass spine that makes the system inspectable.
 
 ## What Jigsaw Is
 
-Jigsaw is a capability layer built from a small fixed kernel chain.
+Jigsaw currently includes:
 
-Its job is to take a candidate and convert it into an explicit evidence bundle with:
+- Controller-side exploration state handling
+- case packaging into `case_input`
+- bounded kernel execution
+- case composition into `kernel_bundle_result`
+- profile-driven runtime behavior
+- readable product artifact generation
 
-- retrieved context
-- structured evidence
-- scores
-- inferred consequences
-- priority
-- explanation
+In practice, Jigsaw is now the engine center of the current stack.
 
 ## What Jigsaw Is Not
 
 Jigsaw is not:
 
-- the memory substrate
-- the judgment engine
+- the long-term memory substrate
+- the final judgment engine
+- the longitudinal case manager over time
+- the action executor
 - a merged orchestration monolith
-- a hidden prompt chain that smuggles state between repos
 
 ## Boundary Rule
 
-Jigsaw interoperates with the other systems only through explicit contracts:
+Jigsaw interoperates through explicit contracts and bounded handoffs:
 
-- memory adapter contract
-- message envelope contract
-- Arbiter decision contract
+- `gc_context_snapshot`
+- `hypothesis_state`
+- `case_input`
+- `kernel_bundle_result`
+- `arbiter_request`
+- `arbiter_response`
 
-The kernel logic itself should not contain repo-specific hacks.
+The point is not to hide intelligence in one giant loop. The point is to keep each decision boundary visible.
 
-## Standalone Use
+## Current Strongest Public Slice
 
-Jigsaw can run alone in demo mode with local demo adapters.
+The strongest public slice of the repo is now the governed forward pass:
 
-That standalone mode exists to prove:
+- GC-backed context grounding
+- Controller state
+- Jigsaw composition
+- Arbiter judgment
+- readable briefs and reports
 
-- kernel composition
-- inspectability
-- audit trace behavior
-
-## Integrated Use
-
-When connected to the other repos:
-
-- Garbage Collector supplies prior context and stores the final trace
-- Jigsaw transforms the candidate into an explicit bundle
-- Arbiter returns the gating decision
-
-The architectural stack is real, but the codebases remain separate.
+That slice is exposed directly in [docs/demo/README.md](./docs/demo/README.md).

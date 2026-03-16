@@ -2,90 +2,93 @@
 
 ## Scope
 
-This repository implements the **Jigsaw** component in isolation.
+This repository implements the current Jigsaw-centered capability layer of a governed intelligence stack.
 
-- Garbage Collector is treated as an external memory service.
-- Arbiter is treated as an external judgment service.
-- Jigsaw is responsible for gathering, transforming, and packaging evidence in a form those systems can consume.
+- Garbage Collector is external and supplies grounded context
+- Arbiter is external and supplies bounded final judgment
+- Jigsaw owns the middle forward-pass spine:
+  - Controller state
+  - case packaging
+  - kernel execution
+  - composition
+  - product artifact generation
 
-The proof-of-concept stays intentionally narrow: **document or opportunity triage**.
+The current proof domain remains intentionally narrow: remote-workflow or opportunity triage.
 
 ## Core Sentence
 
-Garbage Collector remembers, Jigsaw Kernels gather and transform evidence, Arbiter decides whether action is permitted.
+Garbage Collector grounds context, the Controller tracks exploration state, Jigsaw composes bounded analysis, Arbiter gates the decision, and the product layer emits a readable artifact.
 
 ## Design Goal
 
-Prove that a kernelized evidence pipeline is:
+Prove that an AI-capable forward pass can be:
 
-- more inspectable than a monolithic agent step
-- easier to gate than a direct action path
-- auditable through a shared message envelope and explicit trace records
+- more inspectable than a monolithic agent loop
+- more governable than direct model-to-action behavior
+- auditable through explicit contracts and intermediate objects
+- diagnosable when one bounded layer fails semantically
 
-## Isolation Boundary
+## Current Runtime Flow
 
-Jigsaw depends on two interfaces only:
+1. GC-backed retrieval produces `gc_context_snapshot`.
+2. The Controller creates or updates `hypothesis_state`.
+3. The Controller selects a bounded `next_probe`.
+4. When ready, the Controller emits `case_input`.
+5. Jigsaw composes the case through:
+   - `observed_state`
+   - `expected_state`
+   - `contradiction`
+6. Jigsaw emits `kernel_bundle_result`.
+7. A thin adapter maps that result into `arbiter_request`.
+8. Arbiter returns `arbiter_response`.
+9. The product layer emits readable briefs and summary reports.
 
-1. `MemoryAdapter`
-   - retrieves prior cases and context
-   - persists completed decision traces
+## Explicit Object Spine
 
-2. `ArbiterAdapter`
-   - evaluates the assembled envelope
-   - returns `approve`, `reject`, `watchlist`, or `escalate`
+The current system is organized around this explicit chain:
 
-Everything else is internal to Jigsaw.
+`gc_context_snapshot -> hypothesis_state -> case_input -> kernel_bundle_result -> arbiter_request -> arbiter_response`
 
-## Main Runtime Flow
+This is the core architectural achievement because it keeps:
 
-1. A candidate item enters the Jigsaw pipeline.
-2. Jigsaw asks the memory adapter for similar prior cases.
-3. The shared envelope is created.
-4. Kernels run in a fixed sequence:
-   - `retrieve`
-   - `score`
-   - `infer_consequence`
-   - `rank`
-   - `explain`
-5. Each kernel reads and writes the same envelope shape.
-6. Jigsaw sends the fully populated envelope to the Arbiter.
-7. The Arbiter returns a gated decision.
-8. Jigsaw persists the final trace through the memory adapter.
-9. Mock action executes only on `approve`.
+- context
+- exploration state
+- composition
+- judgment
 
-## Repository Shape
+as separate inspectable stages rather than one opaque prompt loop.
 
-```text
-.
-├── ARCHITECTURE_OVERVIEW.md
-├── MESSAGE_BUS_SCHEMA.md
-├── MEMORY_CONTRACT.md
-├── ARBITER_DECISION_CONTRACT.md
-├── CLAIM_OF_PROOF.md
-├── FRAMEWORK_OVERVIEW.md
-├── INTEGRATION_NOTES.md
-├── README.md
-├── SYSTEM_POSITIONING.md
-├── pyproject.toml
-└── jigsaw/
-    ├── __init__.py
-    ├── adapters.py
-    ├── benchmark.py
-    ├── contracts.py
-    ├── demo_data.py
-    ├── envelope.py
-    ├── kernels.py
-    ├── mappings.py
-    ├── pipeline.py
-    └── runner.py
-```
+## Current Jigsaw Center
+
+The current engine center of gravity is:
+
+- Controller state transitions
+- case packaging
+- reusable kernel runtime
+- execution profiles
+- bounded composition
+- product artifact generation
+
+That is what makes Jigsaw the middle capability repo in the current stack.
+
+## What This Repo Is Not Yet
+
+This repo is not yet:
+
+- a first-class longitudinal case manager
+- an outcome-feedback engine
+- a persistent action-execution system
+- an Autoresearcher worker
+- a companion UI
+
+The forward pass is real. The return loop over time is not yet first-class.
 
 ## Success Criteria
 
-The proof is successful if:
+The current architecture is successful if:
 
-- the same envelope flows through every kernel
-- every kernel contribution is traceable
-- Arbiter receives enough structured evidence to gate action
-- approved actions are mock-executed and logged
-- benchmark output shows the behavioral difference between ungated and gated paths
+- the same explicit spine runs in single-case and batch lanes
+- profile selection changes runtime behavior without changing the lane shape
+- failures can be localized to the responsible layer
+- bounded local models can participate without owning semantic class boundaries
+- the final output is readable by a human, not just technically valid

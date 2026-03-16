@@ -1,191 +1,112 @@
 # Framework Overview
 
-This architecture is a **three-repository system**, not a merged codebase.
+This architecture is still a **three-repository system**, but the current Jigsaw repo now contains more explicit internal structure than the older public framing showed.
 
-- Garbage Collector is the memory substrate.
-- Jigsaw is the capability and kernel layer.
-- Arbiter is the judgment membrane.
-- An optional action layer executes only after permission.
+At the current state:
 
-Each repo can stand alone. Interoperability happens through contracts and adapters.
+- **Garbage Collector** is the substrate repo
+- **Jigsaw** contains the Controller, composition runtime, execution profiles, and product artifact generation
+- **Arbiter** is the judgment membrane repo
 
-## What Each Layer Is
+The strongest proven slice is the governed forward pass.
+
+## Current Layers
 
 ### Garbage Collector
 
-- stores and retrieves prior material
-- exposes searchable memory and trace persistence surfaces
-- acts as the context and recall substrate
+- ingests arbitrary material
+- preserves provenance
+- links related items
+- surfaces grounded context
 
-### Jigsaw
+### Controller
 
-- turns a candidate into an explicit evidence bundle
-- uses a fixed kernel chain with a shared envelope
-- produces inspectable intermediate state and a full audit trace
+- owns `hypothesis_state`
+- transitions state
+- selects `next_probe`
+- emits `case_input` when a branch is ready to package
+
+### Jigsaw Composition Layer
+
+- consumes `case_input`
+- runs bounded kernels
+- composes `kernel_bundle_result`
+- supports deterministic and LM-backed kernel execution
 
 ### Arbiter
 
-- validates evidence sufficiency and judgment inputs
-- decides whether action is permitted
-- returns a structured gating decision
+- consumes the bounded case through a narrow public membrane
+- returns `promoted`, `watchlist`, or `rejected`
 
-### Optional Action Layer
+### Product Layer
 
-- executes only after Arbiter permission
-- remains outside the other three repos
-
-## What Each Layer Is Not
-
-### Garbage Collector is not
-
-- the capability chain
-- the judge
-- a hidden orchestration layer
-
-### Jigsaw is not
-
-- long-term memory
-- the action executor
-- the policy engine
-
-### Arbiter is not
-
-- the evidence-gathering pipeline
-- the memory system
-- the side-effect executor
+- generates opportunity briefs
+- generates summary reports
+- emits Markdown and static HTML artifacts
 
 ## How They Connect
 
 ```mermaid
 flowchart TD
-    GC["Garbage Collector<br/>memory substrate<br/>notes · links · PDFs -> searchable memory"]
-    JIG["Jigsaw<br/>capability layer<br/>converts candidates into evidence bundles"]
-    ARB["Arbiter<br/>judgment layer<br/>gates action on evidence + policy"]
-    ACT["Action Layer<br/>executes only after Arbiter permits"]
+    GC["Garbage Collector<br/>substrate intelligence"]
+    CTRL["Controller<br/>exploration state"]
+    JIG["Jigsaw<br/>composition + runtime"]
+    ARB["Arbiter<br/>judgment membrane"]
+    PROD["Product artifacts<br/>briefs + summaries"]
 
-    GC -- "retrieval + context" --> JIG
-    JIG -- "evidence bundle" --> ARB
-    ARB -- "decision trace" --> GC
-    ARB -- "approved actions only" --> ACT
+    GC -->|gc_context_snapshot| CTRL
+    CTRL -->|hypothesis_state / case_input| JIG
+    JIG -->|kernel_bundle_result| ARB
+    ARB -->|arbiter_response| PROD
 
     style GC fill:#2d4a3e,color:#fff
+    style CTRL fill:#3f4a2d,color:#fff
     style JIG fill:#2d3a4a,color:#fff
     style ARB fill:#4a2d2d,color:#fff
-    style ACT fill:#3a3a3a,color:#fff
+    style PROD fill:#3a3a3a,color:#fff
 ```
 
 ```mermaid
 sequenceDiagram
     participant GC as Garbage Collector
+    participant C as Controller
     participant J as Jigsaw
     participant A as Arbiter
-    participant X as Action Layer
+    participant P as Product
 
-    J->>GC: retrieve_similar_cases(candidate)
-    GC-->>J: prior context / memory cases
-    J->>J: run retrieve -> score -> infer_consequence -> rank -> explain
-    J->>A: decide(arbiter-ready evidence bundle)
-    A-->>J: approve | reject | watchlist | escalate
-    J->>GC: persist_trace(envelope + decision + action outcome)
-    J->>X: execute mocked action only if approved
+    GC-->>C: gc_context_snapshot
+    C->>C: build / transition hypothesis_state
+    C->>J: case_input
+    J->>J: run observed_state / expected_state / contradiction
+    J->>A: arbiter_request
+    A-->>J: arbiter_response
+    J-->>P: briefs / summary artifacts
 ```
-
-## Exact Integration Points
-
-### Garbage Collector -> Jigsaw
-
-Required fields:
-
-| Garbage Collector output | Jigsaw field | Required |
-| --- | --- | --- |
-| item or case identifier | `MemoryCase.case_id` | yes |
-| summary or relevant text | `MemoryCase.summary` | yes |
-| retrieval score or similarity proxy | `MemoryCase.similarity` | yes |
-| provenance metadata | `MemoryCase.provenance` | yes |
-
-Optional fields:
-
-| Garbage Collector output | Jigsaw field | Required |
-| --- | --- | --- |
-| prior decision outcome | `MemoryCase.outcome` | no |
-| richer timestamps | provenance / metadata | no |
-| case type tags | provenance / metadata | no |
-
-### Jigsaw -> Arbiter
-
-Required fields:
-
-| Jigsaw output | Arbiter field | Required |
-| --- | --- | --- |
-| `candidate.candidate_id` | `candidate_id` | yes |
-| candidate domain | `domain` | yes |
-| `candidate.kind` | `candidate_type` | yes |
-| summary or explanation summary | `summary` | yes |
-| evidence source count | `evidence.source_count` | yes |
-| fit score | `evidence.fit_score` | yes |
-| freshness estimate | `evidence.freshness_days` | yes in current public Arbiter |
-
-Optional fields:
-
-| Jigsaw output | Arbiter field | Required |
-| --- | --- | --- |
-| budget or value band | `evidence.estimated_value_band` | no |
-| buyer profile | `context.buyer_profile` | no |
-| queue pressure | `context.current_queue_pressure` | no |
-| action cost | `context.action_cost` | no |
-
-### Arbiter -> Jigsaw / Action Layer
-
-Required fields:
-
-| Arbiter output | Jigsaw field | Required |
-| --- | --- | --- |
-| judgement label | `arbiter_decision.decision` | yes |
-| confidence | `arbiter_decision.confidence` | yes |
-| reason summary | `arbiter_decision.reason` | yes |
-
-Optional fields:
-
-| Arbiter output | Jigsaw field | Required |
-| --- | --- | --- |
-| key factors | `arbiter_decision.required_follow_up` | no |
-| recommended action | `arbiter_decision.required_follow_up` | no |
-
-### Jigsaw -> Garbage Collector After Decision
-
-Required fields:
-
-| Jigsaw trace output | Garbage Collector persistence | Required |
-| --- | --- | --- |
-| envelope id | trace metadata | yes |
-| candidate id | trace metadata | yes |
-| final decision | trace metadata / content | yes |
-| serialized trace | persisted content | yes |
-
-Optional fields:
-
-| Jigsaw trace output | Garbage Collector persistence | Required |
-| --- | --- | --- |
-| priority | trace metadata | no |
-| fit and confidence | trace metadata | no |
-| action outcome | trace content | no |
 
 ## What Is Proven
 
-- three independent repos can compose into one coherent stack through explicit contracts
-- Jigsaw can remain stable between memory and judgment without absorbing either role
-- the evidence path is more inspectable than a monolithic baseline
-- the decision path is auditable end-to-end
+- GC-backed context can enter the Controller through an explicit contract
+- the Controller can emit `case_input`
+- Jigsaw can compose that input into `kernel_bundle_result`
+- Arbiter can judge the resulting bounded case
+- execution profiles can run that same spine repeatedly
+- deterministic and localmix kernel modes can now reach the same spread on the tested lane
 
-## What Is Not Yet Proven
+## What Is Not Yet First-Class
 
-- production-grade cross-repo deployment and operations
-- a final shared trace-ingestion contract in Garbage Collector
-- first-class `escalate` support in the current public Arbiter contract
-- broad domain coverage beyond the current narrow proof
+- longitudinal case lifecycle management
+- action outcome recording
+- confidence trajectory over time
+- human-assisted revision loop
+- Autoresearcher
+- companion UI
 
 ## Honest Position
 
-In its current state, this is a coherent architecture with working independent repos, explicit contracts, and demonstrated composition.
+The current stack is not just “Jigsaw between GC and Arbiter” anymore.
 
-It is not yet a merged platform, and it should not become one.
+It is more precisely:
+
+**GC substrate -> Controller state -> Jigsaw composition/runtime -> Arbiter judgment -> product artifact**
+
+That is the current public architecture and the forward-pass demo is the strongest public proof of it.

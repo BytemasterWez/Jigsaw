@@ -1,34 +1,59 @@
-# Three-Layer Architecture Diagram
+# Governed Forward-Pass Architecture Diagram
 
 ```mermaid
 flowchart LR
-    GC["Garbage Collector<br/>material · normalization · substrate"]
-    JI["Jigsaw<br/>middle capability layer"]
-    AR["Arbiter<br/>final judgment membrane"]
+    GC["Garbage Collector<br/>substrate intelligence<br/>ingest · organize · link · surface"]
+    SNAP["gc_context_snapshot"]
+    CTRL["Controller<br/>hypothesis state · next probe · package_case"]
+    HYP["hypothesis_state"]
+    CASE["case_input"]
+    JIG["Jigsaw<br/>bounded kernels · composition · profiles"]
+    BUNDLE["kernel_bundle_result"]
+    ADAPT["Thin adapter<br/>bundle -> arbiter_request"]
+    ARB["Arbiter<br/>judgment membrane"]
+    RESP["arbiter_response"]
+    PROD["Product artifacts<br/>briefs · summaries · static HTML"]
 
-    GC --> JL1
-    JL1 --> JL2
-    JL2 --> KA
-    KA --> AR
-
-    subgraph JI ["Jigsaw"]
-        JL1["Artifact lane<br/>artifact -> extraction -> chunk -> judgment_request"]
-        JL2["Kernel lane<br/>kernel_input -> observed_state -> expected_state -> contradiction -> kernel_bundle_result"]
-    end
-
-    KA["Thin adapter<br/>kernel_bundle_result -> arbiter_request"]
-    AR --> RESP["arbiter_response"]
+    GC --> SNAP
+    SNAP --> CTRL
+    CTRL --> HYP
+    HYP --> CASE
+    CASE --> JIG
+    JIG --> BUNDLE
+    BUNDLE --> ADAPT
+    ADAPT --> ARB
+    ARB --> RESP
+    RESP --> PROD
 ```
 
 ## Reading the diagram
 
-- Garbage Collector prepares usable material and normalization boundaries.
-- Jigsaw owns the middle lanes that shape artifacts and compose kernel-family outputs.
-- The current Jigsaw to Arbiter connection is intentionally thin.
-- Arbiter consumes the adapted case through its existing public membrane and returns a bounded judgment.
+- **Garbage Collector** supplies grounded context, provenance, and related material.
+- **Controller** owns exploration state and decides when a case is ready to package.
+- **Jigsaw** consumes `case_input`, runs bounded kernels, and composes the case result.
+- **Arbiter** decides what may happen next through a narrow public membrane.
+- **Product artifacts** turn the governed decision path into readable outputs.
 
-## Current pressure point
+## Current Kernel Runtime Inside Jigsaw
 
-Jigsaw's kernel bundle surface is richer than Arbiter's current request membrane.
+```mermaid
+flowchart LR
+    CI["case_input"] --> KI["kernel_input"]
+    KI --> OBS["observed_state<br/>deterministic | lmstudio"]
+    KI --> EXP["expected_state<br/>deterministic | lmstudio"]
+    KI --> CON["contradiction<br/>deterministic"]
+    OBS --> BUNDLE["kernel_bundle_result"]
+    EXP --> BUNDLE
+    CON --> BUNDLE
+```
 
-In the current proof this richer structure is compressed into narrower Arbiter fields such as `fit_score`. That is the main interface pressure signal exposed by the current milestone.
+## Current Pressure Point
+
+The main pressure point is no longer transport or runtime stability.
+
+The main pressure point discovered so far was semantic:
+
+- weaker local models should report structured facts
+- local deterministic logic should enforce class boundaries where those boundaries matter
+
+That pattern is now part of the current architecture.

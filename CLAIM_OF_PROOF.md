@@ -4,31 +4,36 @@
 
 This repository currently proves that:
 
-- Jigsaw can remain a stable middle layer while Garbage Collector and Arbiter stay external
-- a fixed five-kernel chain can transform one candidate into a structured evidence bundle
-- one shared message envelope can carry state across all kernel steps
-- every kernel contribution can be recorded in an audit trace
-- Jigsaw can hand an explicit decision packet to Arbiter instead of forcing a hidden monolithic handoff
-- Jigsaw can persist the final trace back into memory through an adapter boundary
-- thin adapters are sufficient to target the current Garbage Collector and Arbiter public interfaces
+- Jigsaw can remain a stable middle capability repo while Garbage Collector and Arbiter stay external
+- GC-backed context can enter the system through an explicit `gc_context_snapshot`
+- the Controller can hold and transition `hypothesis_state`
+- the Controller can emit `case_input` as a real handoff into Jigsaw composition
+- Jigsaw can run a bounded kernel trio and emit `kernel_bundle_result`
+- Arbiter can consume the bounded case through a thin public membrane
+- standardized execution profiles can run the same spine repeatedly across live GC-backed cases
+- deterministic and localmix kernel modes can reach the same decision spread on the tested lane when semantic class boundaries are normalized locally
+- the system can emit readable user-facing briefs and summary reports from that governed forward pass
 
 ## What Is Not Yet Proven
 
 This repository does not yet prove that:
 
-- the current public Arbiter implementation fully covers Jigsaw's four-way decision contract
-- the current Garbage Collector implementation is the final memory substrate for production retrieval
-- lexical SQLite fallback retrieval is good enough for real operating quality
-- trace persistence in Garbage Collector is the final durable storage model
+- the longitudinal case lifecycle is first-class
+- action outcomes are recorded and fed back into case confidence
+- `case_state/v1`, `action_record/v1`, and `outcome_event/v1` are operational
+- an Autoresearcher worker exists and runs under controller control
+- the full governed loop over time is operational
 - the system is production-ready, high-scale, or policy-complete
-- this architecture is superior across multiple domains beyond the current narrow triage wedge
+- the current architecture is superior across multiple domains beyond the current narrow wedge
 
 ## Honest Boundary
 
 The strongest current claim is:
 
-Jigsaw is now a stable, inspectable middle capability layer with adapter-backed integration realism.
+Jigsaw is now a stable, inspectable middle capability repo with a real governed forward pass:
+
+`gc_context_snapshot -> hypothesis_state -> case_input -> kernel_bundle_result -> arbiter_request -> arbiter_response`
 
 The strongest claim that should **not** be made yet is:
 
-Jigsaw, Garbage Collector, and Arbiter are already fully unified as a production-grade end-to-end system.
+that the full longitudinal governed loop, including case-state revision and outcome feedback over time, is already complete.
