@@ -28,6 +28,14 @@ GC creates grounded context and substrate for downstream work, but it is not the
 
 `material -> normalized form -> shaped kernel bundle -> thin adapter -> Arbiter judgment`
 
+## Governed lifecycle path
+
+The proof now extends beyond the one-way forward pass.
+
+The current bounded lifecycle path is:
+
+`case_state -> action_record -> outcome_event -> confidence revision -> reopen evaluation -> manual review path -> monitoring queue`
+
 ## What has been proven
 
 ### 1. Bounded artifact lane in Jigsaw
@@ -197,5 +205,8 @@ What exists today is:
 - one bounded mixed local-model bundle proof inside Jigsaw
 - one calibrated execution profile with believable spread across live GC-backed cases
 - one user-consumable brief pack generated from a calibrated execution profile
+- bounded lifecycle objects and confidence revision rules
+- explicit reopen evaluation from outcomes and new GC relevance signals
+- operator-visible reopen review packets and case monitoring queue
 
 That is the current foundation for future expansion.

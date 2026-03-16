@@ -2,13 +2,14 @@
 
 Jigsaw is the middle capability repo in a governed intelligence stack.
 
-It currently proves a bounded forward pass in which:
+It currently proves an early governed lifecycle in which:
 
 - Garbage Collector grounds context
 - a Controller holds exploration state
 - Jigsaw composes bounded analytical cases
 - Arbiter returns a gated decision
 - the product layer emits readable artifacts
+- lifecycle state records what happened after action and whether the case should reopen
 
 The current proof domain is remote-workflow or opportunity triage over live GC-backed material.
 
@@ -41,6 +42,10 @@ The strongest architectural achievement so far is the explicit runtime object ch
 `gc_context_snapshot -> hypothesis_state -> case_input -> kernel_bundle_result -> arbiter_request -> arbiter_response`
 
 This is what makes the system inspectable, diagnosable, and governable by layer.
+
+The governed lifecycle now extends that forward-pass spine with:
+
+`case_state -> action_record -> outcome_event -> case_relevance_signal`
 
 ## Governed Forward-Pass Demo
 
@@ -121,6 +126,21 @@ The current lane produces user-facing outputs:
 - opportunity briefs in Markdown and static HTML
 - batch summary reports
 - a public forward-pass demo pack
+- reopen review packets
+- case monitoring queue
+
+### Early governed lifecycle
+
+Jigsaw now supports bounded lifecycle behavior beyond the forward pass:
+
+- `case_state/v1`
+- `action_record/v1`
+- `outcome_event/v1`
+- confidence revision and trajectory updates
+- explicit reopen rules
+- manual reopen/review flow
+- GC-triggered reopen evaluation through `case_relevance_signal`
+- operator-visible review artifacts and monitoring queue
 
 ## Systems Alignment Contribution
 
@@ -156,19 +176,19 @@ The localmix kernel work is a concrete proof of that property:
 - deterministic and LM-backed runtime modes
 - readable brief and summary outputs
 - a public governed forward-pass demo pack
+- bounded lifecycle objects and revision rules
+- operator-visible reopen review artifacts
+- case monitoring queue
 
 ## What Is Not First-Class Yet
 
-- longitudinal case lifecycle management
-- `case_state/v1`
-- `action_record/v1`
-- `outcome_event/v1`
-- confidence trajectory over time
-- human-assisted outcome recording loop
+- automated outcome detection
+- exchange-record objects such as `kernel_exchange/v1` or `arbiter_exchange/v1`
+- external watchdog / circuit-breaker enforcement
 - Autoresearcher worker
 - companion UI
 
-The system is now strong on the **governed forward pass** and weaker on the **return loop over time**.
+The system is now strong on the **governed forward pass** and in an **early governed lifecycle** phase, but weaker on full automation and independent watchdog enforcement.
 
 ## Reproduce The Current Strongest Slice
 

@@ -6,12 +6,14 @@ This repository implements the current Jigsaw-centered capability layer of a gov
 
 - Garbage Collector is external and supplies grounded context
 - Arbiter is external and supplies bounded final judgment
-- Jigsaw owns the middle forward-pass spine:
+- Jigsaw owns the middle forward-pass spine and early lifecycle surface:
   - Controller state
   - case packaging
   - kernel execution
   - composition
   - product artifact generation
+  - lifecycle revision
+  - reopen review artifacts
 
 The current proof domain remains intentionally narrow: remote-workflow or opportunity triage.
 
@@ -42,6 +44,15 @@ Prove that an AI-capable forward pass can be:
 7. A thin adapter maps that result into `arbiter_request`.
 8. Arbiter returns `arbiter_response`.
 9. The product layer emits readable briefs and summary reports.
+
+## Current Lifecycle Flow
+
+1. `case_state` records the completed bounded case.
+2. `action_record` records what was attempted.
+3. `outcome_event` records what happened after action.
+4. `apply_outcome_event(...)` revises confidence and reopen status.
+5. `case_relevance_signal` can attach or reopen a case when new GC material matters.
+6. manual review flow and monitoring artifacts surface which cases need attention next.
 
 ## Explicit Object Spine
 
@@ -75,13 +86,29 @@ That is what makes Jigsaw the middle capability repo in the current stack.
 
 This repo is not yet:
 
-- a first-class longitudinal case manager
 - an outcome-feedback engine
 - a persistent action-execution system
 - an Autoresearcher worker
 - a companion UI
 
-The forward pass is real. The return loop over time is not yet first-class.
+The forward pass is real. The early governed lifecycle is also real. Full long-horizon automation and independent watchdog enforcement are not yet first-class.
+
+## Repo Boundary Note
+
+The current top-level repository split is intentional:
+
+- **Garbage Collector** owns substrate intelligence
+- **Jigsaw** owns controller, runtime, composition, lifecycle, and product slice
+- **Arbiter** owns the final judgment membrane
+
+Several subcomponents still live together inside Jigsaw:
+
+- controller and case lifecycle
+- kernel runtime
+- execution profiles
+- lanes and product artifacts
+
+That is acceptable for now because these boundaries are still evolving together. The right move is to keep internal boundaries explicit and only extract a separate repo when one subcomponent becomes stable enough to live independently.
 
 ## Potential Safety Primitive
 
