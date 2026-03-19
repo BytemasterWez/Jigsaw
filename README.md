@@ -226,3 +226,9 @@ python -m jigsaw.lanes.real_case_lane.generate_summary_report
 - [docs/RESEARCH_CONTROLLER_ROLE.md](./docs/RESEARCH_CONTROLLER_ROLE.md)
 - [validation/execution_profiles/remote_workflow_v1b/SUMMARY.md](./validation/execution_profiles/remote_workflow_v1b/SUMMARY.md)
 - [validation/execution_profiles/remote_workflow_localmix_v1/COMPARISON_vs_remote_workflow_v1b.md](./validation/execution_profiles/remote_workflow_localmix_v1/COMPARISON_vs_remote_workflow_v1b.md)
+
+## Contact
+
+For research or commercial contact:
+
+- `stratascout.research@gmail.com`
